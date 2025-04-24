@@ -1,9 +1,10 @@
 :root {
-  --type-face: sans-serif;
+  --type-face: 'Inter', sans-serif;
 
   --h1: 30px;
   --h2: 24px;
   --h3: 20px;
+  --h3: var(--body-text);
   --body-text: 16px;
   --body-text-small: 12px;
   --body-text-x-small: 10px;
@@ -47,6 +48,9 @@
   --purple-dark: #8826FC;
   --purple-medium: #C392FD;
   --purple-light: #D1B8EE;
+
+
+
 }
 
 h1 {
@@ -66,6 +70,11 @@ h3 {
   font-weight: 600;
 }
 
+h4 {
+  font-size: var(--h4);
+  font-weight: 600;
+}
+
 p {
   font-size: var(--body-text);
   font-weight: 400;
@@ -73,6 +82,10 @@ p {
 
 body {
   font-family: var(--type-face);
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 
@@ -89,11 +102,31 @@ body {
   background-color: var(--body-bg);
 }
 
+
+
+/* LIBRARY SCREEN */
+.testing {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .div-header {
   padding: 0 16px;
   margin: 0;
 }
 
-.container-quick-start {}
+.library-container-quick-start {
+  box-sizing: border-box;
 
-.btn-big {}
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  width: 100%;
+  padding: 0 var(--general-padding);
+}
+
+
+
+.workout-template {}

@@ -1,0 +1,92 @@
+:root {
+    --CTA-font-size: var(--body-text);
+    --CTA-padding-large: 10px;
+    --CTA-padding-medium: 8px;
+    --CTA-padding-small: 2px;
+    --CTA-yes-bg: var(--blue-medium-dark);
+    --CTA-yes-text: var(--white);
+    --CTA-yes-soft-bg: var(--blue-light);
+    --CTA-yes-soft-text: var(--blue-medium-dark);
+
+    --CTA-gray-bg: var(--gray-light);
+    --CTA-gray-text: var(--black);
+
+    --CTA-no-bg: var(--red-dark);
+    --CTA-no-text: var(--white);
+    --CTA-no-soft-bg: var(--red-light);
+    --CTA-no-soft-text: var(--red-dark);
+
+    --CTA-green-bg: var(--green-dark);
+    --CTA-green-text: var(--white);
+
+    --CTA-transparent-bg: #ffffff00;
+    --CTA-transparent-text: var(--blue-dark);
+}
+
+.btn-big {
+    display: flex;
+    justify-content: center;
+    padding: 8px 16px;
+    width: 100%;
+    font-size: var(--body-text);
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+}
+
+.btn-blue-chunky {
+    padding: 10px 16px;
+    background-color: var(--CTA-yes-bg);
+    color: var(--CTA-yes-text);
+}
+
+.btn-gray-skinny {
+    padding: 2px 16px;
+    background-color: var(--CTA-gray-bg);
+    color: var(--CTA-gray-text);
+}
+
+
+.btn-red {
+    background-color: var(--CTA-no-bg);
+    color: var(--CTA-no-text);
+}
+
+.btn-gray {
+    background-color: var(--CTA-gray-bg);
+    color: var(--CTA-gray-text);
+}
+
+.btn-blue {
+    background-color: var(--CTA-yes-bg);
+    color: var(--CTA-yes-text);
+}
+
+.btn-blue-soft {
+    background-color: var(--CTA-yes-soft-bg);
+    color: var(--CTA-yes-soft-text);
+}
+
+.btn-red-soft {
+    background-color: var(--CTA-no-soft-bg);
+    color: var(--CTA-no-soft-text);
+}
+
+
+.btn-green-small {
+    width: fit-content;
+    background-color: var(--CTA-green-bg);
+    color: var(--CTA-green-text);
+}
+
+.btn-blue-small {
+    width: fit-content;
+    background-color: var(--CTA-yes-bg);
+    color: var(--CTA-yes-text);
+}
+
+.btn-blue-transparent {
+    width: fit-content;
+    background-color: var(--CTA-transparent-bg);
+    color: var(--CTA-transparent-text);
+}

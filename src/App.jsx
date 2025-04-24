@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import './index.css'
-import HomeScreen from './screens/HomeScreen.jsx'
+import TemplatesScreen from './screens/TemplatesScreen.jsx'
 
 function App() {
 
   return (
-    <HomeScreen />
+    <TemplatesScreen />
   )
 }
 

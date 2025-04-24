@@ -1,0 +1,16 @@
+:root {
+    --header-btn-icon: var(--black-blue-dark);
+    --header-btn-bg: var(--gray-light);
+    --content-btn-icon: var(--blue-dark);
+    --content-btn-bg: var(--blue-light);
+    --header-row-btn-icon: var(--black-blue-dark);
+    --header-row-btn-bg: #ffffff00;
+}
+
+.testing-icon-div {
+    fill: greenyellow;
+    background-color: red;
+    padding: 20px;
+    border-radius: 4px;
+    width: fit-content;
+}
