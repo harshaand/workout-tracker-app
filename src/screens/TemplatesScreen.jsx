@@ -1,13 +1,17 @@
 import '../css/template-screen.css';
-import '../css/icons.css'
+import '../css/buttons.css'; // Import button-specific styles
 
 import {
-    NavClock, NavAdd, NavProgress, NavUser, AddMedium, AddSmall, Folder, Weight,
-    Cross, Tick, Trash, Calendar, Collapse, Duplicate, Clock, Progress,
-    Target, Question, Pencil, TrophyLarge, TrophyMedium, TrophySmall, Lock, Timer,
-    ArrowDown, ArrowLeft, ArrowRight, Search, Bicep,
-    Streak, Ellipsis, BlankNarrow, BlankWide
+    AddMedium, AddSmall, ArrowDown, ArrowLeft, ArrowRight, Bicep, BlankNarrow, BlankWide,
+    Calendar, Clock, Collapse, Cross, Duplicate, Ellipsis, Folder, Lock,
+    NavAdd, NavProgress, NavUser, Pencil, Progress, Question, Search, Streak,
+    Target, Tick, Timer, Trash, TrophyLarge, TrophyMedium, TrophySmall, Weight, NavClock
 } from '../assets/icons/icons.js';
+
+import ButtonSmall from '../components/ButtonSmall.jsx'
+import ButtonBig from '../components/ButtonBig.jsx'
+import ButtonModal from '../components/ButtonModal.jsx'
+
 
 
 function TemplatesScreen() {
@@ -20,56 +24,48 @@ function TemplatesScreen() {
             <div className="library-container-quick-start">
                 <h4>Quick Start</h4>
                 <button className="btn-big btn-blue-chunky"> Start an Empty Workout </button>
+                <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
+
+                <div className='modal-options modal-options-default-width'>
+                    <ButtonModal type='options' icon='add'>Add Template</ButtonModal>
+                    <ButtonModal type='options' icon='archive'>Rename Folder</ButtonModal>
+                    <ButtonModal type='options' icon='collapse'>Collapse Folder</ButtonModal>
+                    <ButtonModal type='options' icon='duplicate'>Duplicate</ButtonModal>
+                    <ButtonModal type='options' icon='edit'>Edit Template</ButtonModal>
+                    <ButtonModal type='optionsDelete' icon='delete'>Delete</ButtonModal>
+                </div>
+
+                <div className='modal-select'>
+                    <div className='modal-select-header'>
+                        <ButtonSmall type='closeModal' />
+                        <h3>Select Folder</h3>
+                        <ButtonBig color='transparent' size='hug'>Next</ButtonBig>
+                    </div>
+                    <div className='modal-select-buttons-container'>
+                        <ButtonModal type='select' icon='check'>None</ButtonModal>
+                        <ButtonModal type='select' icon='check'>Folder 5</ButtonModal>
+                        <ButtonModal type='select' icon='check'>Folder 4</ButtonModal>
+                        <ButtonModal type='select' icon='check'>Folder 3</ButtonModal>
+                        <ButtonModal type='select' icon='check'>Full Body</ButtonModal>
+                    </div>
+
+                </div>
+
+
             </div>
             <div className="library-main-section">
                 <div className="library-main-section-header">
-                    <div className="testing--div">
-                        <AddMedium />
-                        <Folder />
-                        <Weight />
-                        <Trash />
-                        <Collapse />
-                        <Duplicate />
-                        <Clock />
-                        <Target />
-                        <Question />
-                        <Pencil />
-                        <TrophyMedium />
-                        <Lock />
-                        <Timer />
-                        <Search />
-                        <Ellipsis />
-                        <BlankNarrow />
-                        <BlankWide />
 
 
 
-                    </div>
-                    <div className="testing-icon-div">
-                        <AddSmall />
-                        <Cross />
-                        <Tick />
-                        <ArrowDown />
-                        <ArrowLeft />
-                        <ArrowRight />
-                        <TrophySmall />
-                    </div>
+                    <button className='btn-icon-small btn-blue-soft'><Folder /></button>
+                    <button className='button-view-all btn-blue-soft'>View All<ArrowRight /></button>
+                    <ButtonSmall type='options1' />
 
 
-                    <div className="testing-icon-div">
-                        <Calendar />
-                        <Progress />
-                        <TrophyLarge />
-                        <Streak />
-                        <Bicep />
-                    </div>
 
-                    <div className="testing-icon-div">
-                        <NavClock />
-                        <NavAdd />
-                        <NavProgress />
-                        <NavUser />
-                    </div>
+
+
 
                 </div>
                 <div className="library-main-section-content">

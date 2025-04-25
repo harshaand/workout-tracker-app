@@ -1,6 +1,16 @@
+/*
+To do list
+1. Sort out variabes
+  - main colors (background, text colors)
+2. Rename blue -> primary
+3. maybe create the absolute minimum amount of tokens needed
+*/
+
+
 :root {
   --type-face: 'Inter', sans-serif;
 
+  /*SIZES*/
   --h1: 30px;
   --h2: 24px;
   --h3: 20px;
@@ -15,6 +25,19 @@
   --space-between-sections: 48px;
   --margin-top-prim-screen: 105px;
   --margin-top-secon-screen: 60px;
+
+  /*MAIN
+   background color
+
+   ----text-colors------
+   text-primary-color
+   secondary
+   placeholder
+   colored
+
+   COLORS: blue -> primary-medium...
+then when different themes, can just change primary colors + 
+*/
 
   /* COLORS */
   --blue-dark: #2A85CC;
@@ -86,6 +109,7 @@ body {
   padding: 0;
   max-width: 100%;
   overflow-x: hidden;
+  background-color: #909090;
 }
 
 

@@ -1,92 +1,224 @@
-:root {
-    --CTA-font-size: var(--body-text);
-    --CTA-padding-large: 10px;
-    --CTA-padding-medium: 8px;
-    --CTA-padding-small: 2px;
-    --CTA-yes-bg: var(--blue-medium-dark);
-    --CTA-yes-text: var(--white);
-    --CTA-yes-soft-bg: var(--blue-light);
-    --CTA-yes-soft-text: var(--blue-medium-dark);
+/*
+To do list
+1. Add hover and press animations
+2. Add modal buttons
+*/
 
-    --CTA-gray-bg: var(--gray-light);
-    --CTA-gray-text: var(--black);
-
-    --CTA-no-bg: var(--red-dark);
-    --CTA-no-text: var(--white);
-    --CTA-no-soft-bg: var(--red-light);
-    --CTA-no-soft-text: var(--red-dark);
-
-    --CTA-green-bg: var(--green-dark);
-    --CTA-green-text: var(--white);
-
-    --CTA-transparent-bg: #ffffff00;
-    --CTA-transparent-text: var(--blue-dark);
-}
-
-.btn-big {
+button {
     display: flex;
     justify-content: center;
-    padding: 8px 16px;
-    width: 100%;
-    font-size: var(--body-text);
-    font-weight: 600;
+    align-items: center;
     border: none;
     border-radius: 8px;
+    font-size: var(--body-text);
+    font-weight: 600;
 }
 
-.btn-blue-chunky {
-    padding: 10px 16px;
-    background-color: var(--CTA-yes-bg);
-    color: var(--CTA-yes-text);
+/*-----------------------------------BUTTON COLORS-----------------------------------*/
+.btn-blue {
+    background-color: var(--blue-medium-dark);
+    color: var(--white);
 }
 
-.btn-gray-skinny {
-    padding: 2px 16px;
-    background-color: var(--CTA-gray-bg);
-    color: var(--CTA-gray-text);
+.btn-blue-soft {
+    background-color: var(--blue-light);
+    color: var(--blue-medium-dark);
+    fill: var(--blue-dark);
 }
 
 
 .btn-red {
-    background-color: var(--CTA-no-bg);
-    color: var(--CTA-no-text);
-}
-
-.btn-gray {
-    background-color: var(--CTA-gray-bg);
-    color: var(--CTA-gray-text);
-}
-
-.btn-blue {
-    background-color: var(--CTA-yes-bg);
-    color: var(--CTA-yes-text);
-}
-
-.btn-blue-soft {
-    background-color: var(--CTA-yes-soft-bg);
-    color: var(--CTA-yes-soft-text);
+    background-color: var(--red-dark);
+    color: var(--white);
 }
 
 .btn-red-soft {
-    background-color: var(--CTA-no-soft-bg);
-    color: var(--CTA-no-soft-text);
+    background-color: var(--red-light);
+    color: var(--red-dark);
+}
+
+.btn-gray {
+    background-color: var(--gray-light);
+    color: var(--black);
+    fill: var(--black-blue-dark);
+}
+
+.btn-transparent {
+    background-color: #ffffff00;
+    color: var(--blue-dark);
+    fill: var(--black-blue-dark);
+}
+
+.btn-green {
+    background-color: var(--green-dark);
+    color: var(--white);
+    fill: var(--white);
+}
+
+/*special cases*/
+.btn-unchecked {
+    background-color: var(--gray-light);
+    fill: #C9CCCD;
+}
+
+.btn-checkbox-locked {
+    background-color: var(--gray-super-light);
+    fill: #C7C9CA;
+}
+
+/*-----------------------------------BUTTON SIZES-----------------------------------*/
+
+
+.btn-icon-small {
+    padding: 0;
+    width: 32px;
+    height: 24px;
+}
+
+.btn-icon-big {
+    padding: 0;
+    width: 48px;
+    height: 35px;
+}
+
+.btn-big {
+    padding: 8px 16px;
+    width: 100%;
+    gap: 8px;
+}
+
+.btn-big-hug {
+    padding: 8px 16px;
+    width: fit-content;
+    gap: 8px;
+}
+
+.btn-big-skinny {
+    padding: 2px 16px;
+    width: 100%;
+    gap: 4px;
+}
+
+.btn-big-chunky {
+    padding: 10px 16px;
+    width: 100%;
+    gap: 8px;
+}
+
+/*special cases*/
+.btn-view-all {
+    padding: 2px 8px;
+    height: 24px;
+    width: fit-content;
+    letter-spacing: -2%;
+    gap: 6px;
+}
+
+.btn-add-template {
+    padding: 2px 8px;
+    height: 24px;
+    width: fit-content;
+    letter-spacing: -2%;
+    gap: 8px;
+}
+
+/*-----------------------------------MODAL EDIT-----------------------------------*/
+
+.modal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background-color: var(--black-blue-light);
+    height: fit-content;
+    border-radius: 16px;
+}
+
+.modal-options-default-width {
+    width: 200px;
+}
+
+.modal-options-wide-width {
+    width: 250px;
 }
 
 
-.btn-green-small {
-    width: fit-content;
-    background-color: var(--CTA-green-bg);
-    color: var(--CTA-green-text);
+.btn-modal-options {
+    background-color: #ffffff00;
+    color: var(--white);
+    fill: var(--blue-medium-light);
+    justify-content: flex-start;
+    border-radius: 0;
+    padding: 12px 16px;
+    width: 100%;
+    gap: 8px;
 }
 
-.btn-blue-small {
-    width: fit-content;
-    background-color: var(--CTA-yes-bg);
-    color: var(--CTA-yes-text);
+.btn-modal-options-wide {
+    background-color: #ffffff00;
+    color: var(--white);
+    fill: var(--blue-medium-light);
+    justify-content: flex-start;
+    border-radius: 0;
+    padding: 12px 16px;
+    width: 100%;
+    gap: 8px;
 }
 
-.btn-blue-transparent {
-    width: fit-content;
-    background-color: var(--CTA-transparent-bg);
-    color: var(--CTA-transparent-text);
+.btn-modal-options-delete {
+    background-color: #ffffff00;
+    color: var(--white);
+    fill: var(--red-medium);
+    justify-content: flex-start;
+    border-radius: 0;
+    padding: 13px 18px;
+    width: 100%;
+    gap: 10px;
+}
+
+/*-----------------------------------MODAL SELECT-----------------------------------*/
+.modal-select {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    padding: 7px 0px 12px 0px;
+    background-color: var(--white);
+    height: fit-content;
+    width: 361px;
+    border-radius: 16px;
+}
+
+.modal-select-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 16px;
+    margin: 0;
+    height: fit-content;
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 0;
+
+}
+
+.modal-select-buttons-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    height: fit-content;
+    width: 100%;
+
+}
+
+.btn-modal-select {
+    background-color: #ffffff00;
+    color: var(--black-blue-light);
+    fill: var(--blue-dark);
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    padding: 9px 16px;
+    width: 100%;
+    gap: 8px;
+
 }
