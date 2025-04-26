@@ -26,6 +26,15 @@ To do list
   --margin-top-prim-screen: 105px;
   --margin-top-secon-screen: 60px;
 
+
+  --text-color-heading-1: var(--black);
+  --text-color-heading-2: var(--black-blue-light);
+  --text-color-body: var(--gray-dark);
+  --text-color-supporting: var(--gray-medium-dark);
+  --text-color-colored: var(--blue-medium-dark);
+  --input-field-text: var(--black);
+  --input-field-text-placeholder: var(--gray-medium-light);
+  --input-field-bg: var(--gray-light);
   /*MAIN
    background color
 
@@ -101,6 +110,7 @@ h4 {
 p {
   font-size: var(--body-text);
   font-weight: 400;
+  color: var(--text-color-body)
 }
 
 body {

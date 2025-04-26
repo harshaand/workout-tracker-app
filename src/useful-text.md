@@ -93,3 +93,31 @@ edit
     <ButtonModal type='options' icon='edit'>Edit Template</ButtonModal>
     <ButtonModal type='optionsDelete' icon='delete'>Delete</ButtonModal>
 </div>
+
+
+
+import ModalOptionsTemplate from '../components/Modals/ModalOptionsTemplate.jsx'
+import ModalOptionsHistory from '../components/Modals/ModalOptionsHistory.jsx'
+import ModalOptionsFolder from '../components/Modals/ModalOptionsFolder.jsx'
+import ModalOptionsEditTemplateScreen from '../components/Modals/ModalOptionsEditTemplateScreen.jsx'
+
+import ModalDelete from '../components/Modals/ModalDelete.jsx'
+import ModalDiscard from '../components/Modals/ModalDiscard.jsx'
+import ModalSaveInputDescr from '../components/Modals/ModalSaveInputDescr.jsx'
+import ModalSaveInputNoDescr from '../components/Modals/ModalSaveInputNoDescr.jsx'
+import ModalSave from '../components/Modals/ModalSave.jsx'
+import ModalAdd from '../components/Modals/ModalAdd.jsx'
+import ModalSelect from '../components/Modals/ModalSelect.jsx'
+
+<ModalOptionsTemplate />
+<ModalOptionsHistory />
+<ModalOptionsFolder />
+<ModalOptionsEditTemplateScreen />
+
+<ModalDelete />
+<ModalDiscard />
+<ModalSaveInputDescr />
+<ModalSaveInputNoDescr />
+<ModalSave />
+<ModalAdd />
+<ModalSelect />

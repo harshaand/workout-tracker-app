@@ -1,10 +1,8 @@
 // components/Button.jsx
 import React from 'react';
 import {
-    AddMedium, AddSmall, ArrowDown, ArrowLeft, ArrowRight, Bicep, BlankNarrow, BlankWide,
-    Calendar, Clock, Collapse, Cross, Duplicate, Ellipsis, Folder, Lock,
-    NavAdd, NavProgress, NavUser, Pencil, Progress, Question, Search, Streak,
-    Target, Tick, Timer, Trash, TrophyLarge, TrophyMedium, TrophySmall, Weight, NavClock
+    AddMedium, ArrowLeft, ArrowRight, BlankNarrow, Cross, Ellipsis,
+    Folder, Question, Target, Tick, Timer
 } from '../assets/icons/icons.js';
 
 

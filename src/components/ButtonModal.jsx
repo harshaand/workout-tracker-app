@@ -18,7 +18,7 @@ function ButtonModal({ children, type = 'edit', icon, onClick }) {
     const CLASSES_MAP = {
         options: 'btn-modal-options',
         optionsDelete: 'btn-modal-options-delete',
-        select: 'btn-modal-select',
+        select: 'btn-modal-select active',
     }
 
 
