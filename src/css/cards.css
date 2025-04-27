@@ -105,3 +105,112 @@
 
 
 /*-----------------------------------CARD WORKOUT HISTORY-----------------------------------*/
+
+
+
+.card-workout-history {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: var(--white);
+    fill: var(--text-color-body);
+    height: fit-content;
+    width: 361px;
+    padding: 18px 16px;
+    border-radius: 16px;
+    box-sizing: border-box;
+}
+
+
+.card-workout-history h3 {
+    color: var(--text-color-heading-2);
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.card-workout-history h4 {
+    color: var(--text-color-heading-2);
+    font-weight: 500;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.card-workout-history .heading {
+    padding-right: 44px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.card-workout-history p {
+    font-size: var(--body-text);
+    font-weight: 400;
+    color: var(--text-color-body);
+    margin: 0;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.card-workout-history .options-button {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+}
+
+.card-workout-history .container-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.card-workout-history .container-stats .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+
+}
+
+.card-workout-history .container-stats .stats .stat {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0;
+}
+
+.card-workout-history .container-stats .stats .duration {
+    padding: 0 4px;
+}
+
+.card-workout-history .container-stats .stats .volume {
+    padding: 0 8px;
+}
+
+.card-workout-history .container-stats .stats .PRs {
+    padding: 0 8px;
+}
+
+.card-workout-history .container-data-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.card-workout-history .container-data-rows .heading {
+    width: 100%;
+}
+
+.card-workout-history .container-data-rows .data-row {
+    display: flex;
+    gap: 8px;
+
+}
+
+.card-workout-history .container-data-rows .data-row p {
+    width: 100%;
+}
