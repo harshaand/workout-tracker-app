@@ -1,5 +1,5 @@
 import '../../css/modals.css';
-import ButtonModal from '../ButtonModal.jsx'
+import ButtonModal from '../Buttons/ButtonModal.jsx'
 import React from 'react'
 
 function ModalOptionsHistory() {

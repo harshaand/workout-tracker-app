@@ -3,10 +3,10 @@ import React from 'react';
 import {
     AddMedium, ArrowLeft, ArrowRight, BlankNarrow, Cross, Ellipsis,
     Folder, Question, Target, Tick, Timer
-} from '../assets/icons/icons.js';
+} from '../../assets/icons/icons.js';
 
 
-function ButtonSmall({ type, onClick }) {
+function ButtonSmall({ type, onClick, customClasses = '' }) {
     const ICONS_MAP = {
         options1: Ellipsis,
         option2: Ellipsis,
@@ -44,7 +44,7 @@ function ButtonSmall({ type, onClick }) {
     const IconComponent = ICONS_MAP[type];
 
     return (
-        <button className={CLASSES_MAP[type]} onClick={onClick}>
+        <button className={`${CLASSES_MAP[type]} ${customClasses}`} onClick={onClick}>
             {IconComponent && <IconComponent />}
         </button>
     );

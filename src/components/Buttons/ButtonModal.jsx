@@ -2,7 +2,7 @@
 import React from 'react';
 import {
     AddMedium, Collapse, Cross, Duplicate, Pencil, Trash, Tick
-} from '../assets/icons/icons.js';
+} from '../../assets/icons/icons.js';
 
 function ButtonModal({ children, type = 'edit', icon, onClick }) {
     const ICONS_MAP = {

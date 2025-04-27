@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../css/modals.css';
-import ButtonSmall from '../ButtonSmall.jsx'
+import ButtonSmall from '../Buttons/ButtonSmall.jsx'
 
 function ModalAdd() {
     return (

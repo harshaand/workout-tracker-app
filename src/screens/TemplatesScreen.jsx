@@ -1,11 +1,10 @@
 import '../css/template-screen.css';
-import '../css/buttons.css'; // Import button-specific styles
+import '../css/buttons.css';
 import '../css/modals.css';
 
-import ButtonSmall from '../components/ButtonSmall.jsx'
-import ButtonBig from '../components/ButtonBig.jsx'
-
-
+import ButtonSmall from '../components/Buttons/ButtonSmall.jsx'
+import ButtonBig from '../components/Buttons/ButtonBig.jsx'
+import CardWorkoutTemplate from '../components/Cards/CardWorkoutTemplate.jsx'
 
 
 function TemplatesScreen() {
@@ -18,7 +17,7 @@ function TemplatesScreen() {
             <div className="library-container-quick-start">
                 <h4>Quick Start</h4>
                 <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
-
+                <CardWorkoutTemplate />
 
             </div>
             <div className="library-main-section">

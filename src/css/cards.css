@@ -1,0 +1,107 @@
+/*-----------------------------------CARD WORKOUT TEMPLATE-----------------------------------*/
+
+.card-workout-add-template h3 {
+    margin: 0;
+    padding: 0
+}
+
+.card-workout-add-template p {
+    color: var(--text-color-colored);
+    font-size: var(--body-text-small);
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 0.05em;
+}
+
+.card-workout-template {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white);
+    height: 144px;
+    width: 173px;
+    padding: 16px;
+    border-radius: 16px;
+    box-sizing: border-box;
+}
+
+.card-workout-template-short-title {
+    gap: 6px;
+}
+
+.card-workout-template-long-title {
+    gap: 12px;
+}
+
+.card-workout-template h3 {
+    color: var(--text-color-heading-1);
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.card-workout-template .heading {
+    padding-right: 44px;
+}
+
+
+.card-workout-template p {
+    font-size: var(--body-text-small);
+    margin: 0;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.card-workout-template .options-button {
+    position: absolute;
+    right: 16px;
+    top: 14px;
+}
+
+.card-workout-template .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.card-workout-template .container-timestamp {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-color-supporting);
+    fill: var(--text-color-supporting);
+    height: 19px;
+    width: 100%;
+    padding: 0 4px;
+    box-sizing: border-box;
+}
+
+.card-workout-template .container-timestamp p {
+    color: var(--text-color-supporting);
+}
+
+
+.card-workout-add-template {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--white);
+    color: var(--text-color-colored);
+    height: 144px;
+    width: 173px;
+    padding: 16px;
+    border-radius: 16px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+/*-----------------------------------CARD WORKOUT HISTORY-----------------------------------*/
