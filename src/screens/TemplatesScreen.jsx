@@ -5,6 +5,8 @@ import ButtonSmall from '../components/Buttons/ButtonSmall.jsx'
 import ButtonBig from '../components/Buttons/ButtonBig.jsx'
 import CardWorkoutTemplate from '../components/Cards/CardWorkoutTemplate.jsx'
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
+import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
+
 
 
 
@@ -20,6 +22,7 @@ function TemplatesScreen() {
                 <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
                 <CardWorkoutTemplate />
                 <CardWorkoutHistory />
+                <CardExerciseTracker />
 
             </div>
             <div className="library-main-section">

@@ -6,7 +6,7 @@ import {
 } from '../../assets/icons/icons.js';
 
 
-function ButtonSmall({ type, onClick, customClasses = '' }) {
+function ButtonSmall({ type, onClick, customClasses = '', children }) {
     const ICONS_MAP = {
         options1: Ellipsis,
         option2: Ellipsis,
@@ -38,14 +38,15 @@ function ButtonSmall({ type, onClick, customClasses = '' }) {
         addTemplate: 'btn-add-template btn-blue-soft',
         timer: 'btn-icon-big btn-gray',
         backScreen: 'btn-icon-big btn-gray',
-        addExercise: 'btn-icon-big btn-blue-soft'
+        addExercise: 'btn-icon-big btn-blue-soft',
+        setNumber: 'btn-icon-small btn-set-number'
     }
 
     const IconComponent = ICONS_MAP[type];
 
     return (
         <button className={`${CLASSES_MAP[type]} ${customClasses}`} onClick={onClick}>
-            {IconComponent && <IconComponent />}
+            {IconComponent && <IconComponent />}{children}
         </button>
     );
 };

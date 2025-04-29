@@ -1,0 +1,34 @@
+import React from 'react'
+import ButtonSmall from '../Buttons/ButtonSmall.jsx'
+import ButtonBig from '../Buttons/ButtonBig.jsx'
+import RowExerciseTracker from './RowExerciseTracker.jsx'
+
+import '../../css/cards.css';
+
+
+function CardExerciseTracker(props) {
+
+    function renderRows() {
+        return props.exercise.sets.map(set => (<RowExerciseTracker exerciseId={props.exercise.id} set={set} toggleSetCompleted={props.toggleSetCompleted} />))
+    }
+
+    return (
+        <div className='card-exercise-tracker'>
+            <div className='heading'>
+                <h3>{props.exercise.name}</h3>
+                <ButtonSmall type='options1' customClasses='options-button'></ButtonSmall>
+            </div>
+
+            <div className='container-exercises'>
+                <RowExerciseTracker type='heading' />
+                {renderRows()}
+
+            </div>
+            <div className='container-btn-add-set'>
+                <ButtonBig size='skinny' color='gray' icon='add'>Add Set</ButtonBig>
+            </div>
+        </div>
+    )
+}
+
+export default CardExerciseTracker

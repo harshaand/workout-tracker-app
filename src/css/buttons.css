@@ -30,6 +30,49 @@ button:active {
 }
 
 /*-----------------------------------BUTTON COLORS-----------------------------------*/
+/*special cases (card exercise tracker screen/component*/
+.btn-unchecked {
+    background-color: var(--gray-light);
+    fill: #C9CCCD;
+}
+
+.btn-checkbox-locked {
+    background-color: var(--gray-super-light);
+    fill: #C7C9CA;
+}
+
+.btn-set-number {
+    background-color: var(--input-field-bg);
+    color: var(--text-color-heading-2);
+}
+
+.btn-prev-volume {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff00;
+    font: var(--type-face);
+    font-size: var(--body-text);
+    font-weight: 600;
+    border-radius: 8px;
+    letter-spacing: 0.02em;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding: 2px 12px;
+}
+
+.btn-prev-volume-active {
+    color: var(--text-color-heading-2);
+}
+
+.btn-prev-volume-inactive {
+    color: #C7C9CA;
+}
+
+/*-----------------------------------------------------*/
+
+
 .btn-blue {
     background-color: var(--blue-medium-dark);
     color: var(--white);
@@ -72,16 +115,6 @@ button:active {
     fill: var(--white);
 }
 
-/*special cases*/
-.btn-unchecked {
-    background-color: var(--gray-light);
-    fill: #C9CCCD;
-}
-
-.btn-checkbox-locked {
-    background-color: var(--gray-super-light);
-    fill: #C7C9CA;
-}
 
 /*-----------------------------------BUTTON SIZES-----------------------------------*/
 
