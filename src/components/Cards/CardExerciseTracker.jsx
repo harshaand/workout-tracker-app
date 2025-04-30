@@ -9,7 +9,7 @@ import '../../css/cards.css';
 function CardExerciseTracker(props) {
 
     function renderRows() {
-        return props.exercise.sets.map(set => (<RowExerciseTracker exerciseId={props.exercise.id} set={set} toggleSetCompleted={props.toggleSetCompleted} />))
+        return props.exercise.sets.map(set => (<RowExerciseTracker exerciseId={props.exercise.id} set={set} toggleSetCompleted={props.toggleSetCompleted} deleteSet={props.deleteSet} />))
     }
 
     return (
@@ -25,7 +25,7 @@ function CardExerciseTracker(props) {
 
             </div>
             <div className='container-btn-add-set'>
-                <ButtonBig size='skinny' color='gray' icon='add'>Add Set</ButtonBig>
+                <ButtonBig size='skinny' color='gray' icon='add' onClick={() => props.addSet(props.exercise.id)}>Add Set</ButtonBig>
             </div>
         </div>
     )

@@ -3,7 +3,7 @@ import ButtonSmall from '../Buttons/ButtonSmall.jsx'
 import { Tick, Lock } from '../../assets/icons/icons.js';
 
 
-function RowExerciseTracker({ type, set, toggleSetCompleted, exerciseId }) {
+function RowExerciseTracker({ type, set, toggleSetCompleted, exerciseId, deleteSet }) {
 
     if (type === 'heading') {
         return (
@@ -19,12 +19,12 @@ function RowExerciseTracker({ type, set, toggleSetCompleted, exerciseId }) {
     else {
         return (
             <div className={`exercise-row ${set.completed ? 'exercise-row-completed' : ''}`}>
-                <div className='testing'><ButtonSmall type='setNumber' customClasses={set.completed ? 'completed' : ''}>1</ButtonSmall>
+                <div className='testing'><ButtonSmall type='setNumber' customClasses={set.completed ? 'completed' : ''}>{set.num}</ButtonSmall>
                 </div>
-                <button className='btn-prev-volume btn-prev-volume-inactive'>+10kg x 20</button>
+                <button className='btn-prev-volume btn-prev-volume-inactive' onClick={() => deleteSet(exerciseId, set.id)}>+10kg x 20</button>
                 <div className='testing'><input className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight} id="abc" name="abc" type="text" /></div>
                 <div className='testing'><input className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.reps} id="abc" name="abc" type="text" /></div>
-                <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn-green' : ''} onClick={() => toggleSetCompleted(exerciseId, set.setNum)}></ButtonSmall></div>
+                <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn-green' : ''} onClick={() => toggleSetCompleted(exerciseId, set.num)}></ButtonSmall></div>
             </div>
         )
     }

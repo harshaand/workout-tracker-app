@@ -7,56 +7,12 @@ import ButtonBig from '../components/Buttons/ButtonBig.jsx'
 import CardWorkoutTemplate from '../components/Cards/CardWorkoutTemplate.jsx'
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
+import FolderList from '../OTHER/FoldersFunctionality.jsx'
 
 
-function SessionScreen() {
-    const initialExercises = [
-        {
-            id: 1,
-            name: 'cable curcles',
-            prevWeight: 10,
-            prevReps: 20,
-            sets:
-                [
-                    {
-                        setNum: 1,
-                        weight: 111,
-                        reps: 111,
-                        completed: true
-                    },
-                    {
-                        setNum: 2,
-                        weight: 222,
-                        reps: 222,
-                        completed: false
-                    }
-                ]
-        },
-        {
-            id: 2,
-            name: 'curls cable',
-            prevWeight: 10,
-            prevReps: 20,
-            sets:
-                [
-                    {
-                        setNum: 1,
-                        weight: 999,
-                        reps: 999,
-                        completed: true
-                    },
-                    {
-                        setNum: 2,
-                        weight: 888,
-                        reps: 888,
-                        completed: false
-                    }
-                ]
-        }
+function SessionScreen({ template }) {
 
-    ]
-
-    const [exercises, setExercises] = React.useState(initialExercises)
+    const [exercises, setExercises] = React.useState(template.exercises)
 
     function renderCardExerciseTracker() {
         return exercises.map(exercise => (<CardExerciseTracker exercise={exercise} />))
@@ -67,11 +23,58 @@ function SessionScreen() {
             prevExercises.map(exercise => exercise.id === exerciseId ?
                 {
                     ...exercise,
-                    sets: exercise.sets.map(set => set.setNum === setNum ? { ...set, completed: !set.completed } : set)
+                    sets: exercise.sets.map(set => set.num === setNum ? { ...set, completed: !set.completed } : set)
                 } :
                 exercise)
         ))
     }
+
+
+
+    function addSet(exerciseId) {
+        setExercises(prevExercises => {
+            return prevExercises.map(exercise => {
+                if (exercise.id === exerciseId) {
+                    const nextSetNum = exercise.sets.length + 1;
+
+                    const newSet = {
+                        /* generate unique id */
+                        id: 'revevev',
+                        num: nextSetNum,
+                        weight: exercise.prevWeight,
+                        reps: exercise.prevReps,
+                        completed: false
+                    };
+
+                    return {
+                        ...exercise,
+                        sets: [...exercise.sets, newSet]
+                    };
+                }
+                else { return exercise; }
+            });
+        });
+    };
+
+    function deleteSet(exerciseId, setID) {
+        setExercises(prevExercises => {
+            return prevExercises.map(exercise => {
+                if (exercise.id === exerciseId) {
+                    const updatedSets = exercise.sets.filter(set => set.id !== setID);
+                    const reorderedSets = updatedSets.map((set, index) => ({
+                        ...set,
+                        num: index + 1
+                    }));
+
+                    return {
+                        ...exercise,
+                        sets: reorderedSets
+                    };
+                }
+                else { return exercise; }
+            });
+        });
+    };
 
 
     return (
@@ -85,8 +88,9 @@ function SessionScreen() {
                 <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
                 <CardWorkoutTemplate />
                 <CardWorkoutHistory />
-                <CardExerciseTracker exercise={exercises[0]} toggleSetCompleted={toggleSetCompleted} />
-                <CardExerciseTracker exercise={exercises[1]} toggleSetCompleted={toggleSetCompleted} />
+                <CardExerciseTracker exercise={exercises[0]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} />
+                <CardExerciseTracker exercise={exercises[1]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} />
+                <FolderList />
 
             </div>
             <div className="library-main-section">
