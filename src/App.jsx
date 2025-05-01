@@ -26,6 +26,7 @@ const data = {
             [
               {
                 id: '0plkjn',
+                value: 1,
                 num: 1,
                 weight: 10,
                 reps: 20,
@@ -33,6 +34,7 @@ const data = {
               },
               {
                 id: '876tg',
+                value: 2,
                 num: 2,
                 weight: 10,
                 reps: 20,
@@ -50,6 +52,7 @@ const data = {
             [
               {
                 id: 'gbcbbcfv',
+                value: 1,
                 num: 1,
                 weight: 10,
                 reps: 20,
@@ -57,7 +60,25 @@ const data = {
               },
               {
                 id: 'iuukjy',
+                value: 2,
                 num: 2,
+                weight: 10,
+                reps: 20,
+                completed: false
+              },
+              {
+                id: 'erwvvweevw',
+                value: 3,
+                num: 3,
+                weight: 10,
+                reps: 20,
+                completed: false
+              }
+              ,
+              {
+                id: '765654',
+                value: 4,
+                num: 4,
                 weight: 10,
                 reps: 20,
                 completed: false
