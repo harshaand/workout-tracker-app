@@ -184,7 +184,12 @@ function SessionScreen({ template }) {
 
     };
 
-
+    function saveTemplate() {
+        const result = JSON.stringify(exercises) === JSON.stringify(template.exercises);
+        console.log(exercises)
+        console.log(template.exercises)
+        console.log('Are the templates the same?', result);
+    }
 
 
     return (
@@ -200,6 +205,7 @@ function SessionScreen({ template }) {
                 <CardWorkoutHistory />
                 <CardExerciseTracker exercise={exercises[0]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} handleOptionClick={handleOptionClick} />
                 <CardExerciseTracker exercise={exercises[1]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} handleOptionClick={handleOptionClick} />
+                <ButtonBig size='hug' color='green' onClick={saveTemplate}>Finish</ButtonBig>
                 <FolderList />
 
             </div>
