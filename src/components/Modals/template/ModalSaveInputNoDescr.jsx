@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../css/modals.css';
-import ButtonBig from '../Buttons/ButtonBig.jsx'
+import ButtonBig from '../../Buttons/ButtonBig.jsx'
 
 function ModalSaveInputNoDescr() {
     return (

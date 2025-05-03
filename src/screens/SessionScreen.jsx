@@ -9,10 +9,15 @@ import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import FolderList from '../OTHER/FoldersFunctionality.jsx'
 
+import ModalFinishWorkout from '../components/Modals/session/FinishWorkout.jsx'
+import FinishedWorkoutScreen from './FinishedWorkoutScreen.jsx'
 
 function SessionScreen({ template }) {
 
     const [exercises, setExercises] = React.useState(template.exercises)
+
+    const [showFinishModal, setShowFinishModal] = React.useState(false)
+    const [showFinishedWorkoutScreen, setShowFinishedWorkoutScreen] = React.useState(false)
 
     function renderCardExerciseTracker() {
         return exercises.map(exercise => (<CardExerciseTracker exercise={exercise} />))
@@ -186,13 +191,14 @@ function SessionScreen({ template }) {
 
     function saveTemplate() {
         const result = JSON.stringify(exercises) === JSON.stringify(template.exercises);
-        console.log(exercises)
-        console.log(template.exercises)
         console.log('Are the templates the same?', result);
+        setShowFinishModal(true)
+    }
+    if (showFinishedWorkoutScreen === true) {
+        return <FinishedWorkoutScreen oldExercises={template.exercises} newExercises={exercises} />
     }
 
-
-    return (
+    else return (
         <div className="container-app">
             <div className="div-header">
                 <h1>Start Workout</h1>
@@ -206,6 +212,8 @@ function SessionScreen({ template }) {
                 <CardExerciseTracker exercise={exercises[0]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} handleOptionClick={handleOptionClick} />
                 <CardExerciseTracker exercise={exercises[1]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} handleOptionClick={handleOptionClick} />
                 <ButtonBig size='hug' color='green' onClick={saveTemplate}>Finish</ButtonBig>
+                <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal}
+                    setShowFinishedWorkoutScreen={setShowFinishedWorkoutScreen} />
                 <FolderList />
 
             </div>
