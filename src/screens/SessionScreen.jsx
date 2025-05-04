@@ -4,11 +4,9 @@ import '../css/modals.css';
 
 import ButtonSmall from '../components/Buttons/ButtonSmall.jsx'
 import ButtonBig from '../components/Buttons/ButtonBig.jsx'
-import CardWorkoutTemplate from '../components/Cards/CardWorkoutTemplate.jsx'
-import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
-import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import FolderList from '../OTHER/FoldersFunctionality.jsx'
 
+import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import ModalFinishWorkout from '../components/Modals/session/FinishWorkout.jsx'
 import FinishedWorkoutScreen from './FinishedWorkoutScreen.jsx'
 
@@ -19,9 +17,6 @@ function SessionScreen({ template }) {
     const [showFinishModal, setShowFinishModal] = React.useState(false)
     const [showFinishedWorkoutScreen, setShowFinishedWorkoutScreen] = React.useState(false)
 
-    function renderCardExerciseTracker() {
-        return exercises.map(exercise => (<CardExerciseTracker exercise={exercise} />))
-    }
 
     function toggleSetCompleted(exerciseId, setNum) {
         setExercises(prevExercises => (
@@ -33,8 +28,6 @@ function SessionScreen({ template }) {
                 exercise)
         ))
     }
-
-
 
     function addSet(exerciseId) {
         setExercises(prevExercises => {
@@ -81,7 +74,6 @@ function SessionScreen({ template }) {
             });
         });
     };
-
 
     function handleOptionClick(option, exerciseId, setId) {
         setExercises(prevExercises => {
@@ -194,40 +186,25 @@ function SessionScreen({ template }) {
         console.log('Are the templates the same?', result);
         setShowFinishModal(true)
     }
+
     if (showFinishedWorkoutScreen === true) {
-        return <FinishedWorkoutScreen oldExercises={template.exercises} newExercises={exercises} />
+        return <FinishedWorkoutScreen oldExercises={template.exercises} newExercises={exercises} templateId={template.id} />
     }
 
     else return (
         <div className="container-app">
             <div className="div-header">
-                <h1>Start Workout</h1>
+                <h1>Session Screen</h1>
             </div>
 
             <div className="library-container-quick-start">
-                <h4>Quick Start</h4>
-                <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
-                <CardWorkoutTemplate />
-                <CardWorkoutHistory />
-                <CardExerciseTracker exercise={exercises[0]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} handleOptionClick={handleOptionClick} />
-                <CardExerciseTracker exercise={exercises[1]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} handleOptionClick={handleOptionClick} />
+                <CardExerciseTracker key={exercises[0].id} exercise={exercises[0]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} handleOptionClick={handleOptionClick} />
+                <CardExerciseTracker key={exercises[1].id} exercise={exercises[1]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} handleOptionClick={handleOptionClick} />
                 <ButtonBig size='hug' color='green' onClick={saveTemplate}>Finish</ButtonBig>
                 <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal}
                     setShowFinishedWorkoutScreen={setShowFinishedWorkoutScreen} />
-                <FolderList />
-
             </div>
-            <div className="library-main-section">
-                <div className="library-main-section-header">
 
-
-                    <ButtonSmall type='options1' />
-
-                </div>
-                <div className="library-main-section-content">
-
-                </div>
-            </div>
 
         </div>
     )
