@@ -2,14 +2,14 @@ import React from 'react'
 import ButtonSmall from '../Buttons/ButtonSmall.jsx'
 import ButtonBig from '../Buttons/ButtonBig.jsx'
 import RowExerciseTracker from './RowExerciseTracker.jsx'
-
 import '../../css/cards.css';
 
 
 function CardExerciseTracker(props) {
     function renderRows() {
         return props.exercise.sets.map(set => (<RowExerciseTracker exerciseId={props.exercise.id} set={set}
-            toggleSetCompleted={props.toggleSetCompleted} deleteSet={props.deleteSet} handleOptionClick={props.handleOptionClick} />))
+            toggleSetCompleted={props.toggleSetCompleted} deleteSet={props.deleteSet} handleOptionClick={props.handleOptionClick}
+            saveTemplateValues={props.saveTemplateValues} showFinishModal={props.showFinishModal} />))
     }
 
     return (

@@ -10,7 +10,84 @@ import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import ModalFinishWorkout from '../components/Modals/session/FinishWorkout.jsx'
 import FinishedWorkoutScreen from './FinishedWorkoutScreen.jsx'
 
-function SessionScreen({ template }) {
+function SessionScreen() {
+    const template =
+    {
+        id: '4213313',
+        name: 'Supreme Back workout',
+        exercises: [
+            {
+                id: 1,
+                name: 'morty curcles',
+                prevWeight: 10,
+                prevReps: 20,
+                sets:
+                    [
+                        {
+                            id: '0plkjn',
+                            value: 1,
+                            num: 1,
+                            weight: 10,
+                            reps: 20,
+                            completed: true
+                        },
+                        {
+                            id: '876tg',
+                            value: 2,
+                            num: 2,
+                            weight: 10,
+                            reps: 20,
+                            completed: false
+                        }
+                    ]
+
+            },
+            {
+                id: 2,
+                name: 'curls cable',
+                prevWeight: 10,
+                prevReps: 20,
+                sets:
+                    [
+                        {
+                            id: 'gbcbbcfv',
+                            value: 1,
+                            num: 1,
+                            weight: 10,
+                            reps: 20,
+                            completed: true
+                        },
+                        {
+                            id: 'iuukjy',
+                            value: 2,
+                            num: 2,
+                            weight: 10,
+                            reps: 20,
+                            completed: false
+                        },
+                        {
+                            id: 'erwvvweevw',
+                            value: 3,
+                            num: 3,
+                            weight: 10,
+                            reps: 20,
+                            completed: false
+                        }
+                        ,
+                        {
+                            id: '765654',
+                            value: 4,
+                            num: 4,
+                            weight: 10,
+                            reps: 20,
+                            completed: false
+                        }
+                    ]
+            }
+        ]
+
+    }
+
 
     const [exercises, setExercises] = React.useState(template.exercises)
 
@@ -181,6 +258,18 @@ function SessionScreen({ template }) {
 
     };
 
+
+    function saveTemplateValues(exerciseId, setId, weight, reps) {
+        setExercises(prevExercises => (
+            prevExercises.map(exercise => exercise.id === exerciseId ?
+                {
+                    ...exercise,
+                    sets: exercise.sets.map(set => set.id === setId ? { ...set, weight: weight, reps: reps } : set)
+                } :
+                exercise)
+        ))
+    }
+
     function saveTemplate() {
         const result = JSON.stringify(exercises) === JSON.stringify(template.exercises);
         console.log('Are the templates the same?', result);
@@ -198,8 +287,12 @@ function SessionScreen({ template }) {
             </div>
 
             <div className="library-container-quick-start">
-                <CardExerciseTracker key={exercises[0].id} exercise={exercises[0]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} handleOptionClick={handleOptionClick} />
-                <CardExerciseTracker key={exercises[1].id} exercise={exercises[1]} toggleSetCompleted={toggleSetCompleted} addSet={addSet} deleteSet={deleteSet} handleOptionClick={handleOptionClick} />
+                <CardExerciseTracker key={exercises[0].id} exercise={exercises[0]} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
+                    deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
+                    showFinishModal={showFinishModal} />
+                <CardExerciseTracker key={exercises[1].id} exercise={exercises[1]} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
+                    deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
+                    showFinishModal={showFinishModal} />
                 <ButtonBig size='hug' color='green' onClick={saveTemplate}>Finish</ButtonBig>
                 <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal}
                     setShowFinishedWorkoutScreen={setShowFinishedWorkoutScreen} />
