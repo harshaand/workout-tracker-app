@@ -16,18 +16,6 @@ function TemplatesScreen() {
     const data = useData()
     const [selectedTemplate, setSelectedTemplate] = React.useState(null);
 
-    function renderTemplateButtons() {
-        console.log(data.templates)
-        const buttons = data.templates.map((template, index) => {
-            return <button
-                onClick={() => setSelectedTemplate(data.templates[index])}>
-                {template.name}
-            </button>
-        }
-        )
-        return buttons
-    }
-
     return (
         <div className="container-app">
             <div className="div-header">
@@ -39,7 +27,12 @@ function TemplatesScreen() {
                 <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
                 <CardWorkoutTemplate />
                 <CardWorkoutHistory />
-                {renderTemplateButtons()}
+                {data.templates.map((template, index) => (
+                    <button
+                        onClick={() => setSelectedTemplate(data.templates[index])}>
+                        {template.name}
+                    </button>
+                ))}
                 {selectedTemplate && <SessionScreen template={selectedTemplate} />}
                 <FolderList />
 

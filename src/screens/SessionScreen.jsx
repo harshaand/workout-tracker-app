@@ -13,9 +13,6 @@ import FinishedWorkoutScreen from './FinishedWorkoutScreen.jsx'
 import { RoutingContext } from '../App.jsx'
 
 function SessionScreen() {
-    const { handleScreenChange } = React.useContext(RoutingContext)
-    const [exercises, setExercises] = React.useState(template.exercises)
-    const [showFinishModal, setShowFinishModal] = React.useState(false)
     const template =
     {
         id: '4213313',
@@ -92,6 +89,9 @@ function SessionScreen() {
         ]
 
     }
+    const { handleScreenChange } = React.useContext(RoutingContext)
+    const [exercises, setExercises] = React.useState(template.exercises)
+    const [showFinishModal, setShowFinishModal] = React.useState(false)
 
     function toggleSetCompleted(exerciseId, setNum) {
         setExercises(prevExercises => (

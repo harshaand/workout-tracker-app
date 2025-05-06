@@ -32,31 +32,31 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId }) {
         const changes = [];
 
         // NUMBER OF EXERCISES REMOVED BY USER
-        const newExercisesIds = new Set(newExercises.map(ex => ex.id));
-        const missingExercises = oldExercises.filter(ex => !newExercisesIds.has(ex.id)).length;
-        if (missingExercises > 0) {
+        const newExercisesIds = new Set(newExercises.map(exercise => exercise.id));
+        const userRemovedExercises = oldExercises.filter(ex => !newExercisesIds.has(ex.id));
+        const uncompletedExercises = newExercises.filter(exercise => !exercise.sets.some(set => set.completed === true));
+        const toBeRemovedExercisesCount = userRemovedExercises.length + uncompletedExercises.length
+        if (toBeRemovedExercisesCount > 0) {
             removedValues = true;
-            const message = `Remove ${missingExercises} exercise${missingExercises > 1 ? 's' : ''}`;
+            const message = `Remove ${toBeRemovedExercisesCount} exercise${toBeRemovedExercisesCount > 1 ? 's' : ''}`;
             changes.push({ priority: 1, type: 'remove_exercises', message });
         }
 
         // NUMBER OF EXERCISES ADDED BY USER
-        const addedSets = newExercises.length + missingExercises - oldExercises.length
-        if (newExercises.length > oldExercises.length - missingExercises) {
-            const message = `Add ${addedSets} exercise${addedSets > 1 ? 's' : ''}`;
+        const oldExercisesIds = new Set(oldExercises.map(exercise => exercise.id));
+        const userAddedExercises = newExercises.filter(ex => !oldExercisesIds.has(ex.id));
+        const toBeAddedExercisesCount = userAddedExercises.filter(exercise => exercise.sets.some(set => set.completed === true)).length;
+        if (toBeAddedExercisesCount > 0) {
+            const message = `Add ${toBeAddedExercisesCount} exercise${toBeAddedExercisesCount > 1 ? 's' : ''}`;
             changes.push({ priority: 2, type: 'add_exercises', message });
         }
 
         // CHECK IF EXERCISE ORDER IS DIFFERENT
         let orderDifferent = false;
-        const minLength = Math.min(oldExercises.length, newExercises.length - addedSets);
-
-        for (let i = 0; i < minLength; i++) {
-            if (oldExercises[i].id !== newExercises[i].id) {
-                orderDifferent = true;
-                break;
-            }
-        }
+        //REPLACEMENT CODE:
+        //-when user drags&drops to change order, have a useRef called orderDifferent and switch it to true.
+        //otherwise will need to write me a long algorithm for minimum utility
+        //orignal code is there on the commit on May 6, 2025 for this file.
 
         if (orderDifferent) {
             const message = 'Reorder exercises';
@@ -78,12 +78,17 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId }) {
 
             // skip if exercise doesn't exist in the old template
             if (!oldExercise) continue;
+            const completedSetsCount = newExercise.sets.filter(set => set.completed === true).length;
 
             // difference in number of sets
-            if (oldExercise.sets.length < newExercise.sets.length) {
-                totalMoreSets += (newExercise.sets.length - oldExercise.sets.length);
-            } else if (oldExercise.sets.length > newExercise.sets.length) {
-                totalLessSets += (oldExercise.sets.length - newExercise.sets.length);
+            if (completedSetsCount > oldExercise.sets.length) {
+                totalMoreSets += (completedSetsCount - oldExercise.sets.length);
+            }
+            /*if exercises doesn't have any completed sets, don't need to calculate number of
+             sets to be removed because the whole exercise will be removed */
+            if (newExercise.sets.some(set => set.completed === true)
+                && oldExercise.sets.length > completedSetsCount) {
+                totalLessSets += (oldExercise.sets.length - completedSetsCount);
             }
 
             // number of sets with different values for weight/reps
@@ -92,7 +97,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId }) {
                 const oldSet = oldExercise.sets[i];
                 const newSet = newExercise.sets[i];
 
-                if (oldSet.weight !== newSet.weight || oldSet.reps !== newSet.reps) {
+                if (newSet.completed === true && (oldSet.weight !== newSet.weight || oldSet.reps !== newSet.reps)) {
                     totalDifferentSets++;
                 }
             }
@@ -167,13 +172,25 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId }) {
                 return {
                     ...oldExercise,
                     sets: oldExercise.sets.map((set, index) => {
-                        if (newExercise.sets[index]) return {
-                            id: newExercise.sets[index].id,
-                            value: newExercise.sets[index].value,
-                            num: newExercise.sets[index].num,
-                            weight: newExercise.sets[index].weight,
-                            reps: newExercise.sets[index].reps,
-                            completed: newExercise.sets[index].completed
+                        if (newExercise.sets[index]) {
+                            if (newExercise.sets[index].completed === true) {
+                                return {
+                                    id: newExercise.sets[index].id,
+                                    value: newExercise.sets[index].value,
+                                    num: newExercise.sets[index].num,
+                                    weight: newExercise.sets[index].weight,
+                                    reps: newExercise.sets[index].reps,
+                                    completed: newExercise.sets[index].completed
+                                }
+                            }
+                            else {
+                                return {
+                                    ...set,
+                                    id: newExercise.sets[index].id,
+                                    value: newExercise.sets[index].value,
+                                    num: newExercise.sets[index].num,
+                                }
+                            }
                         }
                         else return set
                     }
@@ -199,13 +216,20 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId }) {
     }
 
     function handleUpdateTemplate() {
+        const exercisesWithAtleast1CompletedSet = newExercises.filter(exercise => exercise.sets.some(set => set.completed === true))
+            .map(exercise => {
+                return {
+                    ...exercise,
+                    sets: exercise.sets.filter(set => set.completed === true)
+                };
+            });
         setData(prevData => {
             return {
                 ...prevData,
                 templates: data.templates.map((template, index) => {
                     if (template.id === templateId) return {
                         ...template,
-                        exercises: newExercises
+                        exercises: exercisesWithAtleast1CompletedSet
                     }
                     else return template
                 }
