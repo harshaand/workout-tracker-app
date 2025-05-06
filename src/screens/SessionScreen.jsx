@@ -10,7 +10,11 @@ import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import ModalFinishWorkout from '../components/Modals/session/FinishWorkout.jsx'
 import FinishedWorkoutScreen from './FinishedWorkoutScreen.jsx'
 
+import { RoutingContext } from '../App.jsx'
+
 function SessionScreen() {
+    const { handleScreenChange } = React.useContext(RoutingContext)
+
     const template =
     {
         id: '4213313',
@@ -92,8 +96,6 @@ function SessionScreen() {
     const [exercises, setExercises] = React.useState(template.exercises)
 
     const [showFinishModal, setShowFinishModal] = React.useState(false)
-    const [showFinishedWorkoutScreen, setShowFinishedWorkoutScreen] = React.useState(false)
-
 
     function toggleSetCompleted(exerciseId, setNum) {
         setExercises(prevExercises => (
@@ -276,11 +278,7 @@ function SessionScreen() {
         setShowFinishModal(true)
     }
 
-    if (showFinishedWorkoutScreen === true) {
-        return <FinishedWorkoutScreen oldExercises={template.exercises} newExercises={exercises} templateId={template.id} />
-    }
-
-    else return (
+    return (
         <div className="container-app">
             <div className="div-header">
                 <h1>Session Screen</h1>
@@ -295,7 +293,7 @@ function SessionScreen() {
                     showFinishModal={showFinishModal} />
                 <ButtonBig size='hug' color='green' onClick={saveTemplate}>Finish</ButtonBig>
                 <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal}
-                    setShowFinishedWorkoutScreen={setShowFinishedWorkoutScreen} />
+                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id)} />
             </div>
 
 

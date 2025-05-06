@@ -25,9 +25,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId }) {
 
 
     const exercisesSame = JSON.stringify(newExercises) === JSON.stringify(oldExercises);
-    if (exercisesSame) return undefined;
-
-    else if (!exercisesSame) {
+    if (!exercisesSame) {
 
         console.log("------------ TESTING ------------");
         // Array to collect all change messages
