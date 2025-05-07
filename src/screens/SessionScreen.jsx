@@ -12,83 +12,8 @@ import FinishedWorkoutScreen from './FinishedWorkoutScreen.jsx'
 
 import { RoutingContext } from '../App.jsx'
 
-function SessionScreen() {
-    const template =
-    {
-        id: '4213313',
-        name: 'Supreme Back workout',
-        exercises: [
-            {
-                id: 1,
-                name: 'morty curcles',
-                prevWeight: 10,
-                prevReps: 20,
-                sets:
-                    [
-                        {
-                            id: '0plkjn',
-                            value: 1,
-                            num: 1,
-                            weight: 10,
-                            reps: 20,
-                            completed: true
-                        },
-                        {
-                            id: '876tg',
-                            value: 2,
-                            num: 2,
-                            weight: 10,
-                            reps: 20,
-                            completed: false
-                        }
-                    ]
+function SessionScreen({ template }) {
 
-            },
-            {
-                id: 2,
-                name: 'curls cable',
-                prevWeight: 10,
-                prevReps: 20,
-                sets:
-                    [
-                        {
-                            id: 'gbcbbcfv',
-                            value: 1,
-                            num: 1,
-                            weight: 10,
-                            reps: 20,
-                            completed: true
-                        },
-                        {
-                            id: 'iuukjy',
-                            value: 2,
-                            num: 2,
-                            weight: 10,
-                            reps: 20,
-                            completed: false
-                        },
-                        {
-                            id: 'erwvvweevw',
-                            value: 3,
-                            num: 3,
-                            weight: 10,
-                            reps: 20,
-                            completed: false
-                        }
-                        ,
-                        {
-                            id: '765654',
-                            value: 4,
-                            num: 4,
-                            weight: 10,
-                            reps: 20,
-                            completed: false
-                        }
-                    ]
-            }
-        ]
-
-    }
     const { handleScreenChange } = React.useContext(RoutingContext)
     const [exercises, setExercises] = React.useState(template.exercises)
     const [showFinishModal, setShowFinishModal] = React.useState(false)
@@ -267,11 +192,6 @@ function SessionScreen() {
         ))
     }
 
-    function saveTemplate() {
-        const result = JSON.stringify(exercises) === JSON.stringify(template.exercises);
-        console.log('Are the templates the same?', result);
-        setShowFinishModal(true)
-    }
 
     return (
         <div className="container-app">
@@ -286,9 +206,9 @@ function SessionScreen() {
                 <CardExerciseTracker key={exercises[1].id} exercise={exercises[1]} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
                     deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
                     showFinishModal={showFinishModal} />
-                <ButtonBig size='hug' color='green' onClick={saveTemplate}>Finish</ButtonBig>
+                <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>
                 <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal}
-                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id)} />
+                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template)} />
             </div>
 
 

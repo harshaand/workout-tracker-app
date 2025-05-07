@@ -17,12 +17,14 @@ const dataObject = {
         {
             id: '4213313',
             name: 'Supreme Back workout',
+            duration: 0,
+            notes: '0',
+
+
             exercises: [
                 {
                     id: 1,
                     name: 'morty curcles',
-                    prevWeight: 10,
-                    prevReps: 20,
                     sets:
                         [
                             {
@@ -87,39 +89,87 @@ const dataObject = {
                         ]
                 }
             ]
-
-
-
-
         }
     ],
     history: [
         {
-            title: 'My back',
-            date: Date,
+            id: '4213313',
+            name: 'Supreme Back workout',
             duration: 20,
+            notes: 'Wore lifting shoes',
+
+            date: '1/1/2025',
             volume: 2400,
             PRs: 12,
-            workout: [
+
+
+            exercises: [
                 {
-                    workoutId: 123,
-                    exerciseName: 'Lat Pulldown',
-                    bestSetVolume: 1000,
-                    bestSet: '10 kg x 20',
-                    prev: 'WHAT DO I ADD HEREEEEEEEEEEEEEEEEEEEEEEEE',
+                    id: 1,
+                    name: 'morty curcles',
                     sets:
                         [
                             {
-                                set: 1,
-                                prevWeight: 10,
-                                prevReps: 20,
+                                id: '0plkjn',
+                                value: 1,
+                                num: 1,
+                                weight: 10,
+                                reps: 20,
+                                completed: true
+                            },
+                            {
+                                id: '876tg',
+                                value: 2,
+                                num: 2,
                                 weight: 10,
                                 reps: 20,
                                 completed: false
                             }
                         ]
-                },
 
+                },
+                {
+                    id: 2,
+                    name: 'curls cable',
+                    prevWeight: 10,
+                    prevReps: 20,
+                    sets:
+                        [
+                            {
+                                id: 'gbcbbcfv',
+                                value: 1,
+                                num: 1,
+                                weight: 10,
+                                reps: 20,
+                                completed: true
+                            },
+                            {
+                                id: 'iuukjy',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: false
+                            },
+                            {
+                                id: 'erwvvweevw',
+                                value: 3,
+                                num: 3,
+                                weight: 10,
+                                reps: 20,
+                                completed: false
+                            }
+                            ,
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 10,
+                                reps: 20,
+                                completed: false
+                            }
+                        ]
+                }
             ]
         }
 

@@ -15,7 +15,8 @@ function App() {
   let FWS_data = React.useRef({
     oldExercises: undefined,
     newExercises: undefined,
-    templateId: undefined
+    templateId: undefined,
+    template: undefined
   });
 
 
@@ -27,17 +28,19 @@ function App() {
       ScreenComponent = <FinishedWorkoutScreen
         oldExercises={FWS_data.current.oldExercises}
         newExercises={FWS_data.current.newExercises}
-        templateId={FWS_data.current.templateId} />
+        templateId={FWS_data.current.templateId}
+        template={FWS_data.current.template} />
       break;
     default:
       throw new Error('Unknown screen ' + currentScreen)
   }
 
-  function handleScreenChange(newScreen, oldExercises, newExercises, templateId) {
+  function handleScreenChange(newScreen, oldExercises, newExercises, templateId, template) {
     if (oldExercises && newExercises && templateId) {
       FWS_data.current.oldExercises = oldExercises;
       FWS_data.current.newExercises = newExercises;
       FWS_data.current.templateId = templateId;
+      FWS_data.current.template = template;
     }
     setCurrentScreen(newScreen)
 

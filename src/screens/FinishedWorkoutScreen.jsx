@@ -2,7 +2,7 @@ import React from 'react'
 import ButtonBig from '../components/Buttons/ButtonBig';
 import { useData, useDataUpdate } from '../DataContext.jsx'
 
-function FinishedWorkoutScreen({ oldExercises, newExercises, templateId }) {
+function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template }) {
     const data = useData()
     const setData = useDataUpdate()
     const [showModal, setShowModal] = React.useState(false)
@@ -199,13 +199,35 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId }) {
             }
             else return oldExercise
         })
+        const templateExercises = updatedExercises.map(exercise => {
+            return {
+                ...exercise,
+                sets: exercise.sets.map(set => {
+                    return {
+                        ...set,
+                        completed: false
+                    }
+                })
+            }
+        })
         setData(prevData => {
             return {
                 ...prevData,
+                history: [
+                    ...data.history,
+                    {
+                        ...template,
+                        date: '8/8/2025',
+                        volume: 888,
+                        PRs: 88,
+                        exercises: updatedExercises,
+                    }
+
+                ],
                 templates: data.templates.map((template, index) => {
                     if (template.id === templateId) return {
                         ...template,
-                        exercises: updatedExercises
+                        exercises: templateExercises
                     }
                     else return template
                 }
@@ -216,20 +238,42 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId }) {
     }
 
     function handleUpdateTemplate() {
-        const exercisesWithAtleast1CompletedSet = newExercises.filter(exercise => exercise.sets.some(set => set.completed === true))
+        const filteredExercises = newExercises.filter(exercise => exercise.sets.some(set => set.completed === true))
             .map(exercise => {
                 return {
                     ...exercise,
                     sets: exercise.sets.filter(set => set.completed === true)
                 };
             });
+        const templateExercises = filteredExercises.map(exercise => {
+            return {
+                ...exercise,
+                sets: exercise.sets.map(set => {
+                    return {
+                        ...set,
+                        completed: false
+                    }
+                })
+            }
+        })
         setData(prevData => {
             return {
                 ...prevData,
+                history: [
+                    ...data.history,
+                    {
+                        ...template,
+                        date: '8/8/2025',
+                        volume: 888,
+                        PRs: 88,
+                        exercises: filteredExercises,
+                    }
+
+                ],
                 templates: data.templates.map((template, index) => {
                     if (template.id === templateId) return {
                         ...template,
-                        exercises: exercisesWithAtleast1CompletedSet
+                        exercises: templateExercises
                     }
                     else return template
                 }
