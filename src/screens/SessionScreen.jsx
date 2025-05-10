@@ -192,7 +192,6 @@ function SessionScreen({ template }) {
         ))
     }
 
-
     return (
         <div className="container-app">
             <div className="div-header">

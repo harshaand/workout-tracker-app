@@ -121,3 +121,35 @@ import ModalSelect from '../components/Modals/ModalSelect.jsx'
 <ModalSave />
 <ModalAdd />
 <ModalSelect />
+
+
+
+
+
+
+exercises: [
+    {
+        name: 'Back Squat',
+        PBs: { 1RM: 80, weight: 88, reps: 88, volume: 888 },
+        history: [
+            {
+                date: '1/1/2025',
+                workoutId: 90210,
+                workout: {
+                    PBs: { 1RM: true, weight: true, reps: false, volume: true },
+                    sets: [
+                        { weight: 2, reps: 2 },
+                        { weight: 1, reps: 2 },
+                        { weight: 1, reps: 1 }
+                    ]
+                }
+            }
+        ]
+    }
+],
+strengthScores: {
+    muscleGroups: { chest: 61, back: 87, glutes: 97, quads: 86 },
+    chest: { benchpress: 59, chestfly: 61, cables: 31 },
+    glutes: { backsquats: 97, hipthurst: 40, glutebridge: 55 },
+    quads: { frontsquats: 40, squats: 97, legpress: 88 }
+}

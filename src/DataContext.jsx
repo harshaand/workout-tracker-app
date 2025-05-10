@@ -24,7 +24,7 @@ const dataObject = {
             exercises: [
                 {
                     id: 1,
-                    name: 'morty curcles',
+                    name: 'Back Squat',
                     sets:
                         [
                             {
@@ -33,7 +33,9 @@ const dataObject = {
                                 num: 1,
                                 weight: 10,
                                 reps: 20,
-                                completed: true
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
+                                bestSet: false
                             },
                             {
                                 id: '876tg',
@@ -41,14 +43,16 @@ const dataObject = {
                                 num: 2,
                                 weight: 10,
                                 reps: 20,
-                                completed: false
+                                completed: false,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
+                                bestSet: false
                             }
                         ]
 
                 },
                 {
                     id: 2,
-                    name: 'curls cable',
+                    name: 'Hip Thrust',
                     prevWeight: 10,
                     prevReps: 20,
                     sets:
@@ -59,7 +63,9 @@ const dataObject = {
                                 num: 1,
                                 weight: 10,
                                 reps: 20,
-                                completed: true
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
+                                bestSet: false
                             },
                             {
                                 id: 'iuukjy',
@@ -67,7 +73,9 @@ const dataObject = {
                                 num: 2,
                                 weight: 10,
                                 reps: 20,
-                                completed: false
+                                completed: false,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
+                                bestSet: false
                             },
                             {
                                 id: 'erwvvweevw',
@@ -75,7 +83,9 @@ const dataObject = {
                                 num: 3,
                                 weight: 10,
                                 reps: 20,
-                                completed: false
+                                completed: false,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
+                                bestSet: false
                             }
                             ,
                             {
@@ -84,7 +94,9 @@ const dataObject = {
                                 num: 4,
                                 weight: 10,
                                 reps: 20,
-                                completed: false
+                                completed: false,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
+                                bestSet: false
                             }
                         ]
                 }
@@ -115,7 +127,9 @@ const dataObject = {
                                 num: 1,
                                 weight: 10,
                                 reps: 20,
-                                completed: true
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
                             },
                             {
                                 id: '876tg',
@@ -123,7 +137,9 @@ const dataObject = {
                                 num: 2,
                                 weight: 10,
                                 reps: 20,
-                                completed: false
+                                completed: false,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
                             }
                         ]
 
@@ -141,7 +157,9 @@ const dataObject = {
                                 num: 1,
                                 weight: 10,
                                 reps: 20,
-                                completed: true
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
                             },
                             {
                                 id: 'iuukjy',
@@ -149,7 +167,9 @@ const dataObject = {
                                 num: 2,
                                 weight: 10,
                                 reps: 20,
-                                completed: false
+                                completed: false,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
                             },
                             {
                                 id: 'erwvvweevw',
@@ -157,7 +177,9 @@ const dataObject = {
                                 num: 3,
                                 weight: 10,
                                 reps: 20,
-                                completed: false
+                                completed: false,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
                             }
                             ,
                             {
@@ -166,14 +188,48 @@ const dataObject = {
                                 num: 4,
                                 weight: 10,
                                 reps: 20,
-                                completed: false
+                                completed: false,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
                             }
                         ]
                 }
             ]
         }
 
-    ]
+    ],
+    exercises: [
+        {
+            name: 'Back Squat',
+            prMetric: 'reps',
+            PRs: { '1RM': 123, weight: 123, reps: 123, volume: 123, strengthScore: 123 },
+            thumbnail: '',
+            instructions: { media: '', text: 'Sit a 90* angle...' },
+            history: [
+                {
+                    currentWeight: 88,
+                    currentPRs: { '1RM': 123, weight: 123, reps: 123, volume: 123, strengthScore: 123 },
+                    newPRs: { '1RM': 123, weight: 123, reps: 123, volume: 123, strengthScore: 123 },
+                    date: '1/1/2025',
+                    workoutId: 90210,
+                    sets: [
+                        { weight: 5, reps: 1, PRs: { '1RM': true, weight: true, reps: false, vol: false } },
+                        { weight: 3, reps: 3, PRs: { '1RM': false, weight: false, reps: false, vol: true } },
+                        { weight: 1, reps: 4, PRs: { '1RM': false, weight: false, reps: true, vol: false } }
+                    ]
+                }
+            ]
+        },
+        {
+            name: 'Hip Thrust',
+            prMetric: 'reps',
+            PRs: { '1RM': 123, weight: 123, reps: 123, volume: 123, strengthScore: 123 },
+            thumbnail: '',
+            instructions: { media: '', text: 'Sit a 90* angle...' },
+            history: []
+        }
+
+    ],
 }
 
 function useData() {
