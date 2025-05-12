@@ -6,6 +6,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
     const data = useData()
     const setData = useDataUpdate()
     const [showModal, setShowModal] = React.useState(false)
+    const date = new Date();
 
     console.log('NEW EXERCISES!!!!!!!!:', newExercises)//BUG, showing something unexpected after saveToHistory
     let updatedValues = false;
@@ -30,8 +31,8 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         const changes = [];
 
         // NUMBER OF EXERCISES REMOVED BY USER
-        const newExercisesIds = new Set(newExercises.map(exercise => exercise.id));
-        const userRemovedExercises = oldExercises.filter(ex => !newExercisesIds.has(ex.id));
+        const newExercisesNames = new Set(newExercises.map(exercise => exercise.name));
+        const userRemovedExercises = oldExercises.filter(ex => !newExercisesNames.has(ex.name));
         const uncompletedExercises = newExercises.filter(exercise => !exercise.sets.some(set => set.completed === true));
         const toBeRemovedExercisesCount = userRemovedExercises.length + uncompletedExercises.length
         if (toBeRemovedExercisesCount > 0) {
@@ -41,8 +42,8 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         }
 
         // NUMBER OF EXERCISES ADDED BY USER
-        const oldExercisesIds = new Set(oldExercises.map(exercise => exercise.id));
-        const userAddedExercises = newExercises.filter(ex => !oldExercisesIds.has(ex.id));
+        const oldExercisesNames = new Set(oldExercises.map(exercise => exercise.name));
+        const userAddedExercises = newExercises.filter(ex => !oldExercisesNames.has(ex.name));
         const toBeAddedExercisesCount = userAddedExercises.filter(exercise => exercise.sets.some(set => set.completed === true)).length;
         if (toBeAddedExercisesCount > 0) {
             const message = `Add ${toBeAddedExercisesCount} exercise${toBeAddedExercisesCount > 1 ? 's' : ''}`;
@@ -64,7 +65,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         // CALCULATING DIFFERENCES IN SETS
         const oldExercisesMap = new Map();
         oldExercises.forEach(exercise => {
-            oldExercisesMap.set(exercise.id, exercise);
+            oldExercisesMap.set(exercise.name, exercise);
         });
 
         let totalDifferentSets = 0;
@@ -72,7 +73,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         let totalLessSets = 0;
 
         for (const persistedExercise of newExercises) {
-            const oldExercise = oldExercisesMap.get(persistedExercise.id);
+            const oldExercise = oldExercisesMap.get(persistedExercise.name);
 
             // skip if exercise doesn't exist in the old template
             if (!oldExercise) continue;
@@ -249,7 +250,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
             notes: template.notes,
             workoutId: workoutId,
 
-            date: '1/1/2025',
+            date: date,
             exercises: workoutHistoryExercises,
             PRs: totalPRs,
             volume: totalVolume,
@@ -300,7 +301,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                         currentWeight: 88,
                         currentPRs: exerciseData.PRs,
                         newPRs: exercisesNewPRs[exerciseName],
-                        date: '1/1/2025',
+                        date: date,
                         workoutId: workoutId,
                         sets: [
                             ...exercise.sets.map(set => (
@@ -352,7 +353,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
     function handleUpdateValues() {
         const updatedExercises = oldExercises.map(oldExercise => {
-            const persistedExercise = newExercises.find(exercise => exercise.id === oldExercise.id);
+            const persistedExercise = newExercises.find(exercise => exercise.name === oldExercise.name);
             if (persistedExercise) {
                 return {
                     ...oldExercise,
@@ -434,18 +435,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         setData(prevData => {
             return {
                 ...prevData,
-                history: [
-                    ...data.history,
-                    {
-                        ...template,
-                        date: '8/8/2025',
-                        volume: 888,
-                        PRs: 88,
-                        exercises: filteredExercises,
-                    }
-
-                ],
-                templates: data.templates.map((template, index) => {
+                templates: data.templates.map((template) => {
                     if (template.id === templateId) return {
                         ...template,
                         exercises: finalExercises

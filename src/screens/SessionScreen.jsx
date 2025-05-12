@@ -18,9 +18,9 @@ function SessionScreen({ template }) {
     const [exercises, setExercises] = React.useState(template.exercises)
     const [showFinishModal, setShowFinishModal] = React.useState(false)
 
-    function toggleSetCompleted(exerciseId, setNum) {
+    function toggleSetCompleted(exerciseName, setNum) {
         setExercises(prevExercises => (
-            prevExercises.map(exercise => exercise.id === exerciseId ?
+            prevExercises.map(exercise => exercise.name === exerciseName ?
                 {
                     ...exercise,
                     sets: exercise.sets.map(set => set.num === setNum ? { ...set, completed: !set.completed } : set)
@@ -29,10 +29,10 @@ function SessionScreen({ template }) {
         ))
     }
 
-    function addSet(exerciseId) {
+    function addSet(exerciseName) {
         setExercises(prevExercises => {
             return prevExercises.map(exercise => {
-                if (exercise.id === exerciseId) {
+                if (exercise.name === exerciseName) {
                     const nextSetNum = exercise.sets.length + 1;
 
                     const newSet = {
@@ -55,10 +55,10 @@ function SessionScreen({ template }) {
         });
     };
 
-    function deleteSet(exerciseId, setID) {
+    function deleteSet(exerciseName, setID) {
         setExercises(prevExercises => {
             return prevExercises.map(exercise => {
-                if (exercise.id === exerciseId) {
+                if (exercise.name === exerciseName) {
                     const updatedSets = exercise.sets.filter(set => set.id !== setID);
                     const reorderedSets = updatedSets.map((set, index) => ({
                         ...set,
@@ -75,10 +75,10 @@ function SessionScreen({ template }) {
         });
     };
 
-    function handleOptionClick(option, exerciseId, setId) {
+    function handleOptionClick(option, exerciseName, setId) {
         setExercises(prevExercises => {
             return prevExercises.map(exercise => {
-                if (exercise.id === exerciseId) {
+                if (exercise.name === exerciseName) {
                     const setIndex = exercise.sets.findIndex(set => set.id === setId);
                     if (setIndex === -1) return exercise;
                     const newSets = [...exercise.sets];
@@ -181,9 +181,9 @@ function SessionScreen({ template }) {
 
     };
 
-    function saveTemplateValues(exerciseId, setId, weight, reps) {
+    function saveTemplateValues(exerciseName, setId, weight, reps) {
         setExercises(prevExercises => (
-            prevExercises.map(exercise => exercise.id === exerciseId ?
+            prevExercises.map(exercise => exercise.name === exerciseName ?
                 {
                     ...exercise,
                     sets: exercise.sets.map(set => set.id === setId ? { ...set, weight: weight, reps: reps } : set)
@@ -199,10 +199,10 @@ function SessionScreen({ template }) {
             </div>
 
             <div className="library-container-quick-start">
-                <CardExerciseTracker key={exercises[0].id} exercise={exercises[0]} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
+                <CardExerciseTracker key={exercises[0].name} exercise={exercises[0]} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
                     deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
                     showFinishModal={showFinishModal} />
-                <CardExerciseTracker key={exercises[1].id} exercise={exercises[1]} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
+                <CardExerciseTracker key={exercises[1].name} exercise={exercises[1]} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
                     deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
                     showFinishModal={showFinishModal} />
                 <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>

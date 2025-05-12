@@ -3,7 +3,7 @@ import ButtonSmall from '../Buttons/ButtonSmall.jsx'
 import { Tick, Lock } from '../../assets/icons/icons.js';
 
 
-function RowExerciseTracker({ type, set, toggleSetCompleted, exerciseId, deleteSet, handleOptionClick, saveTemplateValues, showFinishModal }) {
+function RowExerciseTracker({ type, set, toggleSetCompleted, exerciseName, deleteSet, handleOptionClick, saveTemplateValues, showFinishModal }) {
 
     const [showModal, setShowModal] = React.useState(false);
     const weightRef = React.useRef(null);
@@ -15,7 +15,7 @@ function RowExerciseTracker({ type, set, toggleSetCompleted, exerciseId, deleteS
             isFirstRender.current = false;
             return;
         }
-        saveTemplateValues(exerciseId, set.id, weightRef.current.value, repsRef.current.value)
+        saveTemplateValues(exerciseName, set.id, weightRef.current.value, repsRef.current.value)
     }, [showFinishModal])
 
 
@@ -43,23 +43,23 @@ function RowExerciseTracker({ type, set, toggleSetCompleted, exerciseId, deleteS
                     {showModal && (
                         <div className="set-options">
                             <button className="set-options-btns" onClick={() => {
-                                handleOptionClick('W', exerciseId, set.id)
+                                handleOptionClick('W', exerciseName, set.id)
                                 toggleShowModal()
                             }}>W</button>
                             <button className="set-options-btns" onClick={() => {
-                                handleOptionClick('D', exerciseId, set.id)
+                                handleOptionClick('D', exerciseName, set.id)
                                 toggleShowModal()
                             }}> D</button>
                             <button className="set-options-btns" onClick={() => {
-                                handleOptionClick('F', exerciseId, set.id)
+                                handleOptionClick('F', exerciseName, set.id)
                                 toggleShowModal()
                             }}>F</button>
                         </div>)}
                 </div>
-                <button className='btn-prev-volume btn-prev-volume-inactive' onClick={() => deleteSet(exerciseId, set.id)}>+10kg x 20</button>
+                <button className='btn-prev-volume btn-prev-volume-inactive' onClick={() => deleteSet(exerciseName, set.id)}>+10kg x 20</button>
                 <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight} id="abc" name="abc" type="text" /></div>
                 <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.reps} id="abc" name="abc" type="text" /></div>
-                <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn-green' : ''} onClick={() => toggleSetCompleted(exerciseId, set.num)}></ButtonSmall></div>
+                <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn-green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
             </div >
         )
     }
