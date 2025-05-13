@@ -3,7 +3,7 @@ import ButtonSmall from '../Buttons/ButtonSmall.jsx'
 import { Tick, Lock } from '../../assets/icons/icons.js';
 
 
-function RowExerciseTracker({ type, set, toggleSetCompleted, exerciseName, deleteSet, handleOptionClick, saveTemplateValues, showFinishModal }) {
+function RowExerciseTracker({ type, set, toggleSetCompleted, exerciseName, deleteSet, handleOptionClick, saveTemplateValues, showFinishModal, showSaveModal }) {
 
     const [showModal, setShowModal] = React.useState(false);
     const weightRef = React.useRef(null);
@@ -16,7 +16,7 @@ function RowExerciseTracker({ type, set, toggleSetCompleted, exerciseName, delet
             return;
         }
         saveTemplateValues(exerciseName, set.id, weightRef.current.value, repsRef.current.value)
-    }, [showFinishModal])
+    }, [showFinishModal, showSaveModal])
 
 
     function toggleShowModal() {

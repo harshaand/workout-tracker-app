@@ -18,12 +18,12 @@ const dataObject = {
             id: '4213313',
             name: 'Supreme Back workout',
             duration: 0,
-            notes: '0',
+            notes: '',
+            lastDone: {},
 
 
             exercises: [
                 {
-                    id: 1,
                     name: 'Back Squat',
                     sets:
                         [
@@ -51,10 +51,7 @@ const dataObject = {
 
                 },
                 {
-                    id: 2,
                     name: 'Hip Thrust',
-                    prevWeight: 10,
-                    prevReps: 20,
                     sets:
                         [
                             {
@@ -110,6 +107,7 @@ const dataObject = {
             duration: 20,
             notes: 'Wore lifting shoes',
 
+            workoutId: 90210,
             date: '1/1/2025',
             volume: 2400,
             PRs: 12,
@@ -118,7 +116,7 @@ const dataObject = {
             exercises: [
                 {
                     id: 1,
-                    name: 'morty curcles',
+                    name: 'Back Squat',
                     sets:
                         [
                             {
@@ -146,17 +144,15 @@ const dataObject = {
                 },
                 {
                     id: 2,
-                    name: 'curls cable',
-                    prevWeight: 10,
-                    prevReps: 20,
+                    name: 'Hip Thrust',
                     sets:
                         [
                             {
                                 id: 'gbcbbcfv',
                                 value: 1,
                                 num: 1,
-                                weight: 10,
-                                reps: 20,
+                                weight: 666,
+                                reps: 666,
                                 completed: true,
                                 PRs: { '1RM': true, weight: true, reps: false, volume: true },
                                 bestSet: false
@@ -165,8 +161,8 @@ const dataObject = {
                                 id: 'iuukjy',
                                 value: 2,
                                 num: 2,
-                                weight: 10,
-                                reps: 20,
+                                weight: 666,
+                                reps: 666,
                                 completed: false,
                                 PRs: { '1RM': true, weight: true, reps: false, volume: true },
                                 bestSet: false
@@ -177,7 +173,7 @@ const dataObject = {
                                 num: 3,
                                 weight: 10,
                                 reps: 20,
-                                completed: false,
+                                completed: true,
                                 PRs: { '1RM': true, weight: true, reps: false, volume: true },
                                 bestSet: false
                             }
@@ -186,9 +182,9 @@ const dataObject = {
                                 id: '765654',
                                 value: 4,
                                 num: 4,
-                                weight: 10,
-                                reps: 20,
-                                completed: false,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
                                 PRs: { '1RM': true, weight: true, reps: false, volume: true },
                                 bestSet: false
                             }

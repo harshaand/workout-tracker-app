@@ -15,7 +15,7 @@ import SessionScreen from './SessionScreen.jsx'
 function TemplatesScreen() {
     const data = useData()
     const [selectedTemplate, setSelectedTemplate] = React.useState(null);
-
+    //TESTING WITH HISTORY ATM
     return (
         <div className="container-app">
             <div className="div-header">
@@ -27,9 +27,9 @@ function TemplatesScreen() {
                 <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
                 <CardWorkoutTemplate />
                 <CardWorkoutHistory />
-                {data.templates.map((template, index) => (
+                {data.history.map((template, index) => (
                     <button
-                        onClick={() => setSelectedTemplate(data.templates[index])}>
+                        onClick={() => setSelectedTemplate(data.history[index])}>
                         {template.name}
                     </button>
                 ))}

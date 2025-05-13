@@ -2,11 +2,10 @@ import React from 'react'
 import ButtonBig from '../components/Buttons/ButtonBig';
 import { useData, useDataUpdate } from '../DataContext.jsx'
 
-function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template }) {
+function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate }) {
     const data = useData()
     const setData = useDataUpdate()
     const [showModal, setShowModal] = React.useState(false)
-    const date = new Date();
 
     console.log('NEW EXERCISES!!!!!!!!:', newExercises)//BUG, showing something unexpected after saveToHistory
     let updatedValues = false;
@@ -176,14 +175,12 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         let exercisesNewPRs = {};
         let totalPRs = 0;
         let totalVolume = 0;
-        const workoutId = 90210;
         const workoutHistoryExercises = [
             ...filteredExercises.map(exercise => {
                 const exerciseName = exercise.name;
                 const exerciseData = data.exercises.find(ex => ex.name === exerciseName);
 
                 if (exerciseData) {
-                    //const newPRs = exerciseData.PRs
                     exercisesNewPRs = {
                         ...exercisesNewPRs,
                         [exerciseName]: { ...exerciseData.PRs }
@@ -225,7 +222,6 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                             if (value === highestValue && !assigned && value > exerciseData.PRs[prKey]) {
                                 set.PRs[prKey] = true;
                                 assigned = true;
-                                ///newPRs[prKey] = value;
                                 exercisesNewPRs = {
                                     ...exercisesNewPRs,
                                     [exerciseName]: { ...exercisesNewPRs[exerciseName], [prKey]: value }
@@ -237,34 +233,32 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
                         });
                     });
-                    console.log('EXERCISE AT THIS POINT!!!:', exercise)
-
                     return exercise;
                 }
             })
         ]
-        const history = {
-            id: template.id,
-            name: template.name,
-            duration: template.duration,
-            notes: template.notes,
-            workoutId: workoutId,
 
-            date: date,
-            exercises: workoutHistoryExercises,
-            PRs: totalPRs,
-            volume: totalVolume,
-        }
         setData(prevData => {
             return {
                 ...prevData,
 
                 history: [
-                    ...data.history,
-                    history
-                ],
+                    ...prevData.history,
+                    {
+                        id: template.id,
+                        name: template.name,
+                        duration: template.duration,
+                        notes: template.notes,
+                        workoutId: workoutId,
 
+                        date: currentDate,
+                        exercises: workoutHistoryExercises,
+                        PRs: totalPRs,
+                        volume: totalVolume,
+                    }
+                ],
             }
+
         })
 
 
@@ -301,7 +295,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                         currentWeight: 88,
                         currentPRs: exerciseData.PRs,
                         newPRs: exercisesNewPRs[exerciseName],
-                        date: date,
+                        date: currentDate,
                         workoutId: workoutId,
                         sets: [
                             ...exercise.sets.map(set => (
@@ -402,6 +396,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 templates: data.templates.map((template, index) => {
                     if (template.id === templateId) return {
                         ...template,
+                        lastDone: currentDate,
                         exercises: finalExercises
                     }
                     else return template
@@ -438,6 +433,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 templates: data.templates.map((template) => {
                     if (template.id === templateId) return {
                         ...template,
+                        lastDone: currentDate,
                         exercises: finalExercises
                     }
                     else return template
