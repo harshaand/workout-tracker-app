@@ -1,8 +1,8 @@
 import React from 'react'
 
-function SaveEditedWorkout({ showSaveModal, setShowSaveModal, handleScreenChange, saveToHistory }) {
+function SaveEditedWorkout({ showSaveWorkoutModal, setShowSaveWorkoutModal, handleScreenChange, saveToHistory }) {
 
-    if (!showSaveModal) return null
+    if (!showSaveWorkoutModal) return null
     else {
         return (
             <>
@@ -10,10 +10,10 @@ function SaveEditedWorkout({ showSaveModal, setShowSaveModal, handleScreenChange
                 <div className='div-finish-workout'>
                     <h3>Save Workout?</h3>
                     <div className='buttons-finish-workout'>
-                        <button onClick={() => setShowSaveModal(false)}>cancel</button>
+                        <button onClick={() => setShowSaveWorkoutModal(false)}>cancel</button>
                         <button onClick={() => {
                             saveToHistory()
-                            setShowSaveModal(false)
+                            setShowSaveWorkoutModal(false)
                             handleScreenChange()
                         }}>save</button>
                     </div>

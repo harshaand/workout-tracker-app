@@ -16,24 +16,29 @@ import { useData, useDataUpdate } from '../DataContext.jsx'
 
 import { RoutingContext } from '../App.jsx'
 
-function SessionScreen({ template }) {
+function SessionScreen({ template, screenVariant = 'newSession' }) {
     const data = useData()
     const setData = useDataUpdate()
-
+    /* SCREEN VARIANTS
+    1. newSession ------new key
+    2. editSession -----old key
+    3. editTemplate   
+    4. newEmptyTemplate
+    5. newEmptySession -new key
+    */
 
     const { handleScreenChange } = React.useContext(RoutingContext)
     const [exercises, setExercises] = React.useState(template.exercises)
     const [showFinishModal, setShowFinishModal] = React.useState(false)
-    const [showSaveModal, setShowSaveModal] = React.useState(false)
+    const [showSaveWorkoutModal, setShowSaveWorkoutModal] = React.useState(false)
 
-    const workoutExists = data.history.find(history => history.workoutId === template.workoutId) ? true : false;
     let workoutId = null
     const currentDate = new Date();
-    if (workoutExists) {
-        workoutId = template.workoutId
-    }
-    else {
+    if (screenVariant === "newSession" || "newEmptySession") {
         workoutId = uuidv4();
+    }
+    else if (screenVariant === "editSession") {
+        workoutId = template.workoutId
     }
 
     function toggleSetCompleted(exerciseName, setNum) {
@@ -363,13 +368,13 @@ function SessionScreen({ template }) {
                 return {
                     ...prevData,
 
-                    exercises: data.exercises.map((exercise, index) => {
+                    exercises: data.exercises.map((exercise) => {
                         if (exercise.name in updatedExerciseObjects) {
 
                             return {
                                 ...exercise,
                                 PRs: exercisesNewPRs[exercise.name],
-                                history: workoutExists ?
+                                history: exercise.history.find(history => history.workoutId === template.workoutId) ?
                                     [...exercise.history.map(history => {
                                         if (history.workoutId === workoutId) {
                                             return updatedExerciseObjects[exercise.name]
@@ -399,13 +404,13 @@ function SessionScreen({ template }) {
                 {exercises.map(exercise => (
                     <CardExerciseTracker key={exercise.name} exercise={exercise} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
                         deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
-                        showFinishModal={showFinishModal} showSaveModal={showSaveModal} />
+                        showFinishModal={showFinishModal} showSaveWorkoutModal={showSaveWorkoutModal} screenVariant={screenVariant} />
                 ))}
-                {workoutExists ? <ButtonBig size='hug' color='blue' onClick={() => setShowSaveModal(true)}>Save</ButtonBig>
+                {screenVariant === "editSession" ? <ButtonBig size='hug' color='blue' onClick={() => setShowSaveWorkoutModal(true)}>Save</ButtonBig>
                     : <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>}
                 <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal}
-                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, workoutExists, currentDate)} />
-                <ModalSaveWorkout showSaveModal={showSaveModal} setShowSaveModal={setShowSaveModal} saveToHistory={saveToHistory}
+                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, currentDate)} />
+                <ModalSaveWorkout showSaveWorkoutModal={showSaveWorkoutModal} setShowSaveWorkoutModal={setShowSaveWorkoutModal} saveToHistory={saveToHistory}
                     handleScreenChange={() => handleScreenChange('templates')} />
             </div>
 

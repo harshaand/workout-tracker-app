@@ -16,6 +16,13 @@ function TemplatesScreen() {
     const data = useData()
     const [selectedTemplate, setSelectedTemplate] = React.useState(null);
     //TESTING WITH HISTORY ATM
+    /* SCREEN VARIANTS
+    1. newSession ------new key
+    2. editSession -----old key
+    3. editTemplate   
+    4. newEmptyTemplate
+    5. newEmptySession -new key
+    */
     return (
         <div className="container-app">
             <div className="div-header">
@@ -27,13 +34,13 @@ function TemplatesScreen() {
                 <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
                 <CardWorkoutTemplate />
                 <CardWorkoutHistory />
-                {data.history.map((template, index) => (
+                {data.templates.map((template, index) => (
                     <button
-                        onClick={() => setSelectedTemplate(data.history[index])}>
+                        onClick={() => setSelectedTemplate(data.templates[index])}>
                         {template.name}
                     </button>
                 ))}
-                {selectedTemplate && <SessionScreen template={selectedTemplate} />}
+                {selectedTemplate && <SessionScreen template={selectedTemplate} screenVariant='editTemplate' />}
                 <FolderList />
 
             </div>
