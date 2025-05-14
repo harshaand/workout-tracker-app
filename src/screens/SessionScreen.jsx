@@ -10,6 +10,7 @@ import FolderList from '../OTHER/FoldersFunctionality.jsx'
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import ModalFinishWorkout from '../components/Modals/session/FinishWorkout.jsx'
 import ModalSaveWorkout from '../components/Modals/session/SaveEditedWorkout.jsx'
+import ModalSaveTemplate from '../components/Modals/session/SaveEditedTemplate.jsx'
 import FinishedWorkoutScreen from './FinishedWorkoutScreen.jsx'
 
 import { useData, useDataUpdate } from '../DataContext.jsx'
@@ -29,8 +30,10 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
     const { handleScreenChange } = React.useContext(RoutingContext)
     const [exercises, setExercises] = React.useState(template.exercises)
+    //Finish modals
     const [showFinishModal, setShowFinishModal] = React.useState(false)
     const [showSaveWorkoutModal, setShowSaveWorkoutModal] = React.useState(false)
+    const [showSaveTemplateModal, setShowSaveTemplateModal] = React.useState(false)
 
     let workoutId = null
     const currentDate = new Date();
@@ -215,7 +218,6 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
     }
 
     function saveToHistory() {
-        console.log('saveToHistory')
         //--------------------------APPENDING WORKOUT TO HISTORY--------------------------
         const filteredExercises = exercises.filter(exercise => exercise.sets.some(set => set.completed === true))
             .map(exercise => {
@@ -393,7 +395,44 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
             })
         })
     }
-
+    function handleUpdateTemplate() {
+        const finalExercises = exercises.map(exercise => {
+            return {
+                ...exercise,
+                sets: exercise.sets.map(set => {
+                    return {
+                        ...set,
+                        completed: false
+                    }
+                })
+            }
+        })
+        setData(prevData => {
+            return {
+                ...prevData,
+                templates: prevData.templates.map((dataTemplate) => {
+                    if (dataTemplate.id === template.id) return {
+                        ...dataTemplate,
+                        exercises: finalExercises
+                    }
+                    else return dataTemplate
+                }
+                )
+            }
+        })
+    }
+    const renderActionButton = () => {
+        switch (screenVariant) {
+            case "newSession":
+                return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
+            case "editSession":
+                return <ButtonBig size='hug' color='blue' onClick={() => setShowSaveWorkoutModal(true)}>Save</ButtonBig>;
+            case "editTemplate":
+                return <ButtonBig size='hug' color='blue' onClick={() => setShowSaveTemplateModal(true)}>Save</ButtonBig>;
+            default:
+                return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
+        }
+    }
     return (
         <div className="container-app">
             <div className="div-header">
@@ -404,13 +443,15 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                 {exercises.map(exercise => (
                     <CardExerciseTracker key={exercise.name} exercise={exercise} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
                         deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
-                        showFinishModal={showFinishModal} showSaveWorkoutModal={showSaveWorkoutModal} screenVariant={screenVariant} />
+                        showFinishModal={showFinishModal} showSaveWorkoutModal={showSaveWorkoutModal} showSaveTemplateModal={showSaveTemplateModal}
+                        screenVariant={screenVariant} />
                 ))}
-                {screenVariant === "editSession" ? <ButtonBig size='hug' color='blue' onClick={() => setShowSaveWorkoutModal(true)}>Save</ButtonBig>
-                    : <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>}
+                {renderActionButton()}
                 <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal}
                     handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, currentDate)} />
                 <ModalSaveWorkout showSaveWorkoutModal={showSaveWorkoutModal} setShowSaveWorkoutModal={setShowSaveWorkoutModal} saveToHistory={saveToHistory}
+                    handleScreenChange={() => handleScreenChange('templates')} />
+                <ModalSaveTemplate showSaveTemplateModal={showSaveTemplateModal} setShowSaveTemplateModal={setShowSaveTemplateModal} handleUpdateTemplate={handleUpdateTemplate}
                     handleScreenChange={() => handleScreenChange('templates')} />
             </div>
 

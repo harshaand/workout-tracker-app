@@ -4,7 +4,7 @@ import { Tick, Lock } from '../../assets/icons/icons.js';
 
 
 function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exerciseName, deleteSet, handleOptionClick, saveTemplateValues,
-    showFinishModal, showSaveWorkoutModal, screenVariant = 'newSession' }) {
+    showFinishModal, showSaveWorkoutModal, showSaveTemplateModal, screenVariant = 'newSession' }) {
 
     const [showModal, setShowModal] = React.useState(false);
     const weightRef = React.useRef(null);
@@ -17,7 +17,7 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
             return;
         }
         saveTemplateValues(exerciseName, set.id, weightRef.current.value, repsRef.current.value)
-    }, [showFinishModal, showSaveWorkoutModal])
+    }, [showFinishModal, showSaveWorkoutModal, showSaveTemplateModal])
 
 
     function toggleShowModal() {

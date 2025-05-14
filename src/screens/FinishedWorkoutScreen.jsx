@@ -430,7 +430,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         setData(prevData => {
             return {
                 ...prevData,
-                templates: data.templates.map((template) => {
+                templates: prevData.templates.map((template) => {
                     if (template.id === templateId) return {
                         ...template,
                         lastDone: currentDate,

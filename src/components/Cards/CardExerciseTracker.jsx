@@ -9,7 +9,8 @@ function CardExerciseTracker(props) {
     function renderRows() {
         return props.exercise.sets.map(set => (<RowExerciseTracker exerciseName={props.exercise.name} set={set}
             toggleSetCompleted={props.toggleSetCompleted} deleteSet={props.deleteSet} handleOptionClick={props.handleOptionClick}
-            saveTemplateValues={props.saveTemplateValues} showFinishModal={props.showFinishModal} showSaveWorkoutModal={props.showSaveWorkoutModal}
+            saveTemplateValues={props.saveTemplateValues} showFinishModal={props.showFinishModal}
+            showSaveWorkoutModal={props.showSaveWorkoutModal} showSaveTemplateModal={props.showSaveTemplateModal}
             screenVariant={props.screenVariant} />))
     }
 
