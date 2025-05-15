@@ -2,7 +2,7 @@ import React from 'react'
 import ButtonBig from '../components/Buttons/ButtonBig';
 import { useData, useDataUpdate } from '../DataContext.jsx'
 
-function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate }) {
+function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant }) {
     const data = useData()
     const setData = useDataUpdate()
     const [showModal, setShowModal] = React.useState(false)
@@ -24,7 +24,24 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
     }, [])
 
     const exercisesSame = JSON.stringify(newExercises) === JSON.stringify(oldExercises);
-    if (!exercisesSame) {
+    console.log('screenVariant!!!!!', screenVariant)
+    if (screenVariant === 'newEmptySession') {
+        modalComponent = (
+            <>
+                <div className='modal-overlay'></div>
+                <div className='div-finish-workout'>
+                    <h2>Save as Template?</h2>
+                    <ButtonBig color="blue" onClick={() => {
+                        handleUpdateTemplate()
+                        saveToHistory()
+                    }}>Save as Template</ButtonBig>
+                    <ButtonBig color="gray" onClick={() => setShowModal(false)}>No thanks!</ButtonBig>
+                </div>
+            </>
+        );
+    }
+
+    else if (!exercisesSame && screenVariant === 'newSession') {
 
         // Array to collect all change messages
         const changes = [];
@@ -144,9 +161,16 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
         if (updateTemplateMessage.length > 0) {
             if (removedValues) {
-                updateTemplateButton = <ButtonBig onClick={handleUpdateTemplate} color="redSoft">{updateTemplateMessage}</ButtonBig>;
+                updateTemplateButton = <ButtonBig onClick={() => {
+                    handleUpdateTemplate()
+                    saveToHistory()
+                }
+                } color="redSoft">{updateTemplateMessage}</ButtonBig>;
             } else {
-                updateTemplateButton = <ButtonBig onClick={handleUpdateTemplate} color="blueSoft">{updateTemplateMessage}</ButtonBig>;
+                updateTemplateButton = <ButtonBig onClick={() => {
+                    handleUpdateTemplate()
+                    saveToHistory()
+                }} color="blueSoft">{updateTemplateMessage}</ButtonBig>;
             }
         }
 
@@ -155,7 +179,10 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 <div className='modal-overlay'></div>
                 <div className='div-finish-workout'>
                     <h2>Update Template</h2>
-                    {updatedValues ? <ButtonBig onClick={handleUpdateValues}>{updatedValuesMessage}</ButtonBig> : 'no button'}
+                    {updatedValues ? <ButtonBig onClick={() => {
+                        handleUpdateValues()
+                        saveToHistory()
+                    }}>{updatedValuesMessage}</ButtonBig> : 'no button'}
                     {updateTemplateButton}
                     <ButtonBig color="gray" onClick={() => setShowModal(false)}>Keep Orignal Template</ButtonBig>
                 </div>
@@ -175,10 +202,11 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         let exercisesNewPRs = {};
         let totalPRs = 0;
         let totalVolume = 0;
+        console.log('filteredExercises!!!', filteredExercises)
         const workoutHistoryExercises = [
             ...filteredExercises.map(exercise => {
                 const exerciseName = exercise.name;
-                const exerciseData = data.exercises.find(ex => ex.name === exerciseName);
+                const exerciseData = data.exercises.find(ex => ex.name === exerciseName)
 
                 if (exerciseData) {
                     exercisesNewPRs = {
@@ -235,8 +263,12 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     });
                     return exercise;
                 }
+                else {
+                    //create new exercise object 
+                }
             })
         ]
+        console.log('workoutHistoryExercises 1!!!', workoutHistoryExercises)
 
         setData(prevData => {
             return {
@@ -265,6 +297,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
         //--------------------------UPDATING EXERCISE OBJECT--------------------------
         let updatedExerciseObjects = {}
+        console.log('workoutHistoryExercises 2!!!', workoutHistoryExercises)
         workoutHistoryExercises.forEach(exercise => {
             const exerciseName = exercise.name;
             const exerciseData = data.exercises.find(ex => ex.name === exerciseName);
@@ -404,7 +437,6 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 )
             }
         })
-        saveToHistory()
         setShowModal(false)
     }
 
@@ -428,20 +460,28 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
             }
         })
         setData(prevData => {
+            const templateExists = prevData.templates.find(template => template.id === templateId) ? true : false
             return {
                 ...prevData,
-                templates: prevData.templates.map((template) => {
-                    if (template.id === templateId) return {
-                        ...template,
-                        lastDone: currentDate,
-                        exercises: finalExercises
-                    }
-                    else return template
-                }
-                )
+                templates: templateExists ?
+                    prevData.templates.map((template) => {
+                        if (template.id === templateId) return {
+                            ...template,
+                            lastDone: currentDate,
+                            exercises: finalExercises
+                        }
+                        else return template
+                    })
+                    : [
+                        ...prevData.templates,
+                        {
+                            ...template,
+                            lastDone: currentDate,
+                            exercises: finalExercises
+                        }
+                    ]
             }
         })
-        saveToHistory()
         setShowModal(false)
     }
     return (

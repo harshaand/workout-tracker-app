@@ -11,6 +11,7 @@ function CardExerciseTracker(props) {
             toggleSetCompleted={props.toggleSetCompleted} deleteSet={props.deleteSet} handleOptionClick={props.handleOptionClick}
             saveTemplateValues={props.saveTemplateValues} showFinishModal={props.showFinishModal}
             showSaveWorkoutModal={props.showSaveWorkoutModal} showSaveTemplateModal={props.showSaveTemplateModal}
+            showSaveAsNewTemplate={props.showSaveAsNewTemplate}
             screenVariant={props.screenVariant} />))
     }
 

@@ -4,7 +4,7 @@ import { Tick, Lock } from '../../assets/icons/icons.js';
 
 
 function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exerciseName, deleteSet, handleOptionClick, saveTemplateValues,
-    showFinishModal, showSaveWorkoutModal, showSaveTemplateModal, screenVariant = 'newSession' }) {
+    showFinishModal, showSaveWorkoutModal, showSaveTemplateModal, showSaveAsNewTemplate, screenVariant = 'newSession' }) {
 
     const [showModal, setShowModal] = React.useState(false);
     const weightRef = React.useRef(null);
@@ -17,15 +17,14 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
             return;
         }
         saveTemplateValues(exerciseName, set.id, weightRef.current.value, repsRef.current.value)
-    }, [showFinishModal, showSaveWorkoutModal, showSaveTemplateModal])
+    }, [showFinishModal, showSaveWorkoutModal, showSaveTemplateModal, showSaveAsNewTemplate])
 
 
     function toggleShowModal() {
         setShowModal(prevShowModal => !prevShowModal)
     }
 
-
-    if (type === 'heading' && screenVariant === 'newSession') {
+    if (type === 'heading' && (screenVariant === 'newSession' || screenVariant === 'editSession' || screenVariant === 'newEmptySession')) {
         return (
             <div className='heading-row'>
                 <div className='heading'><h4>Set</h4></div>
@@ -36,7 +35,7 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
             </div>
         )
     }
-    else if (type === 'exerciseRow' && screenVariant === 'newSession') {
+    else if (type === 'exerciseRow' && (screenVariant === 'newSession' || screenVariant === 'editSession' || screenVariant === 'newEmptySession')) {
         return (
             <div className={`exercise-row ${set.completed ? 'exercise-row-completed' : ''}`}>
 
@@ -64,7 +63,7 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
             </div >
         )
     }
-    else if (type === 'heading' && screenVariant === ('editTemplate' || 'newEmptyTemplate')) {
+    else if (type === 'heading' && (screenVariant === 'editTemplate' || screenVariant === 'newEmptyTemplate')) {
         return (
             <div className='heading-row'>
                 <div className='heading'><h4>Set</h4></div>
@@ -75,7 +74,7 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
             </div>
         )
     }
-    else if (type === 'exerciseRow' && screenVariant === ('editTemplate' || 'newEmptyTemplate')) {
+    else if (type === 'exerciseRow' && (screenVariant === 'editTemplate' || screenVariant === 'newEmptyTemplate')) {
         return (
             <div className={`exercise-row ${set.completed ? 'exercise-row-completed' : ''}`}>
 

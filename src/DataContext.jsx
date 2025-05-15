@@ -16,7 +16,7 @@ const dataObject = {
     templates: [
         {
             id: '4213313',
-            name: 'Supreme Back workout',
+            name: 'Supreme Back workout template',
             duration: 0,
             notes: '',
             lastDone: {},
@@ -103,7 +103,7 @@ const dataObject = {
     history: [
         {
             id: '4213313',
-            name: 'Supreme Back workout',
+            name: 'Supreme Back workout history',
             duration: 20,
             notes: 'Wore lifting shoes',
 
@@ -135,7 +135,7 @@ const dataObject = {
                                 num: 2,
                                 weight: 10,
                                 reps: 20,
-                                completed: false,
+                                completed: true,
                                 PRs: { '1RM': true, weight: true, reps: false, volume: true },
                                 bestSet: false
                             }
@@ -163,7 +163,7 @@ const dataObject = {
                                 num: 2,
                                 weight: 666,
                                 reps: 666,
-                                completed: false,
+                                completed: true,
                                 PRs: { '1RM': true, weight: true, reps: false, volume: true },
                                 bestSet: false
                             },
@@ -223,7 +223,16 @@ const dataObject = {
             thumbnail: '',
             instructions: { media: '', text: 'Sit a 90* angle...' },
             history: []
+        },
+        {
+            name: 'Testing Exercise',
+            prMetric: 'reps',
+            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+            thumbnail: '',
+            instructions: { media: '', text: '' },
+            history: []
         }
+
 
     ],
 }

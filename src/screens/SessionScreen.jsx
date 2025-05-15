@@ -9,6 +9,7 @@ import FolderList from '../OTHER/FoldersFunctionality.jsx'
 
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import ModalFinishWorkout from '../components/Modals/session/FinishWorkout.jsx'
+import ModalSaveAsNewTemplate from '../components/Modals/session/SaveAsNewTemplate.jsx'
 import ModalSaveWorkout from '../components/Modals/session/SaveEditedWorkout.jsx'
 import ModalSaveTemplate from '../components/Modals/session/SaveEditedTemplate.jsx'
 import FinishedWorkoutScreen from './FinishedWorkoutScreen.jsx'
@@ -32,17 +33,13 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
     const [exercises, setExercises] = React.useState(template.exercises)
     //Finish modals
     const [showFinishModal, setShowFinishModal] = React.useState(false)
+    const [showSaveAsNewTemplate, setShowSaveAsNewTemplate] = React.useState(false)
     const [showSaveWorkoutModal, setShowSaveWorkoutModal] = React.useState(false)
     const [showSaveTemplateModal, setShowSaveTemplateModal] = React.useState(false)
 
-    let workoutId = null
+    const workoutId = template.workoutId
     const currentDate = new Date();
-    if (screenVariant === "newSession" || "newEmptySession") {
-        workoutId = uuidv4();
-    }
-    else if (screenVariant === "editSession") {
-        workoutId = template.workoutId
-    }
+
 
     function toggleSetCompleted(exerciseName, setNum) {
         setExercises(prevExercises => (
@@ -408,16 +405,23 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
             }
         })
         setData(prevData => {
+            const templateExists = prevData.templates.find(templ => templ === template.id) ? true : false
             return {
                 ...prevData,
-                templates: prevData.templates.map((dataTemplate) => {
-                    if (dataTemplate.id === template.id) return {
-                        ...dataTemplate,
+                templates: templateExists ? prevData.templates.map((templ) => {
+                    if (templ.id === template.id) return {
+                        ...templ,
                         exercises: finalExercises
                     }
-                    else return dataTemplate
-                }
-                )
+                    else return templ
+                })
+                    : [
+                        ...prevData.templates,
+                        {
+                            ...template,
+                            exercises: finalExercises
+                        }
+                    ]
             }
         })
     }
@@ -427,7 +431,11 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                 return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
             case "editSession":
                 return <ButtonBig size='hug' color='blue' onClick={() => setShowSaveWorkoutModal(true)}>Save</ButtonBig>;
+            case "newEmptySession":
+                return <ButtonBig size='hug' color='green' onClick={() => setShowSaveAsNewTemplate(true)}>Save</ButtonBig>;
             case "editTemplate":
+                return <ButtonBig size='hug' color='blue' onClick={() => setShowSaveTemplateModal(true)}>Save</ButtonBig>;
+            case "newEmptyTemplate":
                 return <ButtonBig size='hug' color='blue' onClick={() => setShowSaveTemplateModal(true)}>Save</ButtonBig>;
             default:
                 return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
@@ -444,13 +452,27 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                     <CardExerciseTracker key={exercise.name} exercise={exercise} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
                         deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
                         showFinishModal={showFinishModal} showSaveWorkoutModal={showSaveWorkoutModal} showSaveTemplateModal={showSaveTemplateModal}
+                        showSaveAsNewTemplate={showSaveAsNewTemplate}
                         screenVariant={screenVariant} />
                 ))}
                 {renderActionButton()}
+
+                {/*newEmptySession*/}
+                <ModalSaveAsNewTemplate showSaveAsNewTemplate={showSaveAsNewTemplate} setShowSaveAsNewTemplate={setShowSaveAsNewTemplate}
+                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant)}
+                    emptySets={exercises.filter(exercise => exercise.sets.some(set => set.completed === false)).length > 0 ? true : false} />
+
+                {/*newSession*/}
                 <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal}
-                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, currentDate)} />
+                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant)} />
+
+
+                {/*editSession*/}
                 <ModalSaveWorkout showSaveWorkoutModal={showSaveWorkoutModal} setShowSaveWorkoutModal={setShowSaveWorkoutModal} saveToHistory={saveToHistory}
                     handleScreenChange={() => handleScreenChange('templates')} />
+
+
+                {/*editTemplate + newEmptyTemplate*/}
                 <ModalSaveTemplate showSaveTemplateModal={showSaveTemplateModal} setShowSaveTemplateModal={setShowSaveTemplateModal} handleUpdateTemplate={handleUpdateTemplate}
                     handleScreenChange={() => handleScreenChange('templates')} />
             </div>

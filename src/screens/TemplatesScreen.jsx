@@ -11,6 +11,9 @@ import FolderList from '../OTHER/FoldersFunctionality.jsx'
 import { useData } from '../DataContext.jsx'
 import SessionScreen from './SessionScreen.jsx'
 
+import { v4 as uuidv4 } from 'uuid';
+
+
 
 function TemplatesScreen() {
     const data = useData()
@@ -23,6 +26,46 @@ function TemplatesScreen() {
     4. newEmptyTemplate
     5. newEmptySession -new key
     */
+    const screenVariant = React.useRef(null);
+
+    const newEmptySession = {
+        id: uuidv4(),
+        name: 'New Workout',
+        duration: undefined,
+        notes: undefined,
+        lastDone: {},
+
+        exercises: [
+            {
+                name: 'Testing Exercise',
+                sets:
+                    [
+                        {
+                            id: '0plkjn',
+                            value: 1,
+                            num: 1,
+                            weight: 0,
+                            reps: 0,
+                            completed: false,
+                            PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
+                            bestSet: false
+                        },
+                        {
+                            id: '876tg',
+                            value: 2,
+                            num: 2,
+                            weight: 0,
+                            reps: 0,
+                            completed: false,
+                            PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
+                            bestSet: false
+                        }
+                    ]
+
+            }
+        ]
+    }
+
     return (
         <div className="container-app">
             <div className="div-header">
@@ -34,13 +77,71 @@ function TemplatesScreen() {
                 <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
                 <CardWorkoutTemplate />
                 <CardWorkoutHistory />
+
+
+                {/*newSession*/}
                 {data.templates.map((template, index) => (
-                    <button
-                        onClick={() => setSelectedTemplate(data.templates[index])}>
-                        {template.name}
-                    </button>
+                    <ButtonBig color='green' size='hug'
+                        onClick={() => {
+                            setSelectedTemplate({ ...data.templates[index], workoutId: uuidv4() });
+                            screenVariant.current = 'newSession';
+                        }}>
+                        {`New Session ${template.name}`}
+                    </ButtonBig>
+
                 ))}
-                {selectedTemplate && <SessionScreen template={selectedTemplate} screenVariant='editTemplate' />}
+
+                {/*editSession*/}
+                {data.history.map((history, index) => (
+                    <ButtonBig color='blue' size='hug'
+                        onClick={() => {
+                            setSelectedTemplate(data.history[index]);
+                            screenVariant.current = 'editSession';
+                        }}>
+                        {`Edit Session ${history.name}`}
+                    </ButtonBig>
+
+                ))}
+
+                {/*editTemplate*/}
+                {data.templates.map((template, index) => (
+                    <ButtonBig color='blueSoft' size='hug'
+                        onClick={() => {
+                            setSelectedTemplate({ ...data.templates[index], workoutId: uuidv4() });
+                            screenVariant.current = 'editTemplate';
+                        }}>
+                        {`Edit Template ${template.name}`}
+                    </ButtonBig>
+
+                ))}
+
+
+                {/*editSession*/}
+                <ButtonBig color='blue' size='hug'
+                    onClick={() => {
+                        setSelectedTemplate({ ...newEmptySession, name: 'New Workout', workoutId: uuidv4() });
+                        screenVariant.current = 'newEmptySession';
+                    }}>
+                    New Empty Workout
+                </ButtonBig>
+
+
+                {/*newEmptyTemplate*/}
+                <ButtonBig color='blueSoft' size='hug'
+                    onClick={() => {
+                        setSelectedTemplate({ ...newEmptySession, name: 'New Template' });
+                        screenVariant.current = 'newEmptyTemplate';
+                    }}>
+                    New Empty Template
+                </ButtonBig>
+
+
+
+
+
+
+                {selectedTemplate && <SessionScreen template={selectedTemplate} screenVariant={screenVariant.current} />}
+
                 <FolderList />
 
             </div>
