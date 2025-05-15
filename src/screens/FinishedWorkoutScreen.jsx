@@ -6,6 +6,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
     const data = useData()
     const setData = useDataUpdate()
     const [showModal, setShowModal] = React.useState(false)
+    const userCurrentWeight = data.user.weight
 
     console.log('NEW EXERCISES!!!!!!!!:', newExercises)//BUG, showing something unexpected after saveToHistory
     let updatedValues = false;
@@ -34,6 +35,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     <ButtonBig color="blue" onClick={() => {
                         handleUpdateTemplate()
                         saveToHistory()
+                        setShowModal(false)
                     }}>Save as Template</ButtonBig>
                     <ButtonBig color="gray" onClick={() => setShowModal(false)}>No thanks!</ButtonBig>
                 </div>
@@ -164,12 +166,14 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 updateTemplateButton = <ButtonBig onClick={() => {
                     handleUpdateTemplate()
                     saveToHistory()
+                    setShowModal(false)
                 }
                 } color="redSoft">{updateTemplateMessage}</ButtonBig>;
             } else {
                 updateTemplateButton = <ButtonBig onClick={() => {
                     handleUpdateTemplate()
                     saveToHistory()
+                    setShowModal(false)
                 }} color="blueSoft">{updateTemplateMessage}</ButtonBig>;
             }
         }
@@ -182,9 +186,13 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     {updatedValues ? <ButtonBig onClick={() => {
                         handleUpdateValues()
                         saveToHistory()
+                        setShowModal(false)
                     }}>{updatedValuesMessage}</ButtonBig> : 'no button'}
                     {updateTemplateButton}
-                    <ButtonBig color="gray" onClick={() => setShowModal(false)}>Keep Orignal Template</ButtonBig>
+                    <ButtonBig color="gray" onClick={() => {
+                        saveToHistory()
+                        setShowModal(false)
+                    }}>Keep Orignal Template</ButtonBig>
                 </div>
             </>
         );
@@ -218,10 +226,15 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     prKeys.forEach(prKey => {
 
                         const getPRValue = set => {
+                            const reps = Number(set.reps)
+                            const weight = Number(set.weight)
+                            const oneRepMax = reps < 37 ? weight * (36 / (37 - reps)) : 0
+                            const eliteRatio = exerciseData.thresholds === undefined ? undefined : exerciseData.thresholds[data.user.sex].elite
+                            const strengthScore = eliteRatio === undefined || oneRepMax === 0 ? 0 : Math.min(100, (oneRepMax / (userCurrentWeight * eliteRatio) * 100))
                             switch (prKey) {
-                                case 'volume': return Number(set.reps) * Number(set.weight);
-                                case '1RM': return (Number(set.reps) * Number(set.weight)) / 2;
-                                case 'strengthScore': return Number(set.reps) * Number(set.weight) * 2;
+                                case 'volume': return reps * weight;
+                                case '1RM': return oneRepMax;
+                                case 'strengthScore': return strengthScore;
                                 default: return Number(set[prKey]);
                             }
                         };
@@ -325,7 +338,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 updatedExerciseObjects = {
                     ...updatedExerciseObjects,
                     [exerciseName]: {
-                        currentWeight: 88,
+                        currentWeight: userCurrentWeight,
                         currentPRs: exerciseData.PRs,
                         newPRs: exercisesNewPRs[exerciseName],
                         date: currentDate,
@@ -437,7 +450,6 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 )
             }
         })
-        setShowModal(false)
     }
 
     function handleUpdateTemplate() {
@@ -482,7 +494,6 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     ]
             }
         })
-        setShowModal(false)
     }
     return (
         <div>

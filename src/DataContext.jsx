@@ -3,6 +3,10 @@ import React from 'react'
 const DataContext = React.createContext()
 const DataUpdateContext = React.createContext()
 const dataObject = {
+    user: {
+        sex: 'male',
+        weight: 300,
+    },
     templateFolders: [
         {
             name: 'Back workouts',
@@ -198,14 +202,18 @@ const dataObject = {
         {
             name: 'Back Squat',
             prMetric: 'reps',
-            PRs: { '1RM': 123, weight: 123, reps: 123, volume: 123, strengthScore: 123 },
+            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
             thumbnail: '',
             instructions: { media: '', text: 'Sit a 90* angle...' },
+            thresholds: {
+                male: { beginner: 0.75, novice: 1.25, intermediate: 1.5, advanced: 2.25, elite: 2.75 },
+                female: { beginner: 0.5, novice: 0.75, intermediate: 1.25, advanced: 1.5, elite: 2 }
+            },
             history: [
                 {
                     currentWeight: 88,
-                    currentPRs: { '1RM': 123, weight: 123, reps: 123, volume: 123, strengthScore: 123 },
-                    newPRs: { '1RM': 123, weight: 123, reps: 123, volume: 123, strengthScore: 123 },
+                    currentPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                    newPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
                     date: '1/1/2025',
                     workoutId: 90210,
                     sets: [
@@ -219,9 +227,13 @@ const dataObject = {
         {
             name: 'Hip Thrust',
             prMetric: 'reps',
-            PRs: { '1RM': 123, weight: 123, reps: 123, volume: 123, strengthScore: 123 },
+            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
             thumbnail: '',
             instructions: { media: '', text: 'Sit a 90* angle...' },
+            thresholds: {
+                male: { beginner: 0.5, novice: 1.0, intermediate: 1.75, advanced: 2.5, elite: 3.5 },
+                female: { beginner: 0.5, novice: 1.0, intermediate: 1.5, advanced: 2.25, elite: 3.0 }
+            },
             history: []
         },
         {

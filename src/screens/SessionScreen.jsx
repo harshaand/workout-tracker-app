@@ -40,6 +40,17 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
     const workoutId = template.workoutId
     const currentDate = new Date();
 
+    const currentWeightInExHistory = React.useRef(null)
+    const userCurrentWeight = React.useRef(null)
+
+    React.useEffect(() => {
+        currentWeightInExHistory.current = exercises.map(exercise => {
+            const exWithUserWeight = data.exercises.find(ex => ex.name === exercise.name)?.history.find(history => history.workoutId === template.workoutId);
+            return exWithUserWeight?.currentWeight;
+        }).find(weight => weight !== undefined);
+
+        userCurrentWeight.current = currentWeightInExHistory.current === undefined ? data.user.weight : currentWeightInExHistory.current
+    }, [])
 
     function toggleSetCompleted(exerciseName, setNum) {
         setExercises(prevExercises => (
@@ -231,7 +242,6 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
             ...filteredExercises.map(exercise => {
                 const exerciseName = exercise.name;
                 const exerciseData = data.exercises.find(ex => ex.name === exerciseName);
-
                 if (exerciseData) {
                     exercisesNewPRs = {
                         ...exercisesNewPRs,
@@ -242,10 +252,15 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                     prKeys.forEach(prKey => {
 
                         const getPRValue = set => {
+                            const reps = Number(set.reps)
+                            const weight = Number(set.weight)
+                            const oneRepMax = reps < 37 ? weight * (36 / (37 - reps)) : 0
+                            const eliteRatio = exerciseData.thresholds === undefined ? undefined : exerciseData.thresholds[data.user.sex].elite
+                            const strengthScore = eliteRatio === undefined || oneRepMax === 0 ? 0 : Math.min(100, (oneRepMax / (userCurrentWeight.current * eliteRatio) * 100))
                             switch (prKey) {
-                                case 'volume': return Number(set.reps) * Number(set.weight);
-                                case '1RM': return (Number(set.reps) * Number(set.weight)) / 2;
-                                case 'strengthScore': return Number(set.reps) * Number(set.weight) * 2;
+                                case 'volume': return reps * weight;
+                                case '1RM': return oneRepMax;
+                                case 'strengthScore': return strengthScore;
                                 default: return Number(set[prKey]);
                             }
                         };
@@ -344,7 +359,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                 updatedExerciseObjects = {
                     ...updatedExerciseObjects,
                     [exerciseName]: {
-                        currentWeight: 88,
+                        currentWeight: userCurrentWeight.current,
                         currentPRs: exerciseData.PRs,
                         newPRs: exercisesNewPRs[exerciseName],
                         date: currentDate,
