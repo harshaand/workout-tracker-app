@@ -63,11 +63,11 @@ button:active {
 }
 
 .btn-prev-volume-active {
-    color: var(--text-color-heading-2);
+    color: #C7C9CA;
 }
 
 .btn-prev-volume-inactive {
-    color: #C7C9CA;
+    color: var(--text-color-heading-2);
 }
 
 /*-----------------------------------------------------*/

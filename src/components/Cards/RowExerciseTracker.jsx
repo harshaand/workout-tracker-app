@@ -24,6 +24,12 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
         setShowModal(prevShowModal => !prevShowModal)
     }
 
+    const [valuesFilled, setValuesFilled] = React.useState(false)
+    function fillValues() {
+        setValuesFilled(true)
+        weightRef.current.value = set.weight
+        repsRef.current.value = set.reps
+    }
     if (type === 'heading' && (screenVariant === 'newSession' || screenVariant === 'editSession' || screenVariant === 'newEmptySession')) {
         return (
             <div className='heading-row'>
@@ -35,7 +41,7 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
             </div>
         )
     }
-    else if (type === 'exerciseRow' && (screenVariant === 'newSession' || screenVariant === 'editSession' || screenVariant === 'newEmptySession')) {
+    else if (type === 'exerciseRow' && (screenVariant === 'newSession' || screenVariant === 'newEmptySession')) {
         return (
             <div className={`exercise-row ${set.completed ? 'exercise-row-completed' : ''}`}>
 
@@ -56,9 +62,37 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
                             }}>F</button>
                         </div>)}
                 </div>
-                <button className='btn-prev-volume btn-prev-volume-inactive' onClick={() => deleteSet(exerciseName, set.id)}>+10kg x 20</button>
+                <button className={`btn-prev-volume ${valuesFilled ? 'btn-prev-volume-active' : 'btn-prev-volume-inactive'}`} onClick={fillValues}>{`${set.weight} kg x ${set.reps}`}</button>
                 <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight} id="abc" name="abc" type="text" /></div>
                 <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.reps} id="abc" name="abc" type="text" /></div>
+                <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn-green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
+            </div >
+        )
+    }
+    else if (type === 'exerciseRow' && screenVariant === 'editSession') {
+        return (
+            <div className={`exercise-row ${set.completed ? 'exercise-row-completed' : ''}`}>
+
+                <div className='testing'><ButtonSmall type='setNumber' customClasses={set.completed ? 'completed' : ''} onClick={() => toggleShowModal()}>{set.value}</ButtonSmall>
+                    {showModal && (
+                        <div className="set-options">
+                            <button className="set-options-btns" onClick={() => {
+                                handleOptionClick('W', exerciseName, set.id)
+                                toggleShowModal()
+                            }}>W</button>
+                            <button className="set-options-btns" onClick={() => {
+                                handleOptionClick('D', exerciseName, set.id)
+                                toggleShowModal()
+                            }}> D</button>
+                            <button className="set-options-btns" onClick={() => {
+                                handleOptionClick('F', exerciseName, set.id)
+                                toggleShowModal()
+                            }}>F</button>
+                        </div>)}
+                </div>
+                <button className='btn-prev-volume btn-prev-volume-active' /*onClick={fillValues}*/ >{`${set.weight} kg x ${set.reps}`}</button>
+                <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight} id="abc" name="abc" type="text" /></div>
+                <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.reps} id="abc" name="abc" type="text" /></div>
                 <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn-green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
             </div >
         )
@@ -95,9 +129,9 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
                             }}>F</button>
                         </div>)}
                 </div>
-                <button className='btn-prev-volume btn-prev-volume-inactive' onClick={() => deleteSet(exerciseName, set.id)}>+10kg x 20</button>
-                <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight} id="abc" name="abc" type="text" /></div>
-                <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.reps} id="abc" name="abc" type="text" /></div>
+                <button className='btn-prev-volume btn-prev-volume-active' /*onClick={fillValues}*/ >{`${set.weight} kg x ${set.reps}`}</button>
+                <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight} id="abc" name="abc" type="text" /></div>
+                <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.reps} id="abc" name="abc" type="text" /></div>
                 <div className='testing'><ButtonSmall type='checkboxLocked' customClasses={set.completed ? 'btn-green' : ''} ></ButtonSmall></div>
             </div >
         )
