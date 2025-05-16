@@ -496,7 +496,6 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                     {(screenVariant === 'editSession') && <h2>Duration: {template.duration}</h2>}
                 </div>
                 <input ref={notes} defaultValue={template.notes} type="text" />
-                <button onClick={() => console.log(notes.current.value)}>Print notes</button>
             </div>
 
             <div className="library-container-quick-start">
