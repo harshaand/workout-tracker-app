@@ -1,6 +1,6 @@
 import React from 'react'
 
-function SaveAsNewTemplate({ showSaveAsNewTemplate, setShowSaveAsNewTemplate, handleScreenChange, emptySets }) {
+function SaveAsNewTemplate({ showSaveAsNewTemplate, setShowSaveAsNewTemplate, handleScreenChange, emptySets, clearInterval }) {
     const message = 'All invalid or empty sets will be removed. All valid sets will be marked as completed'
     if (!showSaveAsNewTemplate) return null
     else {
@@ -14,6 +14,7 @@ function SaveAsNewTemplate({ showSaveAsNewTemplate, setShowSaveAsNewTemplate, ha
                         <button onClick={() => setShowSaveAsNewTemplate(false)}>cancel</button>
                         <button onClick={() => {
                             setShowSaveAsNewTemplate(false)
+                            clearInterval()
                             handleScreenChange()
                         }}>finish</button>
                     </div>

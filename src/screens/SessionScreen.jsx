@@ -28,6 +28,40 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
     4. newEmptyTemplate
     5. newEmptySession -new key
     */
+    const [sessionDuration, setSessionDuration] = React.useState(0);
+    const intervalRef = React.useRef(null);
+    function formatTime(totalSeconds) {
+        const hrs = Math.floor(totalSeconds / 3600);
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        const secs = totalSeconds % 60;
+
+        const paddedMins = String(mins).padStart(1, '0');
+        const paddedSecs = String(secs).padStart(2, '0');
+
+        if (hrs > 0) {
+            const paddedHrs = String(hrs).padStart(2, '0');
+            return `${paddedHrs}:${paddedMins}:${paddedSecs}`; // hh:mm:ss
+        } else {
+            return `${paddedMins}:${paddedSecs}`; // mm:ss
+        }
+    };
+    React.useEffect(() => {
+        if (screenVariant === 'newSession' || screenVariant === 'newEmptySession') {
+            intervalRef.current = setInterval(() => {
+                setSessionDuration(prev => prev + 1);
+            }, 1000);
+        }
+
+        currentWeightInExHistory.current = exercises.map(exercise => {
+            const exWithUserWeight = data.exercises.find(ex => ex.name === exercise.name)?.history.find(history => history.workoutId === template.workoutId);
+            return exWithUserWeight?.currentWeight;
+        }).find(weight => weight !== undefined);
+
+        userCurrentWeight.current = currentWeightInExHistory.current === undefined ? data.user.weight : currentWeightInExHistory.current
+
+        return () => clearInterval(intervalRef.current);
+
+    }, [])
 
     const { handleScreenChange } = React.useContext(RoutingContext)
     const [exercises, setExercises] = React.useState(template.exercises)
@@ -42,15 +76,6 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
     const currentWeightInExHistory = React.useRef(null)
     const userCurrentWeight = React.useRef(null)
-
-    React.useEffect(() => {
-        currentWeightInExHistory.current = exercises.map(exercise => {
-            const exWithUserWeight = data.exercises.find(ex => ex.name === exercise.name)?.history.find(history => history.workoutId === template.workoutId);
-            return exWithUserWeight?.currentWeight;
-        }).find(weight => weight !== undefined);
-
-        userCurrentWeight.current = currentWeightInExHistory.current === undefined ? data.user.weight : currentWeightInExHistory.current
-    }, [])
 
     function toggleSetCompleted(exerciseName, setNum) {
         setExercises(prevExercises => (
@@ -460,6 +485,10 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
         <div className="container-app">
             <div className="div-header">
                 <h1>Session Screen</h1>
+                <div>
+                    {(screenVariant === 'newSession' || screenVariant === 'newEmptySession') && <h2>Duration: {formatTime(sessionDuration)}</h2>}
+                    {(screenVariant === 'editSession') && <h2>Duration: {template.duration}</h2>}
+                </div>
             </div>
 
             <div className="library-container-quick-start">
@@ -473,13 +502,13 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                 {renderActionButton()}
 
                 {/*newEmptySession*/}
-                <ModalSaveAsNewTemplate showSaveAsNewTemplate={showSaveAsNewTemplate} setShowSaveAsNewTemplate={setShowSaveAsNewTemplate}
-                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant)}
+                <ModalSaveAsNewTemplate showSaveAsNewTemplate={showSaveAsNewTemplate} setShowSaveAsNewTemplate={setShowSaveAsNewTemplate} clearInterval={() => clearInterval(intervalRef.current)}
+                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant, sessionDuration)}
                     emptySets={exercises.filter(exercise => exercise.sets.some(set => set.completed === false)).length > 0 ? true : false} />
 
                 {/*newSession*/}
-                <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal}
-                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant)} />
+                <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
+                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant, sessionDuration)} />
 
 
                 {/*editSession*/}

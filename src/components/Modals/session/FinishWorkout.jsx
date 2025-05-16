@@ -1,6 +1,6 @@
 import React from 'react'
 
-function FinishWorkout({ showFinishModal, setShowFinishModal, handleScreenChange }) {
+function FinishWorkout({ showFinishModal, setShowFinishModal, handleScreenChange, clearInterval }) {
 
     if (!showFinishModal) return null
     else {
@@ -13,6 +13,7 @@ function FinishWorkout({ showFinishModal, setShowFinishModal, handleScreenChange
                         <button onClick={() => setShowFinishModal(false)}>cancel</button>
                         <button onClick={() => {
                             setShowFinishModal(false)
+                            clearInterval()
                             handleScreenChange()
                         }}>finish</button>
                     </div>

@@ -1,12 +1,14 @@
 import React from 'react'
 import ButtonBig from '../components/Buttons/ButtonBig';
 import { useData, useDataUpdate } from '../DataContext.jsx'
+import { RoutingContext } from '../App.jsx'
 
-function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant }) {
+function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration }) {
     const data = useData()
     const setData = useDataUpdate()
     const [showModal, setShowModal] = React.useState(false)
     const userCurrentWeight = data.user.weight
+    const { handleScreenChange } = React.useContext(RoutingContext)
 
     console.log('NEW EXERCISES!!!!!!!!:', newExercises)//BUG, showing something unexpected after saveToHistory
     let updatedValues = false;
@@ -36,6 +38,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                         handleUpdateTemplate()
                         saveToHistory()
                         setShowModal(false)
+                        handleScreenChange('templates')
                     }}>Save as Template</ButtonBig>
                     <ButtonBig color="gray" onClick={() => setShowModal(false)}>No thanks!</ButtonBig>
                 </div>
@@ -167,6 +170,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     handleUpdateTemplate()
                     saveToHistory()
                     setShowModal(false)
+                    handleScreenChange('templates')
                 }
                 } color="redSoft">{updateTemplateMessage}</ButtonBig>;
             } else {
@@ -174,6 +178,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     handleUpdateTemplate()
                     saveToHistory()
                     setShowModal(false)
+                    handleScreenChange('templates')
                 }} color="blueSoft">{updateTemplateMessage}</ButtonBig>;
             }
         }
@@ -187,11 +192,13 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                         handleUpdateValues()
                         saveToHistory()
                         setShowModal(false)
+                        handleScreenChange('templates')
                     }}>{updatedValuesMessage}</ButtonBig> : 'no button'}
                     {updateTemplateButton}
                     <ButtonBig color="gray" onClick={() => {
                         saveToHistory()
                         setShowModal(false)
+                        handleScreenChange('templates')
                     }}>Keep Orignal Template</ButtonBig>
                 </div>
             </>
@@ -292,7 +299,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     {
                         id: template.id,
                         name: template.name,
-                        duration: template.duration,
+                        duration: duration,
                         notes: template.notes,
                         workoutId: workoutId,
 
