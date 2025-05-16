@@ -102,8 +102,8 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                         id: uuidv4(),
                         value: nextSetNum,
                         num: nextSetNum,
-                        weight: exercise.prevWeight,
-                        reps: exercise.prevReps,
+                        weight: 0,
+                        reps: 0,
                         completed: false
                     };
 

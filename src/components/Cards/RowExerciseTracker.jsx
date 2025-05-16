@@ -1,6 +1,6 @@
 import React from 'react'
 import ButtonSmall from '../Buttons/ButtonSmall.jsx'
-import { Tick, Lock } from '../../assets/icons/icons.js';
+import { Tick, Lock, BlankNarrow, BlankWide } from '../../assets/icons/icons.js';
 
 
 function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exerciseName, deleteSet, handleOptionClick, saveTemplateValues,
@@ -62,9 +62,9 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
                             }}>F</button>
                         </div>)}
                 </div>
-                <button className={`btn-prev-volume ${valuesFilled ? 'btn-prev-volume-active' : 'btn-prev-volume-inactive'}`} onClick={fillValues}>{`${set.weight} kg x ${set.reps}`}</button>
-                <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight} id="abc" name="abc" type="text" /></div>
-                <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.reps} id="abc" name="abc" type="text" /></div>
+                <button className={`btn-prev-volume ${valuesFilled ? 'btn-prev-volume-active' : 'btn-prev-volume-inactive'}`} onClick={set.weight === 0 && set.reps === 0 ? '' : fillValues}>{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight === 0 && set.reps === 0 ? '' : set.weight} id="abc" name="abc" type="text" /></div>
+                <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight === 0 && set.reps === 0 ? '' : set.reps} id="abc" name="abc" type="text" /></div>
                 <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn-green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
             </div >
         )
@@ -90,9 +90,9 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
                             }}>F</button>
                         </div>)}
                 </div>
-                <button className='btn-prev-volume btn-prev-volume-active' /*onClick={fillValues}*/ >{`${set.weight} kg x ${set.reps}`}</button>
-                <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight} id="abc" name="abc" type="text" /></div>
-                <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.reps} id="abc" name="abc" type="text" /></div>
+                <button className='btn-prev-volume btn-prev-volume-active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.weight} id="abc" name="abc" type="text" /></div>
+                <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.reps} id="abc" name="abc" type="text" /></div>
                 <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn-green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
             </div >
         )
@@ -129,9 +129,9 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
                             }}>F</button>
                         </div>)}
                 </div>
-                <button className='btn-prev-volume btn-prev-volume-active' /*onClick={fillValues}*/ >{`${set.weight} kg x ${set.reps}`}</button>
-                <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight} id="abc" name="abc" type="text" /></div>
-                <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.reps} id="abc" name="abc" type="text" /></div>
+                <button className='btn-prev-volume btn-prev-volume-active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.weight} id="abc" name="abc" type="text" /></div>
+                <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.reps} id="abc" name="abc" type="text" /></div>
                 <div className='testing'><ButtonSmall type='checkboxLocked' customClasses={set.completed ? 'btn-green' : ''} ></ButtonSmall></div>
             </div >
         )

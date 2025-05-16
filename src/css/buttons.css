@@ -64,10 +64,12 @@ button:active {
 
 .btn-prev-volume-active {
     color: #C7C9CA;
+    fill: #C7C9CA;
 }
 
 .btn-prev-volume-inactive {
     color: var(--text-color-heading-2);
+    fill: #C7C9CA;
 }
 
 /*-----------------------------------------------------*/
