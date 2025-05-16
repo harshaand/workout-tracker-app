@@ -22,7 +22,7 @@ const dataObject = {
             id: '4213313',
             name: 'Supreme Back workout template',
             duration: 0,
-            notes: '',
+            notes: 'lmfaooooo',
             lastDone: {},
 
 

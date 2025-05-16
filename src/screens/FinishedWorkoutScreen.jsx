@@ -3,7 +3,7 @@ import ButtonBig from '../components/Buttons/ButtonBig';
 import { useData, useDataUpdate } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'
 
-function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration }) {
+function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration, notes }) {
     const data = useData()
     const setData = useDataUpdate()
     const [showModal, setShowModal] = React.useState(false)
@@ -300,7 +300,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                         id: template.id,
                         name: template.name,
                         duration: duration,
-                        notes: template.notes,
+                        notes: notes,
                         workoutId: workoutId,
 
                         date: currentDate,
@@ -486,6 +486,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     prevData.templates.map((template) => {
                         if (template.id === templateId) return {
                             ...template,
+                            notes: notes,
                             lastDone: currentDate,
                             exercises: finalExercises
                         }

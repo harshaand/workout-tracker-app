@@ -20,7 +20,8 @@ function App() {
     workoutId: undefined,
     currentDate: undefined,
     screenVariant: undefined,
-    duration: undefined
+    duration: undefined,
+    notes: undefined
   });
 
 
@@ -38,13 +39,14 @@ function App() {
         currentDate={FWS_data.current.currentDate}
         screenVariant={FWS_data.current.screenVariant}
         duration={FWS_data.current.duration}
+        notes={FWS_data.current.notes}
       />
       break;
     default:
       throw new Error('Unknown screen ' + currentScreen)
   }
 
-  function handleScreenChange(newScreen, oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration) {
+  function handleScreenChange(newScreen, oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration, notes) {
     if (newExercises) {
       FWS_data.current.oldExercises = oldExercises;
       FWS_data.current.newExercises = newExercises;
@@ -54,6 +56,7 @@ function App() {
       FWS_data.current.currentDate = currentDate;
       FWS_data.current.screenVariant = screenVariant;
       FWS_data.current.duration = duration;
+      FWS_data.current.notes = notes;
     }
     setCurrentScreen(newScreen)
 
