@@ -8,6 +8,9 @@ import ButtonBig from '../components/Buttons/ButtonBig.jsx'
 import FolderList from '../OTHER/FoldersFunctionality.jsx'
 
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
+import ModalAddExercises from '../components/Modals/session/AddExercises.jsx'
+import ModalCreateExercise from '../components/Modals/session/CreateExercise.jsx'
+
 import ModalFinishWorkout from '../components/Modals/session/FinishWorkout.jsx'
 import ModalSaveAsNewTemplate from '../components/Modals/session/SaveAsNewTemplate.jsx'
 import ModalSaveWorkout from '../components/Modals/session/SaveEditedWorkout.jsx'
@@ -33,6 +36,9 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
     const { handleScreenChange } = React.useContext(RoutingContext)
     const [exercises, setExercises] = React.useState(template.exercises)
+    const [showAddExercisesModal, setShowAddExercisesModal] = React.useState(false)
+    const [showCreateExerciseModal, setShowCreateExerciseModal] = React.useState(false)
+
     //Finish modals
     const [showFinishModal, setShowFinishModal] = React.useState(false)
     const [showSaveAsNewTemplate, setShowSaveAsNewTemplate] = React.useState(false)
@@ -136,6 +142,56 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
             });
         });
     };
+
+    function createExercise(exerciseName) {
+        setData(prevData => {
+            return {
+                ...prevData,
+                exercises: [
+                    ...prevData.exercises,
+                    {
+                        name: exerciseName,
+                        prMetric: 'volume',
+                        PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                        thumbnail: '',
+                        instructions: { media: '', text: '' },
+                        history: []
+                    }
+                ]
+            }
+        })
+        setShowAddExercisesModal(false)
+    }
+
+    function addExercises(exercises) {
+        exercises.forEach(selectedExercise => {
+            const weight = data.exercises.find(exercise => exercise.name === selectedExercise).history?.at(-1)?.sets?.at(0)?.weight
+            const reps = data.exercises.find(exercise => exercise.name === selectedExercise).history?.at(-1)?.sets?.at(0)?.reps
+            setExercises(prevExercises => (
+                [
+                    ...prevExercises,
+                    {
+                        id: uuidv4(),
+                        name: selectedExercise,
+                        sets:
+                            [
+                                {
+                                    id: uuidv4(),
+                                    value: 1,
+                                    num: 1,
+                                    weight: weight === undefined ? 0 : weight,
+                                    reps: reps === undefined ? 0 : reps,
+                                    completed: false,
+                                    PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
+                                    bestSet: false
+                                }
+                            ]
+                    }
+                ]
+            ))
+        })
+        setShowAddExercisesModal(false)
+    }
 
     function handleOptionClick(option, exerciseName, setId) {
         setExercises(prevExercises => {
@@ -500,13 +556,18 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
             <div className="library-container-quick-start">
                 {exercises.map(exercise => (
-                    <CardExerciseTracker key={exercise.name} exercise={exercise} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
+                    <CardExerciseTracker exercise={exercise} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
                         deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
                         showFinishModal={showFinishModal} showSaveWorkoutModal={showSaveWorkoutModal} showSaveTemplateModal={showSaveTemplateModal}
                         showSaveAsNewTemplate={showSaveAsNewTemplate}
                         screenVariant={screenVariant} />
                 ))}
                 {renderActionButton()}
+                <ButtonBig color='blueSoft' onClick={() => setShowAddExercisesModal(true)}>Add Exercise</ButtonBig>
+
+
+                {showAddExercisesModal && <ModalAddExercises addExercises={addExercises} setShowAddExercisesModal={setShowAddExercisesModal} setShowCreateExerciseModal={setShowCreateExerciseModal} />}
+                {showCreateExerciseModal && <ModalCreateExercise createExercise={createExercise} setShowCreateExerciseModal={setShowCreateExerciseModal} setShowAddExercisesModal={setShowAddExercisesModal} />}
 
                 {/*newEmptySession*/}
                 <ModalSaveAsNewTemplate showSaveAsNewTemplate={showSaveAsNewTemplate} setShowSaveAsNewTemplate={setShowSaveAsNewTemplate} clearInterval={() => clearInterval(intervalRef.current)}
