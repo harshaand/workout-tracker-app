@@ -323,11 +323,50 @@
     width: 100%;
     padding: 10px 16px;
     box-sizing: border-box;
+
+    background-color: white;
 }
 
 .exercise-row-completed {
+    display: grid;
+    grid-template-columns: 32px 2fr 1fr 1fr 32px;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 16px;
+    box-sizing: border-box;
+
     background-color: var(--green-light);
 }
+
+/*--------------------exercise row delete button--------------------------*/
+li {
+    list-style-type: none;
+    position: relative;
+}
+
+li .exercise-row-container {
+    position: relative;
+    z-index: 1;
+}
+
+li .exercise-row-container:hover {
+    cursor: pointer;
+}
+
+li .exercise-row-delete-btn {
+    z-index: 0;
+    position: absolute;
+    height: calc(100% - 2px);
+    width: 70px;
+    top: 50%;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-50%);
+}
+
+/*------------------------------------------------------------------------*/
 
 .testing {
     position: relative;
