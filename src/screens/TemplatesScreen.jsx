@@ -1,5 +1,5 @@
-import '../css/buttons.css';
-import '../css/modals.css';
+import '../css/buttons.scss';
+import '../css/modals.scss';
 import React from 'react'
 import ButtonSmall from '../components/Buttons/ButtonSmall.jsx'
 import ButtonBig from '../components/Buttons/ButtonBig.jsx'

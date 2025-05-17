@@ -2,7 +2,7 @@ import React from 'react'
 import ButtonSmall from '../Buttons/ButtonSmall.jsx'
 import ButtonBig from '../Buttons/ButtonBig.jsx'
 import RowExerciseTracker from './RowExerciseTracker.jsx'
-import '../../css/cards.css';
+import '../../css/cards.scss';
 
 
 function CardExerciseTracker(props) {

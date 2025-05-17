@@ -1,5 +1,5 @@
 import React from 'react'
-import '../../css/modals.css';
+import '../../css/modals.scss';
 import ButtonSmall from '../../Buttons/ButtonSmall.jsx'
 import ButtonModal from '../../Buttons/ButtonModal.jsx'
 

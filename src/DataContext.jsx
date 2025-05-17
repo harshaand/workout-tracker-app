@@ -28,6 +28,7 @@ const dataObject = {
 
             exercises: [
                 {
+                    id: 100,
                     name: 'Back Squat',
                     sets:
                         [
@@ -55,6 +56,7 @@ const dataObject = {
 
                 },
                 {
+                    id: 101,
                     name: 'Hip Thrust',
                     sets:
                         [

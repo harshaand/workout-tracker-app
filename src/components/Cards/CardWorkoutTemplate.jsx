@@ -1,5 +1,5 @@
 import React from 'react'
-import '../../css/cards.css';
+import '../../css/cards.scss';
 import ButtonSmall from '../Buttons/ButtonSmall.jsx'
 import { Clock } from '../../assets/icons/icons.js';
 

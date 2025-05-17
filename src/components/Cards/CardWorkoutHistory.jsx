@@ -1,6 +1,6 @@
 import React from 'react'
 import ButtonSmall from '../Buttons/ButtonSmall.jsx'
-import '../../css/cards.css';
+import '../../css/cards.scss';
 
 import {
     Clock, Weight, TrophyMedium

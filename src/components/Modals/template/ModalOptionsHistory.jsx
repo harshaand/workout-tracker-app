@@ -1,4 +1,4 @@
-import '../../css/modals.css';
+import '../../css/modals.scss';
 import ButtonModal from '../../Buttons/ButtonModal.jsx'
 import React from 'react'
 
