@@ -63,32 +63,32 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
             <AnimatePresence>
                 <motion.li key={set.id} exit={delete_animation} transition={delete_transition}>
                     <motion.div className="exercise-row-container" drag="x" dragConstraints={{ left: 0, right: 0 }} onDragEnd={(_, info) => deleteRow(info)}>
-                        <div className={set.completed ? 'exercise-row-completed' : 'exercise-row'}>
+                        <div className={`exercise-row ${set.completed ? 'exercise-row--completed' : 'exercise-row--uncompleted'}`}>
 
                             <div className='testing'><ButtonSmall type='setNumber' customClasses={set.completed ? 'completed' : ''} onClick={() => toggleShowModal()}>{set.value}</ButtonSmall>
                                 {showModal && (
                                     <div className="set-options">
-                                        <button className="set-options-btns" onClick={() => {
+                                        <button className="set-options__btn" onClick={() => {
                                             handleOptionClick('W', exerciseName, set.id)
                                             toggleShowModal()
                                         }}>W</button>
-                                        <button className="set-options-btns" onClick={() => {
+                                        <button className="set-options__btn" onClick={() => {
                                             handleOptionClick('D', exerciseName, set.id)
                                             toggleShowModal()
                                         }}> D</button>
-                                        <button className="set-options-btns" onClick={() => {
+                                        <button className="set-options__btn" onClick={() => {
                                             handleOptionClick('F', exerciseName, set.id)
                                             toggleShowModal()
                                         }}>F</button>
                                     </div>)}
                             </div>
-                            <button className={`btn-prev-volume ${valuesFilled ? 'btn-prev-volume-active' : 'btn-prev-volume-inactive'}`} onClick={set.weight === 0 && set.reps === 0 ? () => { } : fillValues}>{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                            <button className={`btn--prev-volume ${valuesFilled ? 'btn--prev-volume--active' : 'btn--prev-volume--inactive'}`} onClick={set.weight === 0 && set.reps === 0 ? () => { } : fillValues}>{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
                             <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight === 0 && set.reps === 0 ? '' : set.weight} type="text" /></div>
                             <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight === 0 && set.reps === 0 ? '' : set.reps} type="text" /></div>
-                            <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn-green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
+                            <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn--green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
                         </div >
                     </motion.div>
-                    <div className="exercise-row-delete-btn btn-red">Delete</div>
+                    <div className="exercise-row-delete-btn btn--red">Delete</div>
                 </motion.li>
             </AnimatePresence>
 
@@ -99,31 +99,31 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
             <AnimatePresence>
                 <motion.li key={set.id} exit={delete_animation} transition={delete_transition}>
                     <motion.div className="exercise-row-container" drag="x" dragConstraints={{ left: 0, right: 0 }} onDragEnd={(_, info) => deleteRow(info)}>
-                        <div className={set.completed ? 'exercise-row-completed' : 'exercise-row'}>
+                        <div className={`exercise-row ${set.completed ? 'exercise-row--completed' : 'exercise-row--uncompleted'}`}>
                             <div className='testing'><ButtonSmall type='setNumber' customClasses={set.completed ? 'completed' : ''} onClick={() => toggleShowModal()}>{set.value}</ButtonSmall>
                                 {showModal && (
                                     <div className="set-options">
-                                        <button className="set-options-btns" onClick={() => {
+                                        <button className="set-options__btn" onClick={() => {
                                             handleOptionClick('W', exerciseName, set.id)
                                             toggleShowModal()
                                         }}>W</button>
-                                        <button className="set-options-btns" onClick={() => {
+                                        <button className="set-options__btn" onClick={() => {
                                             handleOptionClick('D', exerciseName, set.id)
                                             toggleShowModal()
                                         }}> D</button>
-                                        <button className="set-options-btns" onClick={() => {
+                                        <button className="set-options__btn" onClick={() => {
                                             handleOptionClick('F', exerciseName, set.id)
                                             toggleShowModal()
                                         }}>F</button>
                                     </div>)}
                             </div>
-                            <button className='btn-prev-volume btn-prev-volume-active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                            <button className='btn--prev-volume btn--prev-volume--active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
                             <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.weight} type="text" /></div>
                             <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.reps} type="text" /></div>
-                            <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn-green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
+                            <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn--green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
                         </div >
                     </motion.div>
-                    <div className="exercise-row-delete-btn btn-red">Delete</div>
+                    <div className="exercise-row-delete-btn btn--red">Delete</div>
                 </motion.li>
             </AnimatePresence>
         )
@@ -144,31 +144,31 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
             <AnimatePresence>
                 <motion.li key={set.id} exit={delete_animation} transition={delete_transition}>
                     <motion.div className="exercise-row-container" drag="x" dragConstraints={{ left: 0, right: 0 }} onDragEnd={(_, info) => deleteRow(info)}>
-                        <div className={set.completed ? 'exercise-row-completed' : 'exercise-row'}>
+                        <div className={`exercise-row ${set.completed ? 'exercise-row--completed' : 'exercise-row--uncompleted'}`}>
                             <div className='testing'><ButtonSmall type='setNumber' customClasses={set.completed ? 'completed' : ''} onClick={() => toggleShowModal()}>{set.value}</ButtonSmall>
                                 {showModal && (
                                     <div className="set-options">
-                                        <button className="set-options-btns" onClick={() => {
+                                        <button className="set-options__btn" onClick={() => {
                                             handleOptionClick('W', exerciseName, set.id)
                                             toggleShowModal()
                                         }}>W</button>
-                                        <button className="set-options-btns" onClick={() => {
+                                        <button className="set-options__btn" onClick={() => {
                                             handleOptionClick('D', exerciseName, set.id)
                                             toggleShowModal()
                                         }}> D</button>
-                                        <button className="set-options-btns" onClick={() => {
+                                        <button className="set-options__btn" onClick={() => {
                                             handleOptionClick('F', exerciseName, set.id)
                                             toggleShowModal()
                                         }}>F</button>
                                     </div>)}
                             </div>
-                            <button className='btn-prev-volume btn-prev-volume-active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                            <button className='btn--prev-volume btn--prev-volume--active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
                             <div className='testing'><input ref={weightRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.weight} type="text" /></div>
                             <div className='testing'><input ref={repsRef} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.reps} type="text" /></div>
-                            <div className='testing'><ButtonSmall type='checkboxLocked' customClasses={set.completed ? 'btn-green' : ''} ></ButtonSmall></div>
+                            <div className='testing'><ButtonSmall type='checkboxLocked' customClasses={set.completed ? 'btn--green' : ''} ></ButtonSmall></div>
                         </div >
                     </motion.div>
-                    <div className="exercise-row-delete-btn btn-red">Delete</div>
+                    <div className="exercise-row-delete-btn btn--red">Delete</div>
                 </motion.li>
             </AnimatePresence>
         )

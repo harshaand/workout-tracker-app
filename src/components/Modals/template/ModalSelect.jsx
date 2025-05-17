@@ -6,12 +6,12 @@ import ButtonModal from '../../Buttons/ButtonModal.jsx'
 function ModalSelect() {
     return (
         <div className='modal-select'>
-            <div className='modal-header'>
+            <div className='modal__header'>
                 <ButtonSmall type='closeModal' />
                 <h3>Select Folder</h3>
-                <button className='btn-transparent'>Next</button>
+                <button className='btn--transparent'>Next</button>
             </div>
-            <div className='modal-select-buttons-container'>
+            <div className='modal-select__container-buttons'>
                 <ButtonModal type='select' icon='check'>None</ButtonModal>
                 <ButtonModal type='select' icon='check'>Folder 5</ButtonModal>
                 <ButtonModal type='select' icon='check'>Folder 4</ButtonModal>

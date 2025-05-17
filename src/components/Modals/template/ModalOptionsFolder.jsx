@@ -1,10 +1,10 @@
-import '../../css/modals.scss';
+import '../../../css/modals.scss';
 import ButtonModal from '../../Buttons/ButtonModal.jsx'
 import React from 'react'
 
 function ModalOptionsFolder() {
     return (
-        <div className='modal-options modal-options-default-width'>
+        <div className='modal-options modal-options--default-width'>
             <ButtonModal type='options' icon='collapse'>Collapse Folder</ButtonModal>
             <ButtonModal type='options' icon='add'>Add Template</ButtonModal>
             <ButtonModal type='options' icon='edit'>Rename Template</ButtonModal>

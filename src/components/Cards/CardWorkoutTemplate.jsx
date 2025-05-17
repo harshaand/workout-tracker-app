@@ -15,8 +15,8 @@ function CardWorkoutTemplate({ title = placeholderTitle,
     titleLength = 'short', type = 'default' }) {
 
     const LENGTH_MAP = {
-        short: 'card-workout-template-short-title',
-        long: 'card-workout-template-lomg-title'
+        short: 'card-workout-template__short-title',
+        long: 'card-workout-template__long-title'
     }
 
     if (type === 'add') {

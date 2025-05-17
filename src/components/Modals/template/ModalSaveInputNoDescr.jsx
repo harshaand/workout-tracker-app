@@ -4,11 +4,11 @@ import ButtonBig from '../../Buttons/ButtonBig.jsx'
 
 function ModalSaveInputNoDescr() {
     return (
-        <div className='modal modal-spacing-no-body-text'>
+        <div className='modal modal-spacing--no-body-text'>
             <h3>Choose a template name</h3>
-            <div className='content-spacing-no-body-text'>
+            <div className='content-spacing--no-body-text'>
                 <input type="text" name="" id="" />
-                <div className='modal-buttons-horizontal'>
+                <div className='modal__buttons--horizontal'>
                     <ButtonBig color='gray'>Cancel</ButtonBig>
                     <ButtonBig color='blue'>Save</ButtonBig>
                 </div>

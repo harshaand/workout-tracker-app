@@ -25,21 +25,21 @@ function ButtonSmall({ type, onClick, customClasses = '', children }) {
     }
 
     const CLASSES_MAP = {
-        options1: 'btn-icon-small btn-blue-soft',
-        option2: 'btn-icon-small btn-gray',
-        target: 'btn-icon-small btn-blue-soft',
-        help: 'btn-icon-small btn-blue-soft',
-        folder: 'btn-icon-small btn-blue-soft',
-        checkbox: 'btn-icon-small btn-unchecked',
-        checkboxLocked: 'btn-icon-small btn-checkbox-locked',
-        closeModal: 'btn-icon-small btn-gray',
-        closeScreen: 'btn-icon-big btn-gray',
-        viewAll: 'btn-view-all btn-blue-soft',
-        addTemplate: 'btn-add-template btn-blue-soft',
-        timer: 'btn-icon-big btn-gray',
-        backScreen: 'btn-icon-big btn-gray',
-        addExercise: 'btn-icon-big btn-blue-soft',
-        setNumber: 'btn-icon-small btn-set-number'
+        options1: 'btn__icon--small btn--blue-soft',
+        option2: 'btn__icon--small btn--gray',
+        target: 'btn__icon--small btn--blue-soft',
+        help: 'btn__icon--small btn--blue-soft',
+        folder: 'btn__icon--small btn--blue-soft',
+        checkbox: 'btn__icon--small btn--unchecked',
+        checkboxLocked: 'btn__icon--small btn--checkbox-locked',
+        closeModal: 'btn__icon--small btn--gray',
+        closeScreen: 'btn__icon--big btn--gray',
+        viewAll: 'btn--view-all btn--blue-soft',
+        addTemplate: 'btn--add-template btn--blue-soft',
+        timer: 'btn__icon--big btn--gray',
+        backScreen: 'btn__icon--big btn--gray',
+        addExercise: 'btn__icon--big btn--blue-soft',
+        setNumber: 'btn__icon--small btn--set-number'
     }
 
     const IconComponent = ICONS_MAP[type];

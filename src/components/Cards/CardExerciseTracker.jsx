@@ -27,7 +27,7 @@ function CardExerciseTracker(props) {
                 {renderRows()}
 
             </div>
-            <div className='container-btn-add-set'>
+            <div className='container-btn--add-set'>
                 <ButtonBig size='skinny' color='gray' icon='add' onClick={() => props.addSet(props.exercise.name)}>Add Set</ButtonBig>
             </div>
         </div>

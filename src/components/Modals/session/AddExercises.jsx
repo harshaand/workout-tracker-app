@@ -17,12 +17,12 @@ function AddExercises({ addExercises, setShowAddExercisesModal, setShowCreateExe
             <div className='div-finish-workout'>
                 <form action={(formData) => { addExercises(formData.getAll("exercise")) }}>
                     <ButtonSmall type='closeModal' onClick={() => { setShowAddExercisesModal(false) }} />
-                    <button className='btn-transparent' onClick={() => {
+                    <button className='btn--transparent' onClick={() => {
                         setShowAddExercisesModal(false)
                         setShowCreateExerciseModal(true)
                     }}>New</button>
                     <div>{checkboxes}</div>
-                    <button type='submit' className='btn-transparent'> Add </button>
+                    <button type='submit' className='btn--transparent'> Add </button>
                 </form>
             </div>
         </>

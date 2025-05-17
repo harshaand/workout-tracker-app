@@ -12,164 +12,166 @@ button {
     border-radius: 8px;
     font-size: var(--body-text);
     font-weight: 600;
-}
 
-/* !!!!!!!!just some hover and pressed styles for now !!!!!!!!*/
-button:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
-}
+    /* !!!!!!!!just some hover and pressed styles for now !!!!!!!!*/
 
-button:active {
-    filter: brightness(0.9);
-    transform: translateY(1px);
-    box-shadow: none;
-    transition: all 0.1s ease;
+    &:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s ease;
+    }
+
+    &:active {
+        filter: brightness(0.9);
+        transform: translateY(1px);
+        box-shadow: none;
+        transition: all 0.1s ease;
+    }
 }
 
 /************************************BUTTON COLORS************************************/
-/*special cases (card exercise tracker screen/component*/
-.btn-unchecked {
-    background-color: var(--gray-light);
-    fill: #C9CCCD;
-}
+.btn {
 
-.btn-checkbox-locked {
-    background-color: var(--gray-super-light);
-    fill: #C7C9CA;
-}
+    /*special cases (card exercise tracker screen/component*/
+    &--unchecked {
+        background-color: var(--gray-light);
+        fill: #C9CCCD;
+    }
 
-.btn-set-number {
-    background-color: var(--input-field-bg);
-    color: var(--text-color-heading-2);
-}
+    &--checkbox-locked {
+        background-color: var(--gray-super-light);
+        fill: #C7C9CA;
+    }
 
-.btn-prev-volume {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #ffffff00;
-    font: var(--type-face);
-    font-size: var(--body-text);
-    font-weight: 600;
-    border-radius: 8px;
-    letter-spacing: 0.02em;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    padding: 2px 12px;
-}
+    &--set-number {
+        background-color: var(--input-field-bg);
+        color: var(--text-color-heading-2);
+    }
 
-.btn-prev-volume-active {
-    color: #C7C9CA;
-    fill: #C7C9CA;
-}
+    &--prev-volume {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff00;
+        font: var(--type-face);
+        font-size: var(--body-text);
+        font-weight: 600;
+        border-radius: 8px;
+        letter-spacing: 0.02em;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        padding: 2px 12px;
 
-.btn-prev-volume-inactive {
-    color: var(--text-color-heading-2);
-    fill: #C7C9CA;
-}
+        &--active {
+            color: #C7C9CA;
+            fill: #C7C9CA;
+        }
 
-/*******************************************************/
+        &--inactive {
+            color: var(--text-color-heading-2);
+            fill: #C7C9CA;
+        }
 
+    }
 
-.btn-blue {
-    background-color: var(--blue-medium-dark);
-    color: var(--white);
-}
+    /*******************************************************/
 
-.btn-blue-soft {
-    background-color: var(--blue-light);
-    color: var(--blue-medium-dark);
-    fill: var(--blue-dark);
-}
+    &--blue {
+        background-color: var(--blue-medium-dark);
+        color: var(--white);
+    }
 
+    &--blue-soft {
+        background-color: var(--blue-light);
+        color: var(--blue-medium-dark);
+        fill: var(--blue-dark);
+    }
 
-.btn-red {
-    background-color: var(--red-dark);
-    color: var(--white);
-}
+    &--red {
+        background-color: var(--red-dark);
+        color: var(--white);
+    }
 
-.btn-red-soft {
-    background-color: var(--red-light);
-    color: var(--red-dark);
-}
+    &--red-soft {
+        background-color: var(--red-light);
+        color: var(--red-dark);
+    }
 
-.btn-gray {
-    background-color: var(--gray-light);
-    color: var(--black);
-    fill: var(--black-blue-dark);
-}
+    &--gray {
+        background-color: var(--gray-light);
+        color: var(--black);
+        fill: var(--black-blue-dark);
+    }
 
-.btn-transparent {
-    background-color: #ffffff00;
-    color: var(--blue-dark);
-    fill: var(--black-blue-dark);
-    width: fit-content;
-    padding: 0px 1px;
-}
+    &--transparent {
+        background-color: #ffffff00;
+        color: var(--blue-dark);
+        fill: var(--black-blue-dark);
+        width: fit-content;
+        padding: 0px 1px;
+    }
 
-.btn-green {
-    background-color: var(--green-dark);
-    color: var(--white);
-    fill: var(--white);
-}
+    &--green {
+        background-color: var(--green-dark);
+        color: var(--white);
+        fill: var(--white);
+    }
 
+    /************************************BUTTON SIZES************************************/
+    &__icon {
+        &--small {
+            padding: 0;
+            width: 32px;
+            height: 24px;
+        }
 
-/************************************BUTTON SIZES************************************/
+        &--big {
+            padding: 0;
+            width: 48px;
+            height: 35px;
+        }
+    }
 
+    &--big {
+        padding: 8px 16px;
+        width: 100%;
+        gap: 8px;
+    }
 
-.btn-icon-small {
-    padding: 0;
-    width: 32px;
-    height: 24px;
-}
+    &--big-hug {
+        padding: 8px 16px;
+        width: fit-content;
+        gap: 8px;
+    }
 
-.btn-icon-big {
-    padding: 0;
-    width: 48px;
-    height: 35px;
-}
+    &--big-skinny {
+        padding: 2px 16px;
+        width: 100%;
+        gap: 4px;
+    }
 
-.btn-big {
-    padding: 8px 16px;
-    width: 100%;
-    gap: 8px;
-}
+    &--big-chunky {
+        padding: 10px 16px;
+        width: 100%;
+        gap: 8px;
+    }
 
-.btn-big-hug {
-    padding: 8px 16px;
-    width: fit-content;
-    gap: 8px;
-}
+    /*special cases*/
+    &--view-all {
+        padding: 2px 8px;
+        height: 24px;
+        width: fit-content;
+        letter-spacing: -2%;
+        gap: 6px;
+    }
 
-.btn-big-skinny {
-    padding: 2px 16px;
-    width: 100%;
-    gap: 4px;
-}
-
-.btn-big-chunky {
-    padding: 10px 16px;
-    width: 100%;
-    gap: 8px;
-}
-
-/*special cases*/
-.btn-view-all {
-    padding: 2px 8px;
-    height: 24px;
-    width: fit-content;
-    letter-spacing: -2%;
-    gap: 6px;
-}
-
-.btn-add-template {
-    padding: 2px 8px;
-    height: 24px;
-    width: fit-content;
-    letter-spacing: -2%;
-    gap: 8px;
+    &--add-template {
+        padding: 2px 8px;
+        height: 24px;
+        width: fit-content;
+        letter-spacing: -2%;
+        gap: 8px;
+    }
 }

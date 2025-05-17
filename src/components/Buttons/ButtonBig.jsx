@@ -8,20 +8,20 @@ function ButtonBig({ children, size = 'default', color = 'blue', icon, onClick }
     }
 
     const SIZE_MAP = {
-        default: 'btn-big',
-        hug: 'btn-big-hug',
-        skinny: 'btn-big-skinny',
-        chunky: 'btn-big-chunky'
+        default: 'btn--big',
+        hug: 'btn--big-hug',
+        skinny: 'btn--big-skinny',
+        chunky: 'btn--big-chunky'
     }
 
     const COLOR_MAP = {
-        blue: 'btn-blue',
-        blueSoft: 'btn-blue-soft',
-        red: 'btn-red',
-        redSoft: 'btn-red-soft',
-        gray: 'btn-gray',
-        transparent: 'btn-transparent',
-        green: 'btn-green'
+        blue: 'btn--blue',
+        blueSoft: 'btn--blue-soft',
+        red: 'btn--red',
+        redSoft: 'btn--red-soft',
+        gray: 'btn--gray',
+        transparent: 'btn--transparent',
+        green: 'btn--green'
     }
 
     const IconComponent = ICONS_MAP[icon];

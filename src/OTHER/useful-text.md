@@ -7,27 +7,27 @@ import {
 
 
 
-btn-blue
-btn-blue-soft
-btn-red
-btn-red-soft
-btn-gray
-btn-transparent
-btn-green
+btn--blue
+btn--blue-soft
+btn--red
+btn--red-soft
+btn--gray
+btn--transparent
+btn--green
 /*special cases*/
-btn-unchecked
+btn--unchecked
 
 
 
-btn-icon-small
-btn-icon-big
-btn-big
-btn-big-hug
-btn-big-skinny
-btn-big-chunky
+btn__icon--small
+btn__icon--big
+btn--big
+btn--big-hug
+btn--big-skinny
+btn--big-chunky
 /*special cases*/
-btn-view-all
-btn-add-template
+btn--view-all
+btn--add-template
 
 
 
@@ -85,7 +85,7 @@ duplicate
 delete
 edit
 
-<div className='modal-options modal-options-default-width'>
+<div className='modal-options modal-options--default-width'>
     <ButtonModal type='options' icon='add'>Add Template</ButtonModal>
     <ButtonModal type='options' icon='archive'>Rename Folder</ButtonModal>
     <ButtonModal type='options' icon='collapse'>Collapse Folder</ButtonModal>
