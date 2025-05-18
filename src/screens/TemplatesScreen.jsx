@@ -88,44 +88,48 @@ function TemplatesScreen() {
 
                     </div>
                     <div className='container-folders__folders'>
-
-                        <div className='container-templates'>
-                            <div className='container-templates__header'>
-                                <h3>Full Body</h3>
+                        <div className='container-folders__folders__group'>
+                            <div className='container-templates'>
+                                <div className='container-templates__header'>
+                                    <h3>Full Body</h3>
+                                    <ButtonSmall type='options1' />
+                                </div>
+                                <div className='container-templates__templates'>
+                                    <CardWorkoutTemplate />
+                                    <CardWorkoutTemplate />
+                                    <CardWorkoutTemplate />
+                                </div>
                             </div>
-                            <div className='container-templates__templates'>
-                                <CardWorkoutTemplate />
-                                <CardWorkoutTemplate />
-                                <CardWorkoutTemplate />
+
+                            <div className='container-templates'>
+                                <div className='container-templates__header'>
+                                    <h3>My Templates 1</h3>
+                                    <ButtonSmall type='options1' />
+                                </div>
+                                <div className='container-templates__templates'>
+                                    <CardWorkoutTemplate />
+                                    <CardWorkoutTemplate />
+                                    <CardWorkoutTemplate />
+                                </div>
                             </div>
                         </div>
 
-                        <div className='container-templates'>
-                            <div className='container-templates__header'>
-                                <h3>My Templates 1</h3>
-                            </div>
-                            <div className='container-templates__templates'>
-                                <CardWorkoutTemplate />
-                                <CardWorkoutTemplate />
-                                <CardWorkoutTemplate />
+                        <div className='container-folders__folders__group'>
+                            <div className='container-templates'>
+                                <div className='container-templates__header'>
+                                    <h3>Example Templates</h3>
+                                    <ButtonSmall type='options1' />
+                                </div>
+                                <div className='container-templates__templates'>
+                                    <CardWorkoutTemplate />
+                                    <CardWorkoutTemplate />
+                                    <CardWorkoutTemplate />
+                                </div>
                             </div>
                         </div>
 
                     </div>
-                    <div className='container-folders__folders'>
 
-                        <div className='container-templates'>
-                            <div className='container-templates__header'>
-                                <h3>Example Templates</h3>
-                            </div>
-                            <div className='container-templates__templates'>
-                                <CardWorkoutTemplate />
-                                <CardWorkoutTemplate />
-                                <CardWorkoutTemplate />
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
 
             </div>
