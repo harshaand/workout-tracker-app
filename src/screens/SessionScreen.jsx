@@ -571,22 +571,22 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
                 {/*newEmptySession*/}
                 <ModalSaveAsNewTemplate showSaveAsNewTemplate={showSaveAsNewTemplate} setShowSaveAsNewTemplate={setShowSaveAsNewTemplate} clearInterval={() => clearInterval(intervalRef.current)}
-                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant, sessionDuration, notes.current.value)}
+                    handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant, sessionDuration, notes.current.value)}
                     emptySets={exercises.filter(exercise => exercise.sets.some(set => set.completed === false)).length > 0 ? true : false} />
 
                 {/*newSession*/}
                 <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
-                    handleScreenChange={() => handleScreenChange('finished-workout', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant, sessionDuration, notes.current.value)} />
+                    handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant, sessionDuration, notes.current.value)} />
 
 
                 {/*editSession*/}
                 <ModalSaveWorkout showSaveWorkoutModal={showSaveWorkoutModal} setShowSaveWorkoutModal={setShowSaveWorkoutModal} saveToHistory={saveToHistory}
-                    handleScreenChange={() => handleScreenChange('templates')} />
+                    handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
 
 
                 {/*editTemplate + newEmptyTemplate*/}
                 <ModalSaveTemplate showSaveTemplateModal={showSaveTemplateModal} setShowSaveTemplateModal={setShowSaveTemplateModal} handleUpdateTemplate={handleUpdateTemplate}
-                    handleScreenChange={() => handleScreenChange('templates')} />
+                    handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
             </div>
 
 

@@ -38,7 +38,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                         handleUpdateTemplate()
                         saveToHistory()
                         setShowModal(false)
-                        handleScreenChange('templates')
+                        handleScreenChange('TemplatesScreen')
                     }}>Save as Template</ButtonBig>
                     <ButtonBig color="gray" onClick={() => setShowModal(false)}>No thanks!</ButtonBig>
                 </div>
@@ -170,7 +170,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     handleUpdateTemplate()
                     saveToHistory()
                     setShowModal(false)
-                    handleScreenChange('templates')
+                    handleScreenChange('TemplatesScreen')
                 }
                 } color="redSoft">{updateTemplateMessage}</ButtonBig>;
             } else {
@@ -178,7 +178,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     handleUpdateTemplate()
                     saveToHistory()
                     setShowModal(false)
-                    handleScreenChange('templates')
+                    handleScreenChange('TemplatesScreen')
                 }} color="blueSoft">{updateTemplateMessage}</ButtonBig>;
             }
         }
@@ -192,13 +192,13 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                         handleUpdateValues()
                         saveToHistory()
                         setShowModal(false)
-                        handleScreenChange('templates')
+                        handleScreenChange('TemplatesScreen')
                     }}>{updatedValuesMessage}</ButtonBig> : 'no button'}
                     {updateTemplateButton}
                     <ButtonBig color="gray" onClick={() => {
                         saveToHistory()
                         setShowModal(false)
-                        handleScreenChange('templates')
+                        handleScreenChange('TemplatesScreen')
                     }}>Keep Orignal Template</ButtonBig>
                 </div>
             </>

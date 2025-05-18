@@ -7,6 +7,7 @@ import CardWorkoutTemplate from '../components/Cards/CardWorkoutTemplate.jsx'
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import FolderList from '../OTHER/FoldersFunctionality.jsx'
+import Navbar from '../components/Navbar.jsx'
 
 import { useData } from '../DataContext.jsx'
 import SessionScreen from './SessionScreen.jsx'
@@ -66,7 +67,8 @@ function TemplatesScreen() {
         ]
     }
 
-    return (
+    return (<>
+        <Navbar />
         <div className="container-app">
             <div className="div-header">
                 <h1>Start Workout</h1>
@@ -158,6 +160,7 @@ function TemplatesScreen() {
             </div>
 
         </div>
+    </>
     )
 }
 
