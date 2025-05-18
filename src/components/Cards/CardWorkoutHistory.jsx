@@ -8,27 +8,48 @@ import {
 
 
 
-function CardWorkoutHistory() {
+function CardWorkoutHistory({ history }) {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    function formatTime(totalSeconds) {
+        const hrs = Math.floor(totalSeconds / 3600);
+        const mins = Math.floor((totalSeconds % 3600) / 60);
+        const secs = totalSeconds % 60;
+
+        if (hrs > 0) {
+            return `${hrs}h ${mins}m`
+        }
+        else if (totalSeconds > 60 && hrs === 0) {
+            return `${mins}m`
+        }
+        else {
+            return `${secs}s`
+        }
+
+    };
     return (
         <div className='card-workout-history'>
             <ButtonSmall type='options1' customClasses='options-button'></ButtonSmall>
-            <div className='heading'><h3>My Back</h3></div>
+            <div className='heading'><h3>{history.name}</h3></div>
 
 
             <div className='container-stats'>
-                <p> Friday, 7 Mar</p>
+                <p> {`${daysOfWeek[history.date.getDay()]}, ${history.date.getDate()} ${months[history.date.getMonth()]}`}</p>
                 <div className='stats'>
                     <div className='stat duration'>
                         <Clock />
-                        <p>20s</p>
+                        <p>{formatTime(history.duration)}</p>
                     </div>
                     <div className='stat volume'>
                         <Weight />
-                        <p>2400 kg</p>
+                        <p>{`${history.volume} kg`}</p>
                     </div>
                     <div className='stat PRs'>
                         <TrophyMedium />
-                        <p>12 PRs</p>
+                        <p>{`${history.PRs} PRs`}</p>
                     </div>
                 </div>
             </div>
@@ -41,31 +62,17 @@ function CardWorkoutHistory() {
                     <div className='heading'><h4>Exercise</h4></div>
                     <div className='heading'><h4>Best Set</h4></div>
                 </div>
+                {
+                    history.exercises.map(exercise => {
+                        let bestSet = exercise.sets.find(set => set.bestSet === true)
+                        if (bestSet === undefined) { bestSet = exercise.sets[0] }
+                        return <div className='data-row'>
+                            <p>{`${exercise.sets.length} x ${exercise.name}`}</p>
+                            <p>{`${bestSet.weight} kg x ${bestSet.reps}`}</p>
+                        </div>
+                    })
+                }
 
-                <div className='data-row'>
-                    <p>2 x Ab Wheel</p>
-                    <p>+10 kg x 20</p>
-                </div>
-
-                <div className='data-row'>
-                    <p>1 x Back Extension</p>
-                    <p>+20 kg x 20</p>
-                </div>
-
-                <div className='data-row'>
-                    <p>1 x Bent Over One...</p>
-                    <p>20 kg x 20</p>
-                </div>
-
-                <div className='data-row'>
-                    <p>1 x Cable Crunch</p>
-                    <p>20 kg x 20</p>
-                </div>
-
-                <div className='data-row'>
-                    <p>1 x Clean (Barbell)</p>
-                    <p>20 kg x 20</p>
-                </div>
             </div>
         </div>
     )

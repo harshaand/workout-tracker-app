@@ -117,7 +117,8 @@
     background-color: var(--white);
     fill: var(--text-color-body);
     height: fit-content;
-    width: 361px;
+    /*width: 361px;*/
+    width: 100%;
     padding: 18px 16px;
     border: 1px var(--card-border-color) solid;
     border-radius: 16px;

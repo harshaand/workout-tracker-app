@@ -78,7 +78,7 @@ function TemplatesScreen() {
                 <h4>Quick Start</h4>
                 <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
                 <CardWorkoutTemplate />
-                <CardWorkoutHistory />
+
 
 
                 {/*newSession*/}
@@ -118,7 +118,7 @@ function TemplatesScreen() {
                 ))}
 
 
-                {/*editSession*/}
+                {/*new Empty Session*/}
                 <ButtonBig color='blue' size='hug'
                     onClick={() => {
                         setSelectedTemplate({ ...newEmptySession, name: 'New Workout', workoutId: uuidv4() });
