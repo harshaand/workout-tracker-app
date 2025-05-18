@@ -68,98 +68,70 @@ function TemplatesScreen() {
     }
 
     return (<>
-        <Navbar />
-        <div className="container-app">
-            <div className="div-header">
+        <div className='templates__container'>
+            <Navbar />
+            <div className='templates__main'>
                 <h1>Start Workout</h1>
-            </div>
 
-            <div className="library-container-quick-start">
-                <h4>Quick Start</h4>
-                <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
-                <CardWorkoutTemplate />
-
-
-
-                {/*newSession*/}
-                {data.templates.map((template, index) => (
-                    <ButtonBig color='green' size='hug'
-                        onClick={() => {
-                            setSelectedTemplate({ ...data.templates[index], workoutId: uuidv4() });
-                            screenVariant.current = 'newSession';
-                        }}>
-                        {`New Session ${template.name}`}
-                    </ButtonBig>
-
-                ))}
-
-                {/*editSession*/}
-                {data.history.map((history, index) => (
-                    <ButtonBig color='blue' size='hug'
-                        onClick={() => {
-                            setSelectedTemplate(data.history[index]);
-                            screenVariant.current = 'editSession';
-                        }}>
-                        {`Edit Session ${history.name}`}
-                    </ButtonBig>
-
-                ))}
-
-                {/*editTemplate*/}
-                {data.templates.map((template, index) => (
-                    <ButtonBig color='blueSoft' size='hug'
-                        onClick={() => {
-                            setSelectedTemplate({ ...data.templates[index], workoutId: uuidv4() });
-                            screenVariant.current = 'editTemplate';
-                        }}>
-                        {`Edit Template ${template.name}`}
-                    </ButtonBig>
-
-                ))}
-
-
-                {/*new Empty Session*/}
-                <ButtonBig color='blue' size='hug'
-                    onClick={() => {
-                        setSelectedTemplate({ ...newEmptySession, name: 'New Workout', workoutId: uuidv4() });
-                        screenVariant.current = 'newEmptySession';
-                    }}>
-                    New Empty Workout
-                </ButtonBig>
-
-
-                {/*newEmptyTemplate*/}
-                <ButtonBig color='blueSoft' size='hug'
-                    onClick={() => {
-                        setSelectedTemplate({ ...newEmptySession, name: 'New Template' });
-                        screenVariant.current = 'newEmptyTemplate';
-                    }}>
-                    New Empty Template
-                </ButtonBig>
-
-
-
-
-
-
-                {selectedTemplate && <SessionScreen template={selectedTemplate} screenVariant={screenVariant.current} />}
-
-                <FolderList />
-
-            </div>
-            <div className="library-main-section">
-                <div className="library-main-section-header">
-
-                    <button>1</button>
-                    <ButtonSmall type='options1' />
-
+                <div className='container-quick-start'>
+                    <h3>Quick Start</h3>
+                    <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
                 </div>
-                <div className="library-main-section-content">
 
+                <div className='container-folders'>
+                    <div className='container-folders__header'>
+                        <h2>Templates</h2>
+                        <div className='container-folders__header__buttons'>
+                            <ButtonSmall type='addTemplate' >Template</ButtonSmall>
+                            <ButtonSmall type='folder' />
+                        </div>
+
+                    </div>
+                    <div className='container-folders__folders'>
+
+                        <div className='container-templates'>
+                            <div className='container-templates__header'>
+                                <h3>Full Body</h3>
+                            </div>
+                            <div className='container-templates__templates'>
+                                <CardWorkoutTemplate />
+                                <CardWorkoutTemplate />
+                                <CardWorkoutTemplate />
+                            </div>
+                        </div>
+
+                        <div className='container-templates'>
+                            <div className='container-templates__header'>
+                                <h3>My Templates 1</h3>
+                            </div>
+                            <div className='container-templates__templates'>
+                                <CardWorkoutTemplate />
+                                <CardWorkoutTemplate />
+                                <CardWorkoutTemplate />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className='container-folders__folders'>
+
+                        <div className='container-templates'>
+                            <div className='container-templates__header'>
+                                <h3>Example Templates</h3>
+                            </div>
+                            <div className='container-templates__templates'>
+                                <CardWorkoutTemplate />
+                                <CardWorkoutTemplate />
+                                <CardWorkoutTemplate />
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
+
+
     </>
     )
 }

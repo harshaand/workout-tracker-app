@@ -3,6 +3,8 @@ import HistoryScreen from './screens/HistoryScreen.jsx'
 import TemplatesScreen from './screens/TemplatesScreen.jsx'
 import ProgressScreen from './screens/ProgressScreen.jsx'
 import ProfileScreen from './screens/ProfileScreen.jsx'
+import TestingScreen from './screens/TestingScreen.jsx'
+
 
 import FinishedWorkoutScreen from './screens/FinishedWorkoutScreen.jsx'
 import { DataProvider } from './DataContext.jsx'
@@ -13,7 +15,7 @@ export const RoutingContext = React.createContext({
 })
 
 function App() {
-  const [currentScreen, setCurrentScreen] = React.useState('TemplatesScreen')
+  const [currentScreen, setCurrentScreen] = React.useState('TestingScreen')
   let ScreenComponent;
   //FWS = finished workout screen
   let FWS_data = React.useRef({
@@ -30,6 +32,9 @@ function App() {
 
 
   switch (currentScreen) {
+    case 'TestingScreen':
+      ScreenComponent = <TestingScreen />;
+      break;
     case 'HistoryScreen':
       ScreenComponent = <HistoryScreen />;
       break;
