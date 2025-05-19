@@ -14,10 +14,13 @@ import SessionScreen from './SessionScreen.jsx'
 
 import { v4 as uuidv4 } from 'uuid';
 
+import { RoutingContext } from '../App.jsx'
 
 
 function TestingScreen() {
     const data = useData()
+    const { handleScreenChange } = React.useContext(RoutingContext)
+
     const [selectedTemplate, setSelectedTemplate] = React.useState(null);
     //TESTING WITH HISTORY ATM
     /* SCREEN VARIANTS
@@ -85,8 +88,10 @@ function TestingScreen() {
                 {data.templates.map((template, index) => (
                     <ButtonBig color='green' size='hug'
                         onClick={() => {
-                            setSelectedTemplate({ ...data.templates[index], workoutId: uuidv4() });
-                            screenVariant.current = 'newSession';
+                            // setSelectedTemplate({ ...data.templates[index], workoutId: uuidv4() });
+                            // screenVariant.current = 'newSession';
+                            handleScreenChange('SessionScreen', { ...data.templates[index], workoutId: uuidv4() }, 'newSession');
+
                         }}>
                         {`New Session ${template.name}`}
                     </ButtonBig>
@@ -97,8 +102,9 @@ function TestingScreen() {
                 {data.history.map((history, index) => (
                     <ButtonBig color='blue' size='hug'
                         onClick={() => {
-                            setSelectedTemplate(data.history[index]);
-                            screenVariant.current = 'editSession';
+                            // setSelectedTemplate(data.history[index]);
+                            // screenVariant.current = 'editSession';
+                            handleScreenChange('SessionScreen', { ...data.history[index] }, 'editSession');
                         }}>
                         {`Edit Session ${history.name}`}
                     </ButtonBig>
@@ -109,8 +115,10 @@ function TestingScreen() {
                 {data.templates.map((template, index) => (
                     <ButtonBig color='blueSoft' size='hug'
                         onClick={() => {
-                            setSelectedTemplate({ ...data.templates[index], workoutId: uuidv4() });
-                            screenVariant.current = 'editTemplate';
+                            // setSelectedTemplate({ ...data.templates[index], workoutId: uuidv4() });
+                            // screenVariant.current = 'editTemplate';
+                            handleScreenChange('SessionScreen', { ...data.templates[index], workoutId: uuidv4() }, 'editTemplate');
+
                         }}>
                         {`Edit Template ${template.name}`}
                     </ButtonBig>
@@ -121,8 +129,10 @@ function TestingScreen() {
                 {/*newEmptySession*/}
                 <ButtonBig color='blue' size='hug'
                     onClick={() => {
-                        setSelectedTemplate({ ...newEmptySession, name: 'New Workout', workoutId: uuidv4() });
-                        screenVariant.current = 'newEmptySession';
+                        // setSelectedTemplate({ ...newEmptySession, name: 'New Workout', workoutId: uuidv4() });
+                        // screenVariant.current = 'newEmptySession';
+                        handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Workout', workoutId: uuidv4() }, 'newEmptySession');
+
                     }}>
                     New Empty Workout
                 </ButtonBig>
@@ -131,8 +141,9 @@ function TestingScreen() {
                 {/*newEmptyTemplate*/}
                 <ButtonBig color='blueSoft' size='hug'
                     onClick={() => {
-                        setSelectedTemplate({ ...newEmptySession, name: 'New Template' });
-                        screenVariant.current = 'newEmptyTemplate';
+                        // setSelectedTemplate({ ...newEmptySession, name: 'New Template' });
+                        // screenVariant.current = 'newEmptyTemplate';
+                        handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate');
                     }}>
                     New Empty Template
                 </ButtonBig>

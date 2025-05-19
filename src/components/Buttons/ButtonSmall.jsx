@@ -9,7 +9,7 @@ import {
 function ButtonSmall({ type, onClick, customClasses = '', children }) {
     const ICONS_MAP = {
         options1: Ellipsis,
-        option2: Ellipsis,
+        options2: Ellipsis,
         target: Target,
         help: Question,
         folder: Folder,
@@ -26,7 +26,7 @@ function ButtonSmall({ type, onClick, customClasses = '', children }) {
 
     const CLASSES_MAP = {
         options1: 'btn__icon--small btn--blue-soft',
-        option2: 'btn__icon--small btn--gray',
+        options2: 'btn__icon--small btn--gray',
         target: 'btn__icon--small btn--blue-soft',
         help: 'btn__icon--small btn--blue-soft',
         folder: 'btn__icon--small btn--blue-soft',

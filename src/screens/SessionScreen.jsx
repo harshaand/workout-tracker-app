@@ -2,6 +2,7 @@ import React from 'react'
 import { v4 as uuidv4 } from 'uuid';
 import '../css/buttons.scss';
 import '../css/modals.scss';
+import '../css/screens.scss'
 
 import ButtonSmall from '../components/Buttons/ButtonSmall.jsx'
 import ButtonBig from '../components/Buttons/ButtonBig.jsx'
@@ -76,11 +77,12 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
         const mins = Math.floor((totalSeconds % 3600) / 60);
         const secs = totalSeconds % 60;
 
-        const paddedMins = String(mins).padStart(1, '0');
+        const paddedHrs = String(hrs).padStart(1, '0');
+        let paddedMins = String(mins).padStart(1, '0');
         const paddedSecs = String(secs).padStart(2, '0');
 
         if (hrs > 0) {
-            const paddedHrs = String(hrs).padStart(2, '0');
+            paddedMins = String(mins).padStart(2, '0');
             return `${paddedHrs}:${paddedMins}:${paddedSecs}`; // hh:mm:ss
         } else {
             return `${paddedMins}:${paddedSecs}`; // mm:ss
@@ -301,12 +303,16 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
     function saveTemplateValues(exerciseName, setId, weight, reps) {
         setExercises(prevExercises => (
-            prevExercises.map(exercise => exercise.name === exerciseName ?
-                {
-                    ...exercise,
-                    sets: exercise.sets.map(set => set.id === setId ? { ...set, weight: weight, reps: reps } : set)
-                } :
-                exercise)
+            prevExercises.map(exercise => {
+                weight = Number(weight)
+                reps = Number(reps)
+                return exercise.name === exerciseName ?
+                    {
+                        ...exercise,
+                        sets: exercise.sets.map(set => set.id === setId ? { ...set, weight: weight, reps: reps } : set)
+                    } :
+                    exercise
+            })
         ))
     }
 
@@ -544,51 +550,86 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
         }
     }
     return (
-        <div className="container-app">
-            <div className="div-header">
-                <h1>Session Screen</h1>
-                <div>
-                    {(screenVariant === 'newSession' || screenVariant === 'newEmptySession') && <h2>Duration: {formatTime(sessionDuration)}</h2>}
-                    {(screenVariant === 'editSession') && <h2>Duration: {template.duration}</h2>}
+        <div className="session__container">
+
+            <div className='session__main'>
+
+                <div className="session__main__header">
+                    <ButtonSmall type='closeScreen' onClick={() => handleScreenChange('TemplatesScreen')} />
+                    {renderActionButton()}
                 </div>
-                <input ref={notes} defaultValue={template.notes} type="text" />
+
+
+                <div className='session__main__body'>
+                    <div className='header'>
+                        <div className='header__title-duration'>
+                            <div className='header__title-duration__title'>
+                                <h2>{template.name}</h2>
+                                <ButtonSmall type='options' />
+                            </div>
+
+                            {(screenVariant === 'newSession' || screenVariant === 'newEmptySession') && <p>{formatTime(sessionDuration)}</p>}
+                            {(screenVariant === 'editSession') && <p>{formatTime(3780)}</p>}
+                        </div>
+
+                        <textarea ref={notes} defaultValue={template.notes} placeholder='Notes' rows={1} onInput={(e) => {
+                            e.target.style.height = "auto";
+                            e.target.style.height = `${e.target.scrollHeight}px`;
+                        }} />
+                    </div>
+
+
+                    <div className='container-cards-and-buttons'>
+                        <div className='container-cards'>
+                            {exercises.map(exercise => (
+                                <CardExerciseTracker exercise={exercise} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
+                                    deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
+                                    showFinishModal={showFinishModal} showSaveWorkoutModal={showSaveWorkoutModal} showSaveTemplateModal={showSaveTemplateModal}
+                                    showSaveAsNewTemplate={showSaveAsNewTemplate}
+                                    screenVariant={screenVariant} />
+                            ))}
+                        </div>
+                        <div className='container-buttons'>
+                            <ButtonBig color='blueSoft' onClick={() => setShowAddExercisesModal(true)}>Add Exercise</ButtonBig>
+                            <ButtonBig color='redSoft' onClick={() => setShowAddExercisesModal(true)}>Cancel Workout</ButtonBig>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+                <div>
+                    {showAddExercisesModal && <ModalAddExercises addExercises={addExercises} setShowAddExercisesModal={setShowAddExercisesModal} setShowCreateExerciseModal={setShowCreateExerciseModal} />}
+                    {showCreateExerciseModal && <ModalCreateExercise createExercise={createExercise} setShowCreateExerciseModal={setShowCreateExerciseModal} setShowAddExercisesModal={setShowAddExercisesModal} />}
+
+                    {/*newEmptySession*/}
+                    <ModalSaveAsNewTemplate showSaveAsNewTemplate={showSaveAsNewTemplate} setShowSaveAsNewTemplate={setShowSaveAsNewTemplate} clearInterval={() => clearInterval(intervalRef.current)}
+                        handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, template.exercises, exercises, template.id, workoutId, currentDate, sessionDuration, notes.current.value)}
+                        emptySets={exercises.filter(exercise => exercise.sets.some(set => set.completed === false)).length > 0 ? true : false} />
+
+                    {/*newSession*/}
+                    <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
+                        handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, template.exercises, exercises, template.id, workoutId, currentDate, sessionDuration, notes.current.value)} />
+
+
+                    {/*editSession*/}
+                    <ModalSaveWorkout showSaveWorkoutModal={showSaveWorkoutModal} setShowSaveWorkoutModal={setShowSaveWorkoutModal} saveToHistory={saveToHistory}
+                        handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+
+
+                    {/*editTemplate + newEmptyTemplate*/}
+                    <ModalSaveTemplate showSaveTemplateModal={showSaveTemplateModal} setShowSaveTemplateModal={setShowSaveTemplateModal} handleUpdateTemplate={handleUpdateTemplate}
+                        handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+
+                </div>
             </div>
-
-            <div className="library-container-quick-start">
-                {exercises.map(exercise => (
-                    <CardExerciseTracker exercise={exercise} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
-                        deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
-                        showFinishModal={showFinishModal} showSaveWorkoutModal={showSaveWorkoutModal} showSaveTemplateModal={showSaveTemplateModal}
-                        showSaveAsNewTemplate={showSaveAsNewTemplate}
-                        screenVariant={screenVariant} />
-                ))}
-                {renderActionButton()}
-                <ButtonBig color='blueSoft' onClick={() => setShowAddExercisesModal(true)}>Add Exercise</ButtonBig>
-
-
-                {showAddExercisesModal && <ModalAddExercises addExercises={addExercises} setShowAddExercisesModal={setShowAddExercisesModal} setShowCreateExerciseModal={setShowCreateExerciseModal} />}
-                {showCreateExerciseModal && <ModalCreateExercise createExercise={createExercise} setShowCreateExerciseModal={setShowCreateExerciseModal} setShowAddExercisesModal={setShowAddExercisesModal} />}
-
-                {/*newEmptySession*/}
-                <ModalSaveAsNewTemplate showSaveAsNewTemplate={showSaveAsNewTemplate} setShowSaveAsNewTemplate={setShowSaveAsNewTemplate} clearInterval={() => clearInterval(intervalRef.current)}
-                    handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant, sessionDuration, notes.current.value)}
-                    emptySets={exercises.filter(exercise => exercise.sets.some(set => set.completed === false)).length > 0 ? true : false} />
-
-                {/*newSession*/}
-                <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
-                    handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template.exercises, exercises, template.id, template, workoutId, currentDate, screenVariant, sessionDuration, notes.current.value)} />
-
-
-                {/*editSession*/}
-                <ModalSaveWorkout showSaveWorkoutModal={showSaveWorkoutModal} setShowSaveWorkoutModal={setShowSaveWorkoutModal} saveToHistory={saveToHistory}
-                    handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
-
-
-                {/*editTemplate + newEmptyTemplate*/}
-                <ModalSaveTemplate showSaveTemplateModal={showSaveTemplateModal} setShowSaveTemplateModal={setShowSaveTemplateModal} handleUpdateTemplate={handleUpdateTemplate}
-                    handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
-            </div>
-
 
         </div>
     )

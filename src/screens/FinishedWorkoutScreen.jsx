@@ -1,4 +1,5 @@
 import React from 'react'
+import '../css/modals.scss'
 import ButtonBig from '../components/Buttons/ButtonBig';
 import { useData, useDataUpdate } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'
@@ -171,35 +172,59 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     saveToHistory()
                     setShowModal(false)
                     handleScreenChange('TemplatesScreen')
-                }
-                } color="redSoft">{updateTemplateMessage}</ButtonBig>;
+                }} color="redSoft">
+                    <div>
+                        <div className='main-text'>Update Template and Values</div>
+                        <div className='supporting-text'>{updateTemplateMessage}</div>
+                    </div>
+                </ButtonBig>;
             } else {
                 updateTemplateButton = <ButtonBig onClick={() => {
                     handleUpdateTemplate()
                     saveToHistory()
                     setShowModal(false)
                     handleScreenChange('TemplatesScreen')
-                }} color="blueSoft">{updateTemplateMessage}</ButtonBig>;
+                }} color="blueSoft">
+                    <div>
+                        <div className='main-text'>Update Template and Values</div>
+                        <div className='supporting-text'>{updateTemplateMessage}</div>
+                    </div>
+                </ButtonBig>;
             }
         }
 
         modalComponent = (
             <>
                 <div className='modal-overlay'></div>
-                <div className='div-finish-workout'>
-                    <h2>Update Template</h2>
-                    {updatedValues ? <ButtonBig onClick={() => {
-                        handleUpdateValues()
-                        saveToHistory()
-                        setShowModal(false)
-                        handleScreenChange('TemplatesScreen')
-                    }}>{updatedValuesMessage}</ButtonBig> : 'no button'}
-                    {updateTemplateButton}
-                    <ButtonBig color="gray" onClick={() => {
-                        saveToHistory()
-                        setShowModal(false)
-                        handleScreenChange('TemplatesScreen')
-                    }}>Keep Orignal Template</ButtonBig>
+                <div className='modal modal-spacing--default'>
+                    <h3>Update Template?</h3>
+                    <div className='content-spacing--default'>
+                        <p>You've made changes from your original template. Would you like to update it?</p>
+                        <div className='modal__buttons--vertical'>
+
+                            {updatedValues &&
+                                <ButtonBig onClick={() => {
+                                    handleUpdateValues()
+                                    saveToHistory()
+                                    setShowModal(false)
+                                    handleScreenChange('TemplatesScreen')
+                                }}>
+                                    <div>
+                                        <div className='main-text'>Update Values Only</div>
+                                        <div className='supporting-text'>{updatedValuesMessage}</div>
+                                    </div>
+                                </ButtonBig>}
+
+                            {updateTemplateButton}
+
+                            <ButtonBig color="gray" onClick={() => {
+                                saveToHistory()
+                                setShowModal(false)
+                                handleScreenChange('TemplatesScreen')
+                            }}>Keep Orignal</ButtonBig>
+
+                        </div>
+                    </div>
                 </div>
             </>
         );

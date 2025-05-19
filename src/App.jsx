@@ -5,7 +5,7 @@ import ProgressScreen from './screens/ProgressScreen.jsx'
 import ProfileScreen from './screens/ProfileScreen.jsx'
 import TestingScreen from './screens/TestingScreen.jsx'
 
-
+import SessionScreen from './screens/SessionScreen.jsx'
 import FinishedWorkoutScreen from './screens/FinishedWorkoutScreen.jsx'
 import { DataProvider } from './DataContext.jsx'
 
@@ -30,6 +30,11 @@ function App() {
     notes: undefined
   });
 
+  let SessionScreenData = React.useRef({
+    template: undefined,
+    screenVariant: undefined,
+  });
+
 
   switch (currentScreen) {
     case 'TestingScreen':
@@ -46,6 +51,12 @@ function App() {
       break;
     case 'ProfileScreen':
       ScreenComponent = <ProfileScreen />;
+      break;
+    case 'SessionScreen':
+      ScreenComponent = <SessionScreen
+        template={SessionScreenData.current.template}
+        screenVariant={SessionScreenData.current.screenVariant}
+      />;
       break;
 
     case 'FinishedWorkoutScreen':
@@ -64,9 +75,11 @@ function App() {
     default:
       throw new Error('Unknown screen ' + currentScreen)
   }
+  //(newScreen, oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration, notes)
+  //(newScreen, template, screenVariant, oldExercises, newExercises, templateId, workoutId, currentDate, duration, notes)
 
-  function handleScreenChange(newScreen, oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration, notes) {
-    if (newExercises) {
+  function handleScreenChange(newScreen, template, screenVariant, oldExercises, newExercises, templateId, workoutId, currentDate, duration, notes) {
+    if (newScreen === 'FinishedWorkoutScreen') {
       FWS_data.current.oldExercises = oldExercises;
       FWS_data.current.newExercises = newExercises;
       FWS_data.current.templateId = templateId;
@@ -76,6 +89,10 @@ function App() {
       FWS_data.current.screenVariant = screenVariant;
       FWS_data.current.duration = duration;
       FWS_data.current.notes = notes;
+    }
+    if (newScreen === 'SessionScreen') {
+      SessionScreenData.current.template = template;
+      SessionScreenData.current.screenVariant = screenVariant;
     }
     setCurrentScreen(newScreen)
 

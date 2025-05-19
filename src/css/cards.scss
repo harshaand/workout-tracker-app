@@ -225,7 +225,8 @@
     flex-direction: column;
     gap: 10px;
     background-color: white;
-    width: 393px;
+    /*width: 393px;*/
+    width: 100%;
     height: fit-content;
     color: var(--text-color-heading-2);
     fill: var(--icon-color-heading);

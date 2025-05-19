@@ -13,6 +13,18 @@ button {
     font-size: var(--body-text);
     font-weight: 600;
 
+    .main-text {
+        font-size: var(--body-text);
+        font-weight: 600;
+    }
+
+    .supporting-text {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+    }
+
+
     /* !!!!!!!!just some hover and pressed styles for now !!!!!!!!*/
 
     &:hover {
@@ -135,6 +147,11 @@ button {
     }
 
     &--big {
+        display: flex;
+        flex-direction: column;
+        gap: -1px;
+        justify-content: center;
+        align-items: center;
         padding: 8px 16px;
         width: 100%;
         gap: 8px;

@@ -14,11 +14,12 @@ import SessionScreen from './SessionScreen.jsx'
 
 import { v4 as uuidv4 } from 'uuid';
 
+import { RoutingContext } from '../App.jsx'
 
 
 function TemplatesScreen() {
+    const { currentScreen, handleScreenChange } = React.useContext(RoutingContext)
     const data = useData()
-    const [selectedTemplate, setSelectedTemplate] = React.useState(null);
     //TESTING WITH HISTORY ATM
     /* SCREEN VARIANTS
     1. newSession ------new key
@@ -91,19 +92,26 @@ function TemplatesScreen() {
                         <div className='container-folders__folders__group'>
                             <div className='container-templates'>
                                 <div className='container-templates__header'>
-                                    <h3>Full Body</h3>
+                                    <h3>My Templates 1</h3>
                                     <ButtonSmall type='options1' />
                                 </div>
                                 <div className='container-templates__templates'>
-                                    <CardWorkoutTemplate />
-                                    <CardWorkoutTemplate />
-                                    <CardWorkoutTemplate />
+                                    {/*newSession*/}
+                                    {data.templates.map((template, index) => (
+                                        <ButtonBig color='green' size='hug'
+                                            onClick={() => {
+                                                handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession');
+                                            }}>
+                                            {`${template.name}`}
+                                        </ButtonBig>
+
+                                    ))}
                                 </div>
                             </div>
 
                             <div className='container-templates'>
                                 <div className='container-templates__header'>
-                                    <h3>My Templates 1</h3>
+                                    <h3>My Templates 2</h3>
                                     <ButtonSmall type='options1' />
                                 </div>
                                 <div className='container-templates__templates'>

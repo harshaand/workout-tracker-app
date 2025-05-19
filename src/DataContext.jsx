@@ -38,7 +38,7 @@ const dataObject = {
                                 num: 1,
                                 weight: 10,
                                 reps: 20,
-                                completed: true,
+                                completed: false,
                                 PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
                                 bestSet: false
                             },
@@ -66,7 +66,7 @@ const dataObject = {
                                 num: 1,
                                 weight: 10,
                                 reps: 20,
-                                completed: true,
+                                completed: false,
                                 PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
                                 bestSet: false
                             },
