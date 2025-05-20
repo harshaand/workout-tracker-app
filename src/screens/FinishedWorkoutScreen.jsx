@@ -33,15 +33,20 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         modalComponent = (
             <>
                 <div className='modal-overlay'></div>
-                <div className='div-finish-workout'>
-                    <h2>Save as Template?</h2>
-                    <ButtonBig color="blue" onClick={() => {
-                        handleUpdateTemplate()
-                        saveToHistory()
-                        setShowModal(false)
-                        handleScreenChange('TemplatesScreen')
-                    }}>Save as Template</ButtonBig>
-                    <ButtonBig color="gray" onClick={() => setShowModal(false)}>No thanks!</ButtonBig>
+                <div className='modal modal-spacing--default'>
+                    <h3>Save as new Template?</h3>
+                    <div className='content-spacing--default'>
+                        <p>Save this workout as a template so you can perform it again in the future?</p>
+                        <div className='modal__buttons--vertical'>
+                            <ButtonBig color='blue' onClick={() => {
+                                handleUpdateTemplate()
+                                saveToHistory()
+                                setShowModal(false)
+                                handleScreenChange('TemplatesScreen')
+                            }}>Save as Template</ButtonBig>
+                            <ButtonBig color='gray' onClick={() => setShowModal(false)}>No thanks!</ButtonBig>
+                        </div>
+                    </div>
                 </div>
             </>
         );

@@ -42,7 +42,6 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
     //Finish modals
     const [showFinishModal, setShowFinishModal] = React.useState(false)
-    const [showSaveAsNewTemplate, setShowSaveAsNewTemplate] = React.useState(false)
     const [showSaveWorkoutModal, setShowSaveWorkoutModal] = React.useState(false)
     const [showSaveTemplateModal, setShowSaveTemplateModal] = React.useState(false)
 
@@ -540,7 +539,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
             case "editSession":
                 return <ButtonBig size='hug' color='blue' onClick={() => setShowSaveWorkoutModal(true)}>Save</ButtonBig>;
             case "newEmptySession":
-                return <ButtonBig size='hug' color='green' onClick={() => setShowSaveAsNewTemplate(true)}>Save</ButtonBig>;
+                return <ButtonBig size='hug' color='green' onClick={() => { setShowFinishModal(true) }}>Save</ButtonBig>;
             case "editTemplate":
                 return <ButtonBig size='hug' color='blue' onClick={() => setShowSaveTemplateModal(true)}>Save</ButtonBig>;
             case "newEmptyTemplate":
@@ -585,7 +584,6 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                                 <CardExerciseTracker exercise={exercise} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
                                     deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
                                     showFinishModal={showFinishModal} showSaveWorkoutModal={showSaveWorkoutModal} showSaveTemplateModal={showSaveTemplateModal}
-                                    showSaveAsNewTemplate={showSaveAsNewTemplate}
                                     screenVariant={screenVariant} />
                             ))}
                         </div>
@@ -606,16 +604,12 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
 
                 <div>
+                    {/*Add exercise + creat exercise modals*/}
                     {showAddExercisesModal && <ModalAddExercises addExercises={addExercises} setShowAddExercisesModal={setShowAddExercisesModal} setShowCreateExerciseModal={setShowCreateExerciseModal} />}
                     {showCreateExerciseModal && <ModalCreateExercise createExercise={createExercise} setShowCreateExerciseModal={setShowCreateExerciseModal} setShowAddExercisesModal={setShowAddExercisesModal} />}
 
-                    {/*newEmptySession*/}
-                    <ModalSaveAsNewTemplate showSaveAsNewTemplate={showSaveAsNewTemplate} setShowSaveAsNewTemplate={setShowSaveAsNewTemplate} clearInterval={() => clearInterval(intervalRef.current)}
-                        handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, template.exercises, exercises, template.id, workoutId, currentDate, sessionDuration, notes.current.value)}
-                        emptySets={exercises.filter(exercise => exercise.sets.some(set => set.completed === false)).length > 0 ? true : false} />
-
                     {/*newSession*/}
-                    <ModalFinishWorkout showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
+                    <ModalFinishWorkout screenVariant={screenVariant} showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
                         handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, template.exercises, exercises, template.id, workoutId, currentDate, sessionDuration, notes.current.value)} />
 
 

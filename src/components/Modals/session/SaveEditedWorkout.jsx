@@ -1,4 +1,5 @@
 import React from 'react'
+import ButtonBig from '../../Buttons/ButtonBig'
 
 function SaveEditedWorkout({ showSaveWorkoutModal, setShowSaveWorkoutModal, handleScreenChange, saveToHistory }) {
 
@@ -7,15 +8,17 @@ function SaveEditedWorkout({ showSaveWorkoutModal, setShowSaveWorkoutModal, hand
         return (
             <>
                 <div className='modal-overlay'></div>
-                <div className='div-finish-workout'>
+                <div className='modal modal-spacing--no-body-text'>
                     <h3>Save Workout?</h3>
-                    <div className='buttons-finish-workout'>
-                        <button onClick={() => setShowSaveWorkoutModal(false)}>cancel</button>
-                        <button onClick={() => {
-                            saveToHistory()
-                            setShowSaveWorkoutModal(false)
-                            handleScreenChange()
-                        }}>save</button>
+                    <div className='content-spacing--no-body-text'>
+                        <div className='modal__buttons--horizontal'>
+                            <ButtonBig color='gray' onClick={() => setShowSaveWorkoutModal(false)}>Cancel</ButtonBig>
+                            <ButtonBig color='blue' onClick={() => {
+                                saveToHistory()
+                                setShowSaveWorkoutModal(false)
+                                handleScreenChange()
+                            }}>Save</ButtonBig>
+                        </div>
                     </div>
                 </div>
             </>
