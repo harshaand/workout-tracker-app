@@ -20,10 +20,10 @@ const dataObject = {
     templates: [
         {
             id: '4213313',
-            name: 'Supreme Back workout template',
+            name: 'Supreme Back workout',
             duration: 0,
             notes: 'lmfaooooo',
-            lastDone: {},
+            lastDone: new Date(2025, 2, 17, 14, 30, 30),
 
 
             exercises: [

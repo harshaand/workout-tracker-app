@@ -284,6 +284,7 @@
 }
 
 .modal-overlay {
+    border-radius: 0;
     position: fixed;
     top: 0;
     left: 0;
@@ -291,4 +292,18 @@
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.704);
     z-index: 999;
+
+    &:hover {
+        filter: brightness(0);
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0);
+        transition: all 0.2s ease;
+    }
+
+    &:active {
+        filter: brightness(0);
+        transform: translateY(0);
+        box-shadow: none;
+        transition: all 0.1s ease;
+    }
 }

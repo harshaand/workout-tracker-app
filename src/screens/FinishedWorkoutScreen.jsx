@@ -1,8 +1,12 @@
 import React from 'react'
 import '../css/modals.scss'
 import ButtonBig from '../components/Buttons/ButtonBig';
+import ButtonSmall from '../components/Buttons/ButtonSmall.jsx';
 import { useData, useDataUpdate } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'
+import { ThreeStarsRow } from '../assets/icons/icons.js';
+import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx';
+
 
 function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration, notes }) {
     const data = useData()
@@ -19,6 +23,12 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
     let modalComponent;
     let updateTemplateButton = null;
 
+    let exercisesNewPRs = {};
+    let totalPRs = 0;
+    let totalVolume = 0;
+    const totalNumberOfWorkouts = React.useRef(data.history.length)
+    const workoutHistory = generateHistory()
+
     React.useEffect(() => {
         const timer = setTimeout(() => {
             setShowModal(true)
@@ -32,7 +42,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
     if (screenVariant === 'newEmptySession') {
         modalComponent = (
             <>
-                <div className='modal-overlay'></div>
+                <button className='modal-overlay' onClick={() => setShowModal(false)}></button>
                 <div className='modal modal-spacing--default'>
                     <h3>Save as new Template?</h3>
                     <div className='content-spacing--default'>
@@ -42,7 +52,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                                 handleUpdateTemplate()
                                 saveToHistory()
                                 setShowModal(false)
-                                handleScreenChange('TemplatesScreen')
+                                // handleScreenChange('TemplatesScreen')
                             }}>Save as Template</ButtonBig>
                             <ButtonBig color='gray' onClick={() => setShowModal(false)}>No thanks!</ButtonBig>
                         </div>
@@ -176,7 +186,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     handleUpdateTemplate()
                     saveToHistory()
                     setShowModal(false)
-                    handleScreenChange('TemplatesScreen')
+                    // handleScreenChange('TemplatesScreen')
                 }} color="redSoft">
                     <div>
                         <div className='main-text'>Update Template and Values</div>
@@ -188,7 +198,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     handleUpdateTemplate()
                     saveToHistory()
                     setShowModal(false)
-                    handleScreenChange('TemplatesScreen')
+                    // handleScreenChange('TemplatesScreen')
                 }} color="blueSoft">
                     <div>
                         <div className='main-text'>Update Template and Values</div>
@@ -200,7 +210,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
         modalComponent = (
             <>
-                <div className='modal-overlay'></div>
+                <button className='modal-overlay' onClick={() => setShowModal(false)}></button>
                 <div className='modal modal-spacing--default'>
                     <h3>Update Template?</h3>
                     <div className='content-spacing--default'>
@@ -212,7 +222,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                                     handleUpdateValues()
                                     saveToHistory()
                                     setShowModal(false)
-                                    handleScreenChange('TemplatesScreen')
+                                    // handleScreenChange('TemplatesScreen')
                                 }}>
                                     <div>
                                         <div className='main-text'>Update Values Only</div>
@@ -225,7 +235,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                             <ButtonBig color="gray" onClick={() => {
                                 saveToHistory()
                                 setShowModal(false)
-                                handleScreenChange('TemplatesScreen')
+                                // handleScreenChange('TemplatesScreen')
                             }}>Keep Orignal</ButtonBig>
 
                         </div>
@@ -235,7 +245,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         );
     }
 
-    function saveToHistory() {
+    function generateHistory() {
         //--------------------------APPENDING WORKOUT TO HISTORY--------------------------
         const filteredExercises = newExercises.filter(exercise => exercise.sets.some(set => set.completed === true))
             .map(exercise => {
@@ -244,9 +254,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     sets: exercise.sets.filter(set => set.completed === true)
                 };
             });
-        let exercisesNewPRs = {};
-        let totalPRs = 0;
-        let totalVolume = 0;
+
         console.log('filteredExercises!!!', filteredExercises)
         const workoutHistoryExercises = [
             ...filteredExercises.map(exercise => {
@@ -320,24 +328,29 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         ]
         console.log('workoutHistoryExercises 1!!!', workoutHistoryExercises)
 
+        return {
+            id: template.id,
+            name: template.name,
+            duration: duration,
+            notes: notes,
+            workoutId: workoutId,
+
+            date: currentDate,
+            exercises: workoutHistoryExercises,
+            PRs: totalPRs,
+            volume: totalVolume,
+        }
+    }
+
+    function saveToHistory() {
+
         setData(prevData => {
             return {
                 ...prevData,
 
                 history: [
                     ...prevData.history,
-                    {
-                        id: template.id,
-                        name: template.name,
-                        duration: duration,
-                        notes: notes,
-                        workoutId: workoutId,
-
-                        date: currentDate,
-                        exercises: workoutHistoryExercises,
-                        PRs: totalPRs,
-                        volume: totalVolume,
-                    }
+                    workoutHistory
                 ],
             }
 
@@ -347,8 +360,8 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
         //--------------------------UPDATING EXERCISE OBJECT--------------------------
         let updatedExerciseObjects = {}
-        console.log('workoutHistoryExercises 2!!!', workoutHistoryExercises)
-        workoutHistoryExercises.forEach(exercise => {
+        console.log('workoutHistoryExercises 2!!!', workoutHistory.exercises)
+        workoutHistory.exercises.forEach(exercise => {
             const exerciseName = exercise.name;
             const exerciseData = data.exercises.find(ex => ex.name === exerciseName);
             const history = exerciseData.history.find(history => history.workoutId === workoutId);
@@ -534,8 +547,26 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         })
     }
     return (
-        <div>
-            <h1>Finished Workout Screen</h1>
+        <div className='session-finished__container'>
+            <div className='session-finished__main'>
+
+                <div className='nav-btns'>
+                    <ButtonSmall type='closeModal' onClick={() => handleScreenChange('TemplatesScreen')} />
+                    <div></div>
+                </div>
+                <div className='header'>
+                    <ThreeStarsRow />
+                    <div className='container-message'>
+                        <h2>Great Job!</h2>
+                        <p>That's your {totalNumberOfWorkouts.current + 1}th workout!</p>
+                    </div>
+                </div>
+
+                <div className='container-template-card'>
+                    <CardWorkoutHistory history={workoutHistory} customClasses='card-workout-history-finished-workout-screen' />
+                </div>
+            </div>
+
             {showModal && modalComponent}
         </div>
     )

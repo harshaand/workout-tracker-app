@@ -6,7 +6,7 @@ function SaveAsNewTemplate({ setShowModal, handleScreenChange, emptySets }) {
 
     return (
         <>
-            <div className='modal-overlay'></div>
+            <button className='modal-overlay' onClick={() => setShowModal(false)}></button>
             <div className='modal modal-spacing--default'>
                 <h3>Save as new Template?</h3>
                 <div className='content-spacing--default'>

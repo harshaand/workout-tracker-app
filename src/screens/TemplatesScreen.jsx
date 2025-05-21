@@ -76,7 +76,8 @@ function TemplatesScreen() {
 
                 <div className='container-quick-start'>
                     <h3>Quick Start</h3>
-                    <ButtonBig color='blue' size='chunky'>Start an Empty Workout</ButtonBig>
+                    <ButtonBig color='blue' size='chunky' onClick={() => handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Workout', workoutId: uuidv4() }, 'newEmptySession')}>
+                        Start an Empty Workout</ButtonBig>
                 </div>
 
                 <div className='container-folders'>
@@ -96,14 +97,13 @@ function TemplatesScreen() {
                                     <ButtonSmall type='options1' />
                                 </div>
                                 <div className='container-templates__templates'>
-                                    {/*newSession*/}
+
                                     {data.templates.map((template, index) => (
-                                        <ButtonBig color='green' size='hug'
+                                        <CardWorkoutTemplate template={template}
                                             onClick={() => {
                                                 handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession');
                                             }}>
-                                            {`${template.name}`}
-                                        </ButtonBig>
+                                        </CardWorkoutTemplate>
 
                                     ))}
                                 </div>

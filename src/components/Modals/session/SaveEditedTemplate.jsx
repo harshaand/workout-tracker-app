@@ -6,7 +6,7 @@ function SaveEditedTemplate({ showSaveTemplateModal, setShowSaveTemplateModal, h
     else {
         return (
             <>
-                <div className='modal-overlay'></div>
+                <button className='modal-overlay' onClick={() => setShowSaveTemplateModal(false)}></button>
                 <div className='modal modal-spacing--no-body-text'>
                     <h3>Save Template?</h3>
                     <div className='content-spacing--no-body-text'>

@@ -1,6 +1,8 @@
 import React from 'react'
 import ButtonSmall from '../Buttons/ButtonSmall.jsx'
 import '../../css/cards.scss';
+import '../../css/screens.scss';
+
 
 import {
     Clock, Weight, TrophyMedium
@@ -8,7 +10,7 @@ import {
 
 
 
-function CardWorkoutHistory({ history }) {
+function CardWorkoutHistory({ history, customClasses }) {
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -31,7 +33,7 @@ function CardWorkoutHistory({ history }) {
 
     };
     return (
-        <div className='card-workout-history'>
+        <div className={`card-workout-history ${customClasses ? customClasses : 'card-workout-history--default'}`}>
             <ButtonSmall type='options1' customClasses='options-button'></ButtonSmall>
             <div className='heading'><h3>{history.name}</h3></div>
 

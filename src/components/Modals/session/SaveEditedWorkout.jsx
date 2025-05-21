@@ -7,7 +7,7 @@ function SaveEditedWorkout({ showSaveWorkoutModal, setShowSaveWorkoutModal, hand
     else {
         return (
             <>
-                <div className='modal-overlay'></div>
+                <button className='modal-overlay' onClick={() => setShowSaveWorkoutModal(false)}></button>
                 <div className='modal modal-spacing--no-body-text'>
                     <h3>Save Workout?</h3>
                     <div className='content-spacing--no-body-text'>

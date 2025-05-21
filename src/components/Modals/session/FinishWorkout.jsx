@@ -6,7 +6,7 @@ function FinishWorkout({ showFinishModal, setShowFinishModal, handleScreenChange
     else {
         return (
             <>
-                <div className='modal-overlay'></div>
+                <button className='modal-overlay' onClick={() => setShowFinishModal(false)}></button>
                 <div className='modal modal-spacing--no-body-text'>
                     <div className='modal-spacing--emoji-text'>
                         <div className='emoji'>🎉</div>

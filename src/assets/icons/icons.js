@@ -32,3 +32,4 @@ export { default as Streak } from './Streak.jsx';
 export { default as Ellipsis } from './Ellipsis.jsx';
 export { default as BlankNarrow } from './BlankNarrow.jsx';
 export { default as BlankWide } from './BlankWide.jsx';
+export { default as ThreeStarsRow } from './ThreeStarsRow.jsx';
