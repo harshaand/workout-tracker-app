@@ -307,3 +307,137 @@
         transition: all 0.1s ease;
     }
 }
+
+/************************************MODAL SESSION OVERVIEW ************************************/
+.modal-session-overview {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1px;
+    padding: 0 var(--general-padding);
+    background-color: var(--white);
+    height: fit-content;
+    max-height: 692px;
+    width: 361px;
+    border-radius: 16px;
+
+    .container-header {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 10px 0 8px 0;
+        gap: 10px;
+        width: 100%;
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            p {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                margin: 0;
+                padding: 0;
+                color: var(--text-color-heading-2);
+                font-weight: 600;
+            }
+
+            a {
+                all: unset;
+                font-weight: 400;
+                color: var(--blue-dark);
+                cursor: pointer;
+            }
+
+        }
+
+
+        .last-performed {
+            width: 100%;
+            font-weight: 500;
+            color: var(--text-color-body);
+            letter-spacing: -0.01em;
+
+        }
+
+    }
+
+    .container-exercises {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 16px;
+        padding: calc(var(--general-padding)/2) 0;
+        width: 100%;
+        height: fit-content;
+        box-sizing: border-box;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        .exercise-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            height: fit-content;
+
+            .image {
+                height: 44px;
+                width: 44px;
+                background-color: red;
+            }
+
+            .container-exercise-text {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+                gap: 5px;
+                padding: 0;
+                min-width: 0;
+                box-sizing: border-box;
+
+                p {
+                    margin: 0;
+                    padding: 0;
+
+
+                }
+
+                .text--main {
+                    color: var(--text-color-heading-2);
+                    font-weight: 500;
+                }
+
+                .text-supporting {
+                    color: var(--text-color-body);
+                    font-weight: 400;
+                }
+            }
+        }
+
+    }
+
+    .container-start-workout-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: var(--general-padding) 0 calc(var(--general-padding) * 2) 0;
+        width: 100%;
+        height: fit-content;
+        box-sizing: border-box;
+    }
+
+}

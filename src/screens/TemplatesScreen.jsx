@@ -4,6 +4,7 @@ import React from 'react'
 import ButtonSmall from '../components/Buttons/ButtonSmall.jsx'
 import ButtonBig from '../components/Buttons/ButtonBig.jsx'
 import CardWorkoutTemplate from '../components/Cards/CardWorkoutTemplate.jsx'
+import ModalSessionOverview from '../components/Modals/session/TemplateOverview.jsx';
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import FolderList from '../OTHER/FoldersFunctionality.jsx'
@@ -29,6 +30,7 @@ function TemplatesScreen() {
     5. newEmptySession -new key
     */
     const screenVariant = React.useRef(null);
+    const [selectedTemplateOverviewModal, setSelectedTemplateOverviewModal] = React.useState(null)
 
     const newEmptySession = {
         id: uuidv4(),
@@ -98,13 +100,18 @@ function TemplatesScreen() {
                                 </div>
                                 <div className='container-templates__templates'>
 
-                                    {data.templates.map((template, index) => (
-                                        <CardWorkoutTemplate template={template}
-                                            onClick={() => {
-                                                handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession');
-                                            }}>
-                                        </CardWorkoutTemplate>
-
+                                    {data.templates.map((template) => (
+                                        <>
+                                            <CardWorkoutTemplate template={template}
+                                                onClick={() => {
+                                                    setSelectedTemplateOverviewModal(template.id);
+                                                }}>
+                                            </CardWorkoutTemplate>
+                                            <ModalSessionOverview template={template} selectedModal={selectedTemplateOverviewModal}
+                                                setSelectedModal={setSelectedTemplateOverviewModal}
+                                                handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
+                                                handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', { ...template }, 'editTemplate')} />
+                                        </>
                                     ))}
                                 </div>
                             </div>
