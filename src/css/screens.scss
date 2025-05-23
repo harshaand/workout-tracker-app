@@ -471,8 +471,10 @@
             height: 2px;
             background-color: var(--text-color-colored);
             width: calc(50% - 32px);
-            transition: all 300ms ease-out;
-
+            margin-left: 16px;
+            will-change: transform;
+            transform: translateZ(0); // Add this to force GPU layer
+            transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)
         }
     }
 
@@ -482,7 +484,6 @@
         width: 100%;
         scroll-snap-type: x mandatory;
         overflow-x: auto;
-
 
         .wrapper-screen {
             width: 100%;
@@ -500,137 +501,62 @@
                 width: 100%;
                 height: fit-content;
                 box-sizing: border-box;
-
-                .card-strength-score-overview {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 20px;
-                    padding: var(--general-padding);
-                    height: fit-content;
-                    width: 100%;
-                    box-sizing: border-box;
-                    border-radius: var(--card-border-radius);
-                    border: 1px solid #d1d5db;
-
-
-
-
-                    h4 {
-                        color: var(--text-color-heading-2);
-                        width: 100%;
-                        text-align: center;
-                        font-weight: 600;
-                        letter-spacing: -0.01em;
-                        margin: 0;
-                        padding: 0;
-                    }
-
-                    .container-anatomy-svgs {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        gap: 96px;
-                        width: 100%;
-                        height: fit-content;
-                    }
-
-                }
-
-                .container-cards-stats {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 8px;
-                    width: 100%;
-                    height: 316px;
-
-                    .columns {
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                        gap: 8px;
-                        width: 100%;
-                        height: 100%;
-                    }
-
-                    .card-stat {
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                        padding: var(--general-padding);
-                        gap: 6px;
-                        width: 100%;
-                        border-radius: var(--card-border-radius);
-                        box-sizing: border-box;
-                        border: 1px solid #d1d5db;
-
-
-                        &--default {
-                            flex: 1;
-
-                            .icon-and-stat {
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                gap: 12px;
-                                width: 100%;
-
-                                height: fit-content;
-                                fill: var(--blue-dark);
-                            }
-                        }
-
-                        &--streak {
-                            height: 100%;
-
-                            .icon-and-stat {
-                                display: flex;
-                                flex-direction: column;
-                                justify-content: center;
-                                align-items: center;
-                                gap: 6px;
-                                width: 100%;
-
-                                height: fit-content;
-                                fill: red;
-                            }
-                        }
-
-
-
-                        .card-text {
-                            text-align: center;
-                            font-weight: 600;
-                            letter-spacing: -0.01em;
-                            margin: 0;
-                            padding: 0;
-
-                            &--title {
-                                color: var(--text-color-heading-2);
-                                width: 100%;
-
-                            }
-
-                            &--value {
-                                color: var(--text-color-colored);
-                                width: fit-content;
-                            }
-                        }
-
-
-
-                    }
-                }
             }
-
-
         }
+    }
+}
 
+.StrScFullBody {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+        width: 100%;
+        height: fit-content;
+        min-height: 100vh;
+        background-color: var(--white);
+        padding: 58px 0;
+    }
 
+    &__header {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: var(--general-padding);
+        padding: 0 var(--general-padding);
+        width: 100%;
+        height: fit-content;
+        width: 100%;
+        box-sizing: border-box;
 
+        h2 {
+            letter-spacing: -0.03em;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color-heading-1);
+        }
+    }
+
+    &__main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+        width: 100%;
+        height: fit-content;
+        box-sizing: border-box;
+
+        .container-rows-strength-scores {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+
+            width: 100%;
+            margin: 0 var(--general-padding);
+        }
     }
 }

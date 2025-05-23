@@ -1,12 +1,14 @@
 import React from 'react'
 import HistoryScreen from './screens/HistoryScreen.jsx'
 import TemplatesScreen from './screens/TemplatesScreen.jsx'
-import ProgressScreen from './screens/ProgressScreen.jsx'
+import ProgressScreen from './screens/ProgressScreens/ProgressScreen.jsx'
 import ProfileScreen from './screens/ProfileScreen.jsx'
 import TestingScreen from './screens/TestingScreen.jsx'
 
 import SessionScreen from './screens/SessionScreen.jsx'
 import FinishedWorkoutScreen from './screens/FinishedWorkoutScreen.jsx'
+
+import StrScFullBodyScreen from './screens/ProgressScreens/StrScFullBodyScreen.jsx'
 import { DataProvider } from './DataContext.jsx'
 
 export const RoutingContext = React.createContext({
@@ -58,7 +60,9 @@ function App() {
         screenVariant={SessionScreenData.current.screenVariant}
       />;
       break;
-
+    case 'StrScFullBodyScreen':
+      ScreenComponent = <StrScFullBodyScreen />;
+      break;
     case 'FinishedWorkoutScreen':
       ScreenComponent = <FinishedWorkoutScreen
         oldExercises={FWS_data.current.oldExercises}
