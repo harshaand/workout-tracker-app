@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import './ProgressScreen.scss'
+import { AnatomyFront, AnatomyBack, Calendar, TrophyLarge, Bicep, Streak, WeightLarge } from '../assets/icons/icons'
+import ButtonBig from '../components/Buttons/ButtonBig'
+import Navbar from '../components/Navbar'
 export default function ProgressScreen() {
+
     const [activeTab, setActiveTab] = useState(0);
     const containerRef = useRef(null);
 
@@ -25,6 +28,7 @@ export default function ProgressScreen() {
 
     return (
         <>
+            <Navbar />
             <div className="progress__container">
                 <div className="progress__header">
                     <button className={`${Math.round(activeTab) === 0 ? 'button-active' : 'button-inactive'}`}
@@ -43,14 +47,76 @@ export default function ProgressScreen() {
                     className="progress__main"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                    <div className="w-full flex-shrink-0 snap-start bg-gray-50 p-8">
-                        <h2 className="text-2xl font-bold mb-4">Container 1</h2>
-                        <p>This is the content of the first container. You can scroll or swipe to navigate between containers.</p>
+                    <div className="wrapper-screen">
+
+                        <div className='container-progress-screen'>
+
+                            <div className='card-strength-score-overview'>
+                                <h4>Strength Score</h4>
+                                <div className='container-anatomy-svgs'>
+                                    <AnatomyFront height={170} width={59} />
+                                    <AnatomyBack height={170} width={60} />
+                                </div>
+                                <ButtonBig size='hug'>View Scores</ButtonBig>
+                            </div>
+                            <div className='container-cards-stats'>
+                                <div className='columns'>
+                                    <div className='card-stat card-stat--streak'>
+                                        <h4 className='card-text card-text--title'>Gym Streak</h4>
+                                        <div className='icon-and-stat'>
+                                            <Streak />
+                                            <h5 className='card-text card-text--value'>1 week</h5>
+                                        </div>
+
+                                    </div>
+
+                                    <div className='card-stat card-stat--default'>
+                                        <h4 className='card-text card-text--title'>Total Volume</h4>
+                                        <div className='icon-and-stat'>
+                                            <WeightLarge />
+                                            <h5 className='card-text card-text--value'>70</h5>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div className='columns'>
+                                    <div className='card-stat card-stat--default'>
+                                        <h4 className='card-text card-text--title'>Total PB's</h4>
+                                        <div className='icon-and-stat'>
+                                            <TrophyLarge />
+                                            <h5 className='card-text card-text--value'>14</h5>
+                                        </div>
+
+                                    </div>
+
+                                    <div className='card-stat card-stat--default'>
+                                        <h4 className='card-text card-text--title'>Total Workouts</h4>
+                                        <div className='icon-and-stat'>
+                                            <Calendar />
+                                            <h5 className='card-text card-text--value'>5</h5>
+                                        </div>
+
+                                    </div>
+                                    <div className='card-stat card-stat--default'>
+                                        <h4 className='card-text card-text--title'>Total Reps</h4>
+                                        <div className='icon-and-stat'>
+                                            <Bicep />
+                                            <h5 className='card-text card-text--value'>70</h5>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <div className="w-full flex-shrink-0 snap-start bg-blue-50 p-8">
-                        <h2 className="text-2xl font-bold mb-4">Container 2</h2>
-                        <p>This is the content of the second container. The tab indicator updates automatically as you scroll.</p>
+
+                    <div className="wrapper-screen">
+                        <h1 >Container 2</h1>
                     </div>
                 </div>
 
