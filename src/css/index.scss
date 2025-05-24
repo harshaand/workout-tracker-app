@@ -13,7 +13,7 @@ To do list
   /*SIZES*/
   --h1: 30px;
   --h2: 24px;
-  --h3: 20px;
+  --h3: var(--body-text);
   --h4: var(--body-text);
   --h5: var(--body-text);
   --body-text: 16px;
@@ -112,7 +112,7 @@ h4 {
 }
 
 h5 {
-  font-size: var(--h4);
+  font-size: var(--h5);
   font-weight: 400;
 }
 

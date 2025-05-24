@@ -1,9 +1,9 @@
 import React from 'react'
 import { ArrowRight } from '../../../assets/icons/icons'
 
-function RowStrSc({ muscleGroup = 'Back', score = '1', type = 'muscle-group' }) {
+function RowStrSc({ muscleGroup = 'Back', score = '1', type = 'muscle-group', onClick }) {
     return (
-        <div className='row-strength-score'>
+        <div className='row-strength-score' onClick={onClick}>
             <div className={`content content--${type}`}>
                 <h4 className='text text--muscle-group'>{muscleGroup}</h4>
                 <div className='score-and-icon'>

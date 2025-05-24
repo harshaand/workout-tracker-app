@@ -9,7 +9,11 @@ function Navbar({ }) {
         <div className="navbar">
             <button className={`navbar__btn ${currentScreen === 'HistoryScreen' ? 'navbar__btn--active' : 'navbar__btn--inactive'}`} onClick={() => handleScreenChange('HistoryScreen')}><NavClock />History</button>
             <button className={`navbar__btn ${currentScreen === 'TemplatesScreen' ? 'navbar__btn--active' : 'navbar__btn--inactive'}`} onClick={() => handleScreenChange('TemplatesScreen')}><NavAdd />Workout</button>
-            <button className={`navbar__btn ${currentScreen === 'ProgressScreen' || currentScreen === 'StrScFullBodyScreen' ? 'navbar__btn--active' : 'navbar__btn--inactive'}`} onClick={() => handleScreenChange('ProgressScreen')}><NavProgress />Progress</button>
+            <button className={`navbar__btn ${currentScreen === 'ProgressScreen'
+                || currentScreen === 'StrScFullBodyScreen'
+                || currentScreen === 'StrScMuscleScreen'
+                || currentScreen === 'StrScExercisesScreen'
+                ? 'navbar__btn--active' : 'navbar__btn--inactive'}`} onClick={() => handleScreenChange('ProgressScreen')}><NavProgress />Progress</button>
             <button className={`navbar__btn ${currentScreen === 'ProfileScreen' ? 'navbar__btn--active' : 'navbar__btn--inactive'}`} onClick={() => handleScreenChange('ProfileScreen')}><NavUser />Profile</button>
         </div>
     )

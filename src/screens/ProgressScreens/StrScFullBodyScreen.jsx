@@ -12,31 +12,28 @@ function StrScFullBodyScreen() {
     const { handleScreenChange } = React.useContext(RoutingContext)
 
     return (
-        <div className='StrScFullBody__container'>
+        <div className='strength-score-sub-screen__container'>
             <Navbar />
-            <div className='StrScFullBody__header'>
+            <div className='header'>
                 <ButtonSmall type='backScreen' onClick={() => handleScreenChange('ProgressScreen')} />
                 <h2>Strength Scores</h2>
             </div>
 
-            <div className='StrScFullBody__main'>
+            <div className='main  main--muscle-group-screen'>
                 <CardStrScFullBody >
                     <AnatomyFront height={170} width={59} />
                     <AnatomyBack height={170} width={60} />
                 </CardStrScFullBody>
 
                 <div className='container-rows-strength-scores'>
-                    <RowStrengthScore muscleGroup='Shoulders' score={20} type='muscle-group' />
-                    <RowStrengthScore muscleGroup='Chest' score={20} type='muscle-group' />
-                    <RowStrengthScore muscleGroup='Arms' score={20} type='muscle-group' />
-                    <RowStrengthScore muscleGroup='Back' score={20} type='muscle-group' />
-                    <RowStrengthScore muscleGroup='Legs' score={20} type='muscle-group' />
-                    <RowStrengthScore muscleGroup='Glutes' score={20} type='muscle-group' />
+                    <RowStrengthScore muscleGroup='Shoulders' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
+                    <RowStrengthScore muscleGroup='Chest' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
+                    <RowStrengthScore muscleGroup='Arms' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
+                    <RowStrengthScore muscleGroup='Back' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
+                    <RowStrengthScore muscleGroup='Legs' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
+                    <RowStrengthScore muscleGroup='Glutes' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
                 </div>
-
-
             </div>
-
 
         </div>
     )

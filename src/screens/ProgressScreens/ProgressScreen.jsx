@@ -27,7 +27,6 @@ export default function ProgressScreen() {
             const scrollLeft = containerRef.current.scrollLeft;
             const containerWidth = containerRef.current.offsetWidth;
             scrollProgress.current = scrollLeft / containerWidth;
-
             if (scrollProgress.current === 0) {
                 setActiveTab(0);
             }

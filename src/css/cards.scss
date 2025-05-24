@@ -683,8 +683,8 @@
             }
         }
 
-        &--exercise {
-            padding: var(--general-padding) var(--general-padding);
+        &--exercise-1 {
+            padding: var(--general-padding) calc(1.5* var(--general-padding));
 
             .text {
                 margin: 0;
@@ -698,6 +698,26 @@
 
                 &--strength-score {
                     color: var(--text-color-heading-2);
+                    font-weight: 600;
+                }
+            }
+        }
+
+        &--exercise-2 {
+            padding: var(--general-padding) calc(2 * var(--general-padding));
+
+            .text {
+                margin: 0;
+                height: fit-content;
+                padding: 0;
+
+                &--muscle-group {
+                    color: var(--text-color-heading-2);
+                    font-weight: 500;
+                }
+
+                &--strength-score {
+                    color: var(--text-color-colored);
                     font-weight: 600;
                 }
             }
@@ -722,4 +742,45 @@
         margin: 0 var(--general-padding);
     }
 
+}
+
+.card-strength-score-muscle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    padding: 28px var(--general-padding);
+    height: fit-content;
+    width: calc(100% - 2 * var(--general-padding));
+    box-sizing: border-box;
+    border-radius: var(--card-border-radius);
+    border: 1px solid #d1d5db;
+    margin: 0 var(--general-padding);
+
+    h4 {
+        width: 100%;
+        text-align: center;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        margin: 0;
+        padding: 0;
+    }
+
+    .text-heading {
+        color: var(--text-color-heading-2);
+    }
+
+    .text-threshold {
+        color: var(--text-color-colored);
+    }
+
+    .container-anatomy-svgs {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 96px;
+        width: 100%;
+        height: fit-content;
+    }
 }

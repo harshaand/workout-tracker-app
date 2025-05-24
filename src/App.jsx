@@ -9,6 +9,9 @@ import SessionScreen from './screens/SessionScreen.jsx'
 import FinishedWorkoutScreen from './screens/FinishedWorkoutScreen.jsx'
 
 import StrScFullBodyScreen from './screens/ProgressScreens/StrScFullBodyScreen.jsx'
+import StrScMuscleScreen from './screens/ProgressScreens/StrScMuscleScreen.jsx'
+import StrScExercisesScreen from './screens/ProgressScreens/StrScExercisesScreen.jsx'
+
 import { DataProvider } from './DataContext.jsx'
 
 export const RoutingContext = React.createContext({
@@ -62,6 +65,12 @@ function App() {
       break;
     case 'StrScFullBodyScreen':
       ScreenComponent = <StrScFullBodyScreen />;
+      break;
+    case 'StrScMuscleScreen':
+      ScreenComponent = <StrScMuscleScreen />;
+      break;
+    case 'StrScExercisesScreen':
+      ScreenComponent = <StrScExercisesScreen />;
       break;
     case 'FinishedWorkoutScreen':
       ScreenComponent = <FinishedWorkoutScreen
