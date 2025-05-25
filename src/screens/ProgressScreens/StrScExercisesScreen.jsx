@@ -1,5 +1,5 @@
 import React from 'react'
-import { AnatomyFront, AnatomyBack, ArrowRight } from '../../assets/icons/icons'
+import { AnatomyFront, AnatomyBack } from '../../assets/icons/icons'
 import ButtonSmall from '../../components/Buttons/ButtonSmall'
 import ButtonBig from '../../components/Buttons/ButtonBig'
 import RowStrengthScore from '../../components/Cards/ProgressScreen/RowStrSc.jsx'
@@ -19,12 +19,12 @@ function StrScExercisesScreen() {
 
             <div className='main main--exercise-screen'>
                 <div className='container-rows-strength-scores'>
-                    <RowStrengthScore muscleGroup='Bench Press' score={20} type='exercise-2' />
-                    <RowStrengthScore muscleGroup='Chest Flies' score={20} type='exercise-2' />
-                    <RowStrengthScore muscleGroup='Inclined Bench Press' score={20} type='exercise-2' />
-                    <RowStrengthScore muscleGroup='Push up' score={20} type='exercise-2' />
-                    <RowStrengthScore muscleGroup='Cable Crossover' score={20} type='exercise-2' />
-                    <RowStrengthScore muscleGroup='Dumbell Press' score={20} type='exercise-2' />
+                    <RowStrengthScore muscleGroup='Bench Press' score={20} type='exercise-2' onClick={() => handleScreenChange('StrScExerciseScreen')} />
+                    <RowStrengthScore muscleGroup='Chest Flies' score={20} type='exercise-2' onClick={() => handleScreenChange('StrScExerciseScreen')} />
+                    <RowStrengthScore muscleGroup='Inclined Bench Press' score={20} type='exercise-2' onClick={() => handleScreenChange('StrScExerciseScreen')} />
+                    <RowStrengthScore muscleGroup='Push up' score={20} type='exercise-2' onClick={() => handleScreenChange('StrScExerciseScreen')} />
+                    <RowStrengthScore muscleGroup='Cable Crossover' score={20} type='exercise-2' onClick={() => handleScreenChange('StrScExerciseScreen')} />
+                    <RowStrengthScore muscleGroup='Dumbell Press' score={20} type='exercise-2' onClick={() => handleScreenChange('StrScExerciseScreen')} />
                 </div>
             </div>
 
