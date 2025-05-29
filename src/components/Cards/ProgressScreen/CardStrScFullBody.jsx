@@ -14,11 +14,11 @@ function CardStrScFullBody({ children = defaultChildren, onClick }) {
                 {children}
             </div>
             <div className='container-levels'>
-                <div className='level Beginner'>Beginner</div>
-                <div className='level Novice'>Novice</div>
-                <div className='level Intermediate'>Intermediate</div>
-                <div className='level Advanced'>Advanced</div>
-                <div className='level Elite'>Elite</div>
+                <div className='level beginner'>Beginner</div>
+                <div className='level novice'>Novice</div>
+                <div className='level intermediate'>Intermediate</div>
+                <div className='level advanced'>Advanced</div>
+                <div className='level elite'>Elite</div>
             </div>
         </div>
     )

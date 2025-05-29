@@ -6,10 +6,12 @@ import RowStrengthScore from '../../components/Cards/ProgressScreen/RowStrSc.jsx
 import CardStrScFullBody from '../../components/Cards/ProgressScreen/CardStrScFullBody.jsx'
 import Navbar from '../../components/Navbar.jsx'
 import { RoutingContext } from '../../App.jsx'
+import { useData } from '../../DataContext.jsx'
 
 
-function StrScFullBodyScreen() {
-    const { handleScreenChange } = React.useContext(RoutingContext)
+function StrScFullBodyScreen({ musclesThresholdBrackets }) {
+    const { handleScreenChange, handleStrScScreenChange } = React.useContext(RoutingContext)
+    const data = useData()
 
     return (
         <div className='strength-score-sub-screen__container'>
@@ -21,17 +23,16 @@ function StrScFullBodyScreen() {
 
             <div className='main  main--muscle-group-screen'>
                 <CardStrScFullBody >
-                    <AnatomyFront height={170} width={59} />
-                    <AnatomyBack height={170} width={60} />
+                    <AnatomyFront height={170} width={59} musclesThresholdBrackets={musclesThresholdBrackets} />
+                    <AnatomyBack height={170} width={60} musclesThresholdBrackets={musclesThresholdBrackets} />
                 </CardStrScFullBody>
 
                 <div className='container-rows-strength-scores'>
-                    <RowStrengthScore muscleGroup='Shoulders' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
-                    <RowStrengthScore muscleGroup='Chest' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
-                    <RowStrengthScore muscleGroup='Arms' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
-                    <RowStrengthScore muscleGroup='Back' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
-                    <RowStrengthScore muscleGroup='Legs' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
-                    <RowStrengthScore muscleGroup='Glutes' score={20} type='muscle-group' onClick={() => handleScreenChange('StrScMuscleScreen')} />
+                    {Object.entries(data.strengthScores).map(([muscleGroup, exercises]) => {
+                        const highestScore = Math.max(...Object.values(exercises));
+                        return <RowStrengthScore muscleGroup={muscleGroup} score={highestScore} type='muscle-group' onClick={() => handleStrScScreenChange('StrScMuscleScreen', musclesThresholdBrackets, muscleGroup, undefined)} />
+                    }
+                    )}
                 </div>
             </div>
 

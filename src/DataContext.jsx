@@ -115,8 +115,9 @@ const dataObject = {
 
             workoutId: 90210,
             date: new Date(2025, 2, 17, 14, 30, 30),
-            volume: 2196,
-            PRs: 7,
+            volume: 100,
+            reps: 10,
+            PRs: 1,
 
 
             exercises: [
@@ -206,8 +207,9 @@ const dataObject = {
 
             workoutId: 90210,
             date: new Date('2023-01-15'),
-            volume: 2196,
-            PRs: 7,
+            volume: 100,
+            reps: 10,
+            PRs: 1,
 
 
             exercises: [
@@ -297,8 +299,9 @@ const dataObject = {
 
             workoutId: 90210,
             date: new Date('2022-12-25'),
-            volume: 2196,
-            PRs: 7,
+            volume: 100,
+            reps: 10,
+            PRs: 1,
 
 
             exercises: [
@@ -388,8 +391,9 @@ const dataObject = {
 
             workoutId: 90210,
             date: new Date('2024-01-03'),
-            volume: 2196,
-            PRs: 7,
+            volume: 100,
+            reps: 10,
+            PRs: 1,
 
 
             exercises: [
@@ -477,7 +481,7 @@ const dataObject = {
         {
             name: 'Back Squat',
             prMetric: 'reps',
-            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+            PRs: { '1RM': 120, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
             thumbnail: '',
             instructions: { media: '', text: 'Sit a 90* angle...' },
             thresholds: {
@@ -522,6 +526,20 @@ const dataObject = {
 
 
     ],
+    strengthScores: {
+        'Shoulders': { 'Back Squat': 1, 'Hip Thrust': 8 },
+        'Chest': { 'Back Squat': 1, 'Hip Thrust': 12 },
+        'Back': { 'Back Squat': 1, 'Hip Thrust': 30 },
+        'Biceps': { 'Back Squat': 1, 'Hip Thrust': 30 },
+        'Triceps': { 'Back Squat': 1, 'Hip Thrust': 27 },
+        'Lower Back': { 'Back Squat': 1, 'Hip Thrust': 8 },
+        'Abs': { 'Back Squat': 1, 'Hip Thrust': 15 },
+        'Glutes': { 'Back Squat': 1, 'Hip Thrust': 60 },
+        'Quads': { 'Back Squat': 1, 'Hip Thrust': 40 },
+        'Hamstrings': { 'Back Squat': 1, 'Hip Thrust': 50 },
+        'Calves': { 'Back Squat': 1, 'Hip Thrust': 20 }
+    }
+
 }
 
 function useData() {

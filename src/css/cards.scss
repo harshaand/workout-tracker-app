@@ -613,27 +613,26 @@
             height: fit-content;
             font-size: var(--body-text-small);
             font-weight: 500;
-            background-color: aqua;
         }
 
-        .Beginner {
-            background-color: #E5FFEA;
+        .beginner {
+            background-color: rgba(var(--anatomy-svg-color), 0.1);
         }
 
-        .Novice {
-            background-color: #B2FFBF;
+        .novice {
+            background-color: rgba(var(--anatomy-svg-color), 0.35);
         }
 
-        .Intermediate {
-            background-color: #66FF80;
+        .intermediate {
+            background-color: rgba(var(--anatomy-svg-color), 0.7);
         }
 
-        .Advanced {
-            background-color: #24fe49;
+        .advanced {
+            background-color: rgba(var(--anatomy-svg-color), 0.9);
         }
 
-        .Elite {
-            background-color: #00fd2a;
+        .elite {
+            background-color: rgba(var(--anatomy-svg-color), 1);
         }
 
     }

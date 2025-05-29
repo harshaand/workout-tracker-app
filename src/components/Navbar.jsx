@@ -12,7 +12,6 @@ function Navbar({ }) {
             <button className={`navbar__btn ${currentScreen === 'ProgressScreen'
                 || currentScreen === 'StrScFullBodyScreen'
                 || currentScreen === 'StrScMuscleScreen'
-                || currentScreen === 'StrScExercisesScreen'
                 || currentScreen === 'StrScExerciseScreen'
                 ? 'navbar__btn--active' : 'navbar__btn--inactive'}`} onClick={() => handleScreenChange('ProgressScreen')}><NavProgress />Progress</button>
             <button className={`navbar__btn ${currentScreen === 'ProfileScreen' ? 'navbar__btn--active' : 'navbar__btn--inactive'}`} onClick={() => handleScreenChange('ProfileScreen')}><NavUser />Profile</button>

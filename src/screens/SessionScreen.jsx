@@ -327,6 +327,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
         let exercisesNewPRs = {};
         let totalPRs = 0;
         let totalVolume = 0;
+        let totalReps = 0;
         console.log('filteredExercises:', filteredExercises)
         const workoutHistoryExercises = [
             ...filteredExercises.map(exercise => {
@@ -367,9 +368,12 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                             }
 
                             const value = getPRValue(set);
-                            //total volume for workout
+                            //total volume + reps for workout
                             if (prKey === 'volume') {
                                 totalVolume += value;
+                            }
+                            if (prKey === 'reps') {
+                                totalReps += value;
                             }
                             //identifying best set in exercise
                             if (value === highestValue && !assigned && prKey === exerciseData.prMetric) {
@@ -409,6 +413,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                                 exercises: workoutHistoryExercises,
                                 PRs: totalPRs,
                                 volume: totalVolume,
+                                reps: totalReps,
                             }
                         }
                         else return history

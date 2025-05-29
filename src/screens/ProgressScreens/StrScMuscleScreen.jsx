@@ -6,35 +6,40 @@ import RowStrengthScore from '../../components/Cards/ProgressScreen/RowStrSc.jsx
 import CardStrScMuscle from '../../components/Cards/ProgressScreen/CardStrScMuscle.jsx'
 import Navbar from '../../components/Navbar.jsx'
 import { RoutingContext } from '../../App.jsx'
+import { useData } from '../../DataContext.jsx'
 
-function StrScMuscleScreen() {
-    const { handleScreenChange } = React.useContext(RoutingContext)
+function StrScMuscleScreen({ musclesThresholdBrackets, muscleGroup }) {
+    const { handleScreenChange, handleStrScScreenChange } = React.useContext(RoutingContext)
+    const data = useData()
 
     return (
         <div className='strength-score-sub-screen__container'>
             <Navbar />
             <div className='header'>
                 <ButtonSmall type='backScreen' onClick={() => handleScreenChange('StrScFullBodyScreen')} />
-                <h2>Glute Strength Score</h2>
+                <h2>{muscleGroup} Strength Score</h2>
             </div>
 
             <div className='main main--exercise-screen'>
-                <CardStrScMuscle >
-                    <AnatomyBack height={215} width={75.85} />
+                <CardStrScMuscle strengthScore={`${Math.max(...Object.values(data.strengthScores[muscleGroup]))} (${musclesThresholdBrackets[muscleGroup].charAt(0).toUpperCase() + musclesThresholdBrackets[muscleGroup].slice(1)})`} >
+                    {muscleGroup === "Shoulders" ||
+                        muscleGroup === "Chest" ||
+                        muscleGroup === "Biceps" ||
+                        muscleGroup === "Abs" ||
+                        muscleGroup === "Quads" ?
+                        <AnatomyFront height={215} width={75.85} musclesThresholdBrackets={musclesThresholdBrackets} />
+                        : <AnatomyBack height={215} width={75.85} musclesThresholdBrackets={musclesThresholdBrackets} />}
                 </CardStrScMuscle>
 
                 <div className='container-rows-strength-scores'>
                     <div className='container-rows-strength-scores__header'>
                         <h3>Eligible Exercises</h3>
-                        <ButtonSmall type='viewAll' onClick={() => handleScreenChange('StrScExercisesScreen')} >
-                            View All</ButtonSmall>
                     </div>
-                    <RowStrengthScore muscleGroup='Shoulders' score={20} type='exercise-1' />
-                    <RowStrengthScore muscleGroup='Chest' score={20} type='exercise-1' />
-                    <RowStrengthScore muscleGroup='Arms' score={20} type='exercise-1' />
-                    <RowStrengthScore muscleGroup='Back' score={20} type='exercise-1' />
-                    <RowStrengthScore muscleGroup='Legs' score={20} type='exercise-1' />
-                    <RowStrengthScore muscleGroup='Glutes' score={20} type='exercise-1' />
+
+                    {Object.entries(data.strengthScores[muscleGroup]).map(([exercise, strengthScore]) => {
+                        return <RowStrengthScore muscleGroup={exercise} score={strengthScore} type='exercise-1' onClick={() => handleStrScScreenChange('StrScExerciseScreen', musclesThresholdBrackets, muscleGroup, exercise)} />
+                    }
+                    )}
                 </div>
             </div>
 

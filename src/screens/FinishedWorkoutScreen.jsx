@@ -26,6 +26,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
     let exercisesNewPRs = {};
     let totalPRs = 0;
     let totalVolume = 0;
+    let totalReps = 0;
     const totalNumberOfWorkouts = React.useRef(data.history.length)
     const workoutHistory = generateHistory()
 
@@ -296,9 +297,12 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                             }
 
                             const value = getPRValue(set);
-                            //total volume for workout
+                            //total volume + reps for workout
                             if (prKey === 'volume') {
                                 totalVolume += value;
+                            }
+                            if (prKey === 'reps') {
+                                totalReps += value;
                             }
                             //identifying best set in exercise
                             if (value === highestValue && !assigned && prKey === exerciseData.prMetric) {
@@ -339,6 +343,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
             exercises: workoutHistoryExercises,
             PRs: totalPRs,
             volume: totalVolume,
+            reps: totalReps,
         }
     }
 

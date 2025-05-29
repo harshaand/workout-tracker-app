@@ -10,13 +10,14 @@ import FinishedWorkoutScreen from './screens/FinishedWorkoutScreen.jsx'
 
 import StrScFullBodyScreen from './screens/ProgressScreens/StrScFullBodyScreen.jsx'
 import StrScMuscleScreen from './screens/ProgressScreens/StrScMuscleScreen.jsx'
-import StrScExercisesScreen from './screens/ProgressScreens/StrScExercisesScreen.jsx'
 import StrScExerciseScreen from './screens/ProgressScreens/StrScExerciseScreen.jsx'
 import { DataProvider } from './DataContext.jsx'
 
 export const RoutingContext = React.createContext({
   currentScreen: 'NOT INITIALISED YET',
-  handleScreenChange: () => { throw new Error('routing not initialised yet') }
+  handleScreenChange: () => { throw new Error('routing not initialised yet') },
+  handleStrScScreenChange: () => { throw new Error('routing not initialised yet') }
+
 })
 
 function App() {
@@ -33,6 +34,12 @@ function App() {
     screenVariant: undefined,
     duration: undefined,
     notes: undefined
+  });
+
+  let StrScScreen_data = React.useRef({
+    musclesThresholdBrackets: undefined,
+    muscleGroup: undefined,
+    exercise: undefined,
   });
 
   let SessionScreenData = React.useRef({
@@ -64,16 +71,22 @@ function App() {
       />;
       break;
     case 'StrScFullBodyScreen':
-      ScreenComponent = <StrScFullBodyScreen />;
+      console.log('musclesThresholdBrackets2222', StrScScreen_data.current.musclesThresholdBrackets)
+      ScreenComponent = <StrScFullBodyScreen
+        musclesThresholdBrackets={StrScScreen_data.current.musclesThresholdBrackets} />;
       break;
     case 'StrScMuscleScreen':
-      ScreenComponent = <StrScMuscleScreen />;
-      break;
-    case 'StrScExercisesScreen':
-      ScreenComponent = <StrScExercisesScreen />;
+      ScreenComponent = <StrScMuscleScreen
+        musclesThresholdBrackets={StrScScreen_data.current.musclesThresholdBrackets}
+        muscleGroup={StrScScreen_data.current.muscleGroup}
+      />;
       break;
     case 'StrScExerciseScreen':
-      ScreenComponent = <StrScExerciseScreen />;
+      ScreenComponent = <StrScExerciseScreen
+        musclesThresholdBrackets={StrScScreen_data.current.musclesThresholdBrackets}
+        muscleGroup={StrScScreen_data.current.muscleGroup}
+        exercise={StrScScreen_data.current.exercise}
+      />;
       break;
     case 'FinishedWorkoutScreen':
       ScreenComponent = <FinishedWorkoutScreen
@@ -91,8 +104,6 @@ function App() {
     default:
       throw new Error('Unknown screen ' + currentScreen)
   }
-  //(newScreen, oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration, notes)
-  //(newScreen, template, screenVariant, oldExercises, newExercises, templateId, workoutId, currentDate, duration, notes)
 
   function handleScreenChange(newScreen, template, screenVariant, oldExercises, newExercises, templateId, workoutId, currentDate, duration, notes) {
     if (newScreen === 'FinishedWorkoutScreen') {
@@ -114,9 +125,17 @@ function App() {
 
   }
 
+
+  function handleStrScScreenChange(newScreen, musclesThresholdBrackets, muscleGroup, exercise) {
+    StrScScreen_data.current.musclesThresholdBrackets = musclesThresholdBrackets;
+    StrScScreen_data.current.muscleGroup = muscleGroup;
+    StrScScreen_data.current.exercise = exercise;
+    setCurrentScreen(newScreen)
+  }
+
   return (
     <DataProvider>
-      <RoutingContext.Provider value={{ currentScreen, handleScreenChange: handleScreenChange }}>
+      <RoutingContext.Provider value={{ currentScreen, handleScreenChange: handleScreenChange, handleStrScScreenChange: handleStrScScreenChange }}>
         {ScreenComponent}
       </RoutingContext.Provider>
     </DataProvider>
