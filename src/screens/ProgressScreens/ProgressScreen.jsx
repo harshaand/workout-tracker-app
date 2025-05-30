@@ -86,6 +86,42 @@ export default function ProgressScreen() {
         }));
     };
 
+    const [searchTerm, setSearchTerm] = React.useState('');
+
+    // Get all exercise names
+    const getAllExercises = () => {
+        const exercises = [];
+        for (const muscleGroup in data.strengthScores) {
+            for (const exercise in data.strengthScores[muscleGroup]) {
+                exercises.push(exercise);
+            }
+        }
+        return exercises;
+    };
+
+    // Filter exercises based on search term
+    const filteredExercises = getAllExercises()
+        .filter(exercise => exercise.toLowerCase().includes(searchTerm.toLowerCase()))
+        .map(exercise => ({
+            name: exercise,
+            percentage: searchTerm.length > 0 ? (searchTerm.length / exercise.length) * 100 : 0
+        }))
+        .sort((a, b) => b.percentage - a.percentage)
+        .map(item => item.name);
+
+    // Function to highlight search term in exercise name
+    function highlightSearchTerm(exerciseName) {
+        if (!searchTerm) return exerciseName;
+
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        const parts = exerciseName.split(regex);
+
+        return parts.map((part, index) =>
+            regex.test(part) ?
+                <span key={index} className="highlighted">{part}</span> :
+                part
+        );
+    };
     return (
         <>
             <Navbar />
@@ -125,13 +161,25 @@ export default function ProgressScreen() {
                             <div className='container-header'>
                                 <div className='search-bar'>
                                     <Search />
-                                    <input type="text" name="" id="" placeholder='Bench Press' />
+                                    <input type="text" name="" id="" placeholder='Bench Press' value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)} />
                                 </div>
                             </div>
 
                             <div className='container-exercises'>
-                                {
-                                    Object.entries(data.strengthScores).map(([muscleGroup, exercises]) => (
+                                {searchTerm.length > 0 ? (
+                                    <div className='container-exercise-rows--search'>
+                                        <div className={'container-rows-exercises search-container-rows-exercises'}>
+                                            {filteredExercises.map((exercise, index) => (
+                                                <div className='row-exercise animate-fadeIn' onClick={(e) => handleStrScScreenChange('HistoryExerciseScreen', undefined, undefined, exercise)}>
+                                                    <div className='image'></div>
+                                                    <h5>{highlightSearchTerm(exercise)}</h5>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ) :
+                                    (Object.entries(data.strengthScores).map(([muscleGroup, exercises]) => (
                                         <div className='row-muscle-group' onClick={(e) => toggleSection(muscleGroup, e)}>
                                             <div className='text-and-btn'>
                                                 <h4>{muscleGroup}</h4>
@@ -148,7 +196,7 @@ export default function ProgressScreen() {
                                             </div>
                                         </div>
                                     ))
-                                }
+                                    )}
                             </div>
                         </div>
                     </div>

@@ -570,7 +570,80 @@ const dataObject = {
             thumbnail: '',
             instructions: { media: '', text: '' },
             history: []
+        },
+        {
+            name: 'q',
+            prMetric: 'reps',
+            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+            thresholds: {
+                male: { beginner: 0.75, novice: 1.25, intermediate: 1.5, advanced: 2.25, elite: 2.75 },
+                female: { beginner: 0.5, novice: 0.75, intermediate: 1.25, advanced: 1.5, elite: 2 }
+            },
+            thumbnail: '',
+            instructions: { media: '', text: '' },
+            history: []
+        },
+        {
+            name: 'qq',
+            prMetric: 'reps',
+            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+            thresholds: {
+                male: { beginner: 0.75, novice: 1.25, intermediate: 1.5, advanced: 2.25, elite: 2.75 },
+                female: { beginner: 0.5, novice: 0.75, intermediate: 1.25, advanced: 1.5, elite: 2 }
+            },
+            thumbnail: '',
+            instructions: { media: '', text: '' },
+            history: []
+        },
+        {
+            name: 'qqq',
+            prMetric: 'reps',
+            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+            thresholds: {
+                male: { beginner: 0.75, novice: 1.25, intermediate: 1.5, advanced: 2.25, elite: 2.75 },
+                female: { beginner: 0.5, novice: 0.75, intermediate: 1.25, advanced: 1.5, elite: 2 }
+            },
+            thumbnail: '',
+            instructions: { media: '', text: '' },
+            history: []
+        },
+        {
+            name: 'qqqq',
+            prMetric: 'reps',
+            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+            thresholds: {
+                male: { beginner: 0.75, novice: 1.25, intermediate: 1.5, advanced: 2.25, elite: 2.75 },
+                female: { beginner: 0.5, novice: 0.75, intermediate: 1.25, advanced: 1.5, elite: 2 }
+            },
+            thumbnail: '',
+            instructions: { media: '', text: '' },
+            history: []
+        },
+        {
+            name: 'qqqqq',
+            prMetric: 'reps',
+            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+            thresholds: {
+                male: { beginner: 0.75, novice: 1.25, intermediate: 1.5, advanced: 2.25, elite: 2.75 },
+                female: { beginner: 0.5, novice: 0.75, intermediate: 1.25, advanced: 1.5, elite: 2 }
+            },
+            thumbnail: '',
+            instructions: { media: '', text: '' },
+            history: []
+        },
+        {
+            name: 'qqqqqq',
+            prMetric: 'reps',
+            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+            thresholds: {
+                male: { beginner: 0.75, novice: 1.25, intermediate: 1.5, advanced: 2.25, elite: 2.75 },
+                female: { beginner: 0.5, novice: 0.75, intermediate: 1.25, advanced: 1.5, elite: 2 }
+            },
+            thumbnail: '',
+            instructions: { media: '', text: '' },
+            history: []
         }
+
 
 
     ],
@@ -580,12 +653,12 @@ const dataObject = {
         'Back': { 'Back Squat': 1, 'Hip Thrust': 30 },
         'Biceps': { 'Back Squat': 1, 'Hip Thrust': 30 },
         'Triceps': { 'Back Squat': 1, 'Hip Thrust': 27 },
-        'Lower Back': { 'Back Squat': 1, 'Hip Thrust': 8 },
-        'Abs': { 'Back Squat': 1, 'Hip Thrust': 15 },
-        'Glutes': { 'Back Squat': 1, 'Hip Thrust': 60 },
-        'Quads': { 'Back Squat': 1, 'Hip Thrust': 40 },
-        'Hamstrings': { 'Back Squat': 1, 'Hip Thrust': 50 },
-        'Calves': { 'Back Squat': 1, 'Hip Thrust': 20 }
+        'Lower Back': { 'Back Squat': 1, 'q': 8 },
+        'Abs': { 'q': 1, 'qq': 15 },
+        'Glutes': { 'qq': 1, 'qqq': 60 },
+        'Quads': { 'qqq': 1, 'qqqq': 40 },
+        'Hamstrings': { 'qqqq': 1, 'qqqqq': 50 },
+        'Calves': { 'qqqqq': 1, 'qqqqq': 20 }
     }
 
 }
