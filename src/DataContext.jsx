@@ -493,12 +493,60 @@ const dataObject = {
                     currentWeight: 88,
                     currentPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
                     newPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
-                    date: '1/1/2025',
+                    date: new Date(2025, 0, 1),
                     workoutId: 90210,
                     sets: [
                         { weight: 5, reps: 1, PRs: { '1RM': true, weight: true, reps: false, vol: false } },
                         { weight: 3, reps: 3, PRs: { '1RM': false, weight: false, reps: false, vol: true } },
-                        { weight: 1, reps: 4, PRs: { '1RM': false, weight: false, reps: true, vol: false } }
+                        { weight: 1, reps: 4, PRs: { '1RM': false, weight: false, reps: false, vol: false } }
+                    ]
+                },
+                {
+                    currentWeight: 88,
+                    currentPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                    newPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                    date: new Date(2025, 2, 1),
+                    workoutId: 90210,
+                    sets: [
+                        { weight: 5, reps: 1, PRs: { '1RM': true, weight: true, reps: false, vol: false } },
+                        { weight: 3, reps: 3, PRs: { '1RM': false, weight: false, reps: false, vol: true } },
+                        { weight: 1, reps: 4, PRs: { '1RM': false, weight: false, reps: false, vol: false } }
+                    ]
+                },
+                {
+                    currentWeight: 88,
+                    currentPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                    newPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                    date: new Date(2025, 5, 1),
+                    workoutId: 90210,
+                    sets: [
+                        { weight: 5, reps: 1, PRs: { '1RM': true, weight: true, reps: false, vol: false } },
+                        { weight: 3, reps: 3, PRs: { '1RM': false, weight: false, reps: false, vol: true } },
+                        { weight: 1, reps: 4, PRs: { '1RM': false, weight: false, reps: false, vol: false } }
+                    ]
+                },
+                {
+                    currentWeight: 88,
+                    currentPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                    newPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                    date: new Date(2025, 0, 5),
+                    workoutId: 90210,
+                    sets: [
+                        { weight: 5, reps: 1, PRs: { '1RM': true, weight: true, reps: false, vol: false } },
+                        { weight: 3, reps: 3, PRs: { '1RM': false, weight: false, reps: false, vol: true } },
+                        { weight: 1, reps: 4, PRs: { '1RM': false, weight: false, reps: false, vol: false } }
+                    ]
+                },
+                {
+                    currentWeight: 88,
+                    currentPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                    newPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                    date: new Date(2025, 9, 10),
+                    workoutId: 90210,
+                    sets: [
+                        { weight: 5, reps: 1, PRs: { '1RM': true, weight: true, reps: false, vol: false } },
+                        { weight: 3, reps: 3, PRs: { '1RM': false, weight: false, reps: false, vol: true } },
+                        { weight: 1, reps: 4, PRs: { '1RM': false, weight: false, reps: false, vol: false } }
                     ]
                 }
             ]

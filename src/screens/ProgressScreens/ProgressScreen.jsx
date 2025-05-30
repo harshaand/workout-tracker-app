@@ -1,6 +1,7 @@
 import React from 'react';
-import { AnatomyFront, AnatomyBack, Calendar, TrophyLarge, Bicep, Streak, WeightLarge } from '../../assets/icons/icons.js'
+import { AnatomyFront, AnatomyBack, Calendar, TrophyLarge, Bicep, Streak, WeightLarge, Search, ArrowDown, Tick } from '../../assets/icons/icons.js'
 import ButtonBig from '../../components/Buttons/ButtonBig.jsx'
+import ButtonSmall from '../../components/Buttons/ButtonSmall.jsx';
 import Navbar from '../../components/Navbar.jsx'
 import CardStrScOverview from '../../components/Cards/ProgressScreen/CardStrScOverview.jsx'
 import CardsStrScStats from '../../components/Cards/ProgressScreen/CardsStrScStats.jsx'
@@ -76,6 +77,14 @@ export default function ProgressScreen() {
         musclesThresholdBrackets.current = { ...musclesThresholdBrackets.current, [muscleGroup]: findHighestBracket(exercisesBrackets) }
     })
 
+    const [openSections, setOpenSections] = React.useState({});
+
+    const toggleSection = (sectionName) => {
+        setOpenSections(prev => ({
+            ...prev,
+            [sectionName]: !prev[sectionName]
+        }));
+    };
 
     return (
         <>
@@ -101,23 +110,50 @@ export default function ProgressScreen() {
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                     <div className="wrapper-screen">
-
                         <div className='container-progress-screen'>
-
                             <CardStrScOverview onClick={() => handleStrScScreenChange('StrScFullBodyScreen', musclesThresholdBrackets.current, undefined, undefined)}>
                                 <AnatomyFront height={170} width={59} musclesThresholdBrackets={musclesThresholdBrackets.current} />
                                 <AnatomyBack height={170} width={60} opacity={20} musclesThresholdBrackets={musclesThresholdBrackets.current} />
                             </CardStrScOverview>
                             <CardsStrScStats streak='1 week' PBs={totalPRs} workouts={totalWorkouts} volume={totalVolume} reps={totalReps} />
-
                         </div>
-
                     </div>
-
 
                     <div className="wrapper-screen">
-                        <h1 >Container 2</h1>
+                        <div className='exercises'>
+
+                            <div className='container-header'>
+                                <div className='search-bar'>
+                                    <Search />
+                                    <input type="text" name="" id="" placeholder='Bench Press' />
+                                </div>
+                            </div>
+
+                            <div className='container-exercises'>
+                                {
+                                    Object.entries(data.strengthScores).map(([muscleGroup, exercises]) => (
+                                        <div className='row-muscle-group' onClick={(e) => toggleSection(muscleGroup, e)}>
+                                            <div className='text-and-btn'>
+                                                <h4>{muscleGroup}</h4>
+                                                <div className={`dropdown-arrow ${openSections[muscleGroup] ? 'rotated' : ''}`} ><ArrowDown /></div>
+                                            </div>
+
+                                            <div className={`container-rows-exercises ${openSections[muscleGroup] ? 'show-container-rows-exercises' : ''}`}>
+                                                {Object.entries(exercises).map(([exercise, strengthScore]) => (
+                                                    <div className='row-exercise' onClick={(e) => handleStrScScreenChange('HistoryExerciseScreen', undefined, undefined, exercise)}>
+                                                        <div className='image'></div>
+                                                        <h5>{exercise}</h5>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>
                     </div>
+
+
                 </div>
 
                 {/* <style jsx>{`div::-webkit-scrollbar {display: none;}`}</style> */}

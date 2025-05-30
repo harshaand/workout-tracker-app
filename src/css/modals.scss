@@ -541,7 +541,7 @@
         justify-content: flex-start;
         gap: 0;
         padding: 0;
-        margin: 0;
+        margin: 6px 0 8px 0;
         width: 100%;
         height: fit-content;
         overflow-y: auto;
@@ -552,10 +552,10 @@
             flex-direction: column;
             align-items: flex-start;
             justify-content: center;
-            gap: 6px;
+            gap: 0;
             width: 100%;
             height: fit-content;
-            padding: 16px 0 10px 0;
+            padding: 0 0 8px 0;
 
             h4 {
                 margin: 0;

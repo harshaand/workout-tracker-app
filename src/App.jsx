@@ -11,6 +11,8 @@ import FinishedWorkoutScreen from './screens/FinishedWorkoutScreen.jsx'
 import StrScFullBodyScreen from './screens/ProgressScreens/StrScFullBodyScreen.jsx'
 import StrScMuscleScreen from './screens/ProgressScreens/StrScMuscleScreen.jsx'
 import StrScExerciseScreen from './screens/ProgressScreens/StrScExerciseScreen.jsx'
+import HistoryExerciseScreen from './screens/ProgressScreens/HistoryExerciseScreen.jsx'
+
 import { DataProvider } from './DataContext.jsx'
 
 export const RoutingContext = React.createContext({
@@ -85,6 +87,11 @@ function App() {
       ScreenComponent = <StrScExerciseScreen
         musclesThresholdBrackets={StrScScreen_data.current.musclesThresholdBrackets}
         muscleGroup={StrScScreen_data.current.muscleGroup}
+        exercise={StrScScreen_data.current.exercise}
+      />;
+      break;
+    case 'HistoryExerciseScreen':
+      ScreenComponent = <HistoryExerciseScreen
         exercise={StrScScreen_data.current.exercise}
       />;
       break;
