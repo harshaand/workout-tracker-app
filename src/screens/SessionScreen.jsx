@@ -165,6 +165,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
     }
 
     function addExercises(exercises) {
+        exercises = [...new Set(exercises)]
         exercises.forEach(selectedExercise => {
             const weight = data.exercises.find(exercise => exercise.name === selectedExercise).history?.at(-1)?.sets?.at(0)?.weight
             const reps = data.exercises.find(exercise => exercise.name === selectedExercise).history?.at(-1)?.sets?.at(0)?.reps

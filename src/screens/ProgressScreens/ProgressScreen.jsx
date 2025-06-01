@@ -77,14 +77,27 @@ export default function ProgressScreen() {
         musclesThresholdBrackets.current = { ...musclesThresholdBrackets.current, [muscleGroup]: findHighestBracket(exercisesBrackets) }
     })
 
-    const [openSections, setOpenSections] = React.useState({});
+    const openSections = React.useRef(Object.fromEntries(
+        Object.keys(data.strengthScores).map(key => [key, false])
+    ))
 
-    const toggleSection = (sectionName) => {
-        setOpenSections(prev => ({
-            ...prev,
-            [sectionName]: !prev[sectionName]
-        }));
-    };
+    const toggleSection = (sectionName, event) => {
+        event.preventDefault(); // Prevent form submission
+        openSections.current = {
+            ...openSections.current,
+            [sectionName]: !openSections.current[sectionName]
+        };
+        const el = document.getElementById(sectionName)
+        const elDropdownArrow = document.getElementById(`${sectionName}-dropdown-arrow`)
+        if (openSections.current[sectionName] === true) {
+            el.style.height = el.scrollHeight + 'px';
+            elDropdownArrow.classList.add('rotated')
+
+        } else {
+            el.style.height = '0px';
+            elDropdownArrow.classList.remove('rotated')
+        }
+    }
 
     const [searchTerm, setSearchTerm] = React.useState('');
 
@@ -100,7 +113,7 @@ export default function ProgressScreen() {
     };
 
     // Filter exercises based on search term
-    const filteredExercises = getAllExercises()
+    const filteredExercises = [...new Set(getAllExercises())]
         .filter(exercise => exercise.toLowerCase().includes(searchTerm.toLowerCase()))
         .map(exercise => ({
             name: exercise,
@@ -168,25 +181,23 @@ export default function ProgressScreen() {
 
                             <div className='container-exercises'>
                                 {searchTerm.length > 0 ? (
-                                    <div className='container-exercise-rows--search'>
-                                        <div className={'container-rows-exercises search-container-rows-exercises'}>
-                                            {filteredExercises.map((exercise, index) => (
-                                                <div className='row-exercise animate-fadeIn' onClick={(e) => handleStrScScreenChange('HistoryExerciseScreen', undefined, undefined, exercise)}>
-                                                    <div className='image'></div>
-                                                    <h5>{highlightSearchTerm(exercise)}</h5>
-                                                </div>
-                                            ))}
-                                        </div>
+                                    <div className={'container-rows-exercises container-rows-exercises--search'}>
+                                        {filteredExercises.map((exercise, index) => (
+                                            <div className='row-exercise animate-fadeIn' onClick={(e) => handleStrScScreenChange('HistoryExerciseScreen', undefined, undefined, exercise)}>
+                                                <div className='image'></div>
+                                                <h5>{highlightSearchTerm(exercise)}</h5>
+                                            </div>
+                                        ))}
                                     </div>
                                 ) :
                                     (Object.entries(data.strengthScores).map(([muscleGroup, exercises]) => (
                                         <div className='row-muscle-group' onClick={(e) => toggleSection(muscleGroup, e)}>
                                             <div className='text-and-btn'>
                                                 <h4>{muscleGroup}</h4>
-                                                <div className={`dropdown-arrow ${openSections[muscleGroup] ? 'rotated' : ''}`} ><ArrowDown /></div>
+                                                <div id={`${muscleGroup}-dropdown-arrow`} key={`${muscleGroup}-dropdown-arrow`} className="dropdown-arrow" ><ArrowDown /></div>
                                             </div>
 
-                                            <div className={`container-rows-exercises ${openSections[muscleGroup] ? 'show-container-rows-exercises' : ''}`}>
+                                            <div id={muscleGroup} key={muscleGroup} className={"container-rows-exercises container-rows-exercises--default"}>
                                                 {Object.entries(exercises).map(([exercise, strengthScore]) => (
                                                     <div className='row-exercise' onClick={(e) => handleStrScScreenChange('HistoryExerciseScreen', undefined, undefined, exercise)}>
                                                         <div className='image'></div>

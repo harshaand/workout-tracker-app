@@ -457,6 +457,7 @@
     padding: 0;
     background-color: var(--white);
     height: fit-content;
+    min-height: 400px;
     max-height: 692px;
     width: 361px;
     border-radius: var(--modal-border-radius);
@@ -556,15 +557,9 @@
             width: 100%;
             height: fit-content;
             padding: 0 0 8px 0;
+            cursor: pointer;
 
             h4 {
-                margin: 0;
-                padding: 0;
-                color: var(--text-color-heading-2);
-            }
-
-            h5 {
-                flex: 1;
                 margin: 0;
                 padding: 0;
                 color: var(--text-color-heading-2);
@@ -591,8 +586,7 @@
                     border: none;
                     border-radius: 8px;
                     cursor: pointer;
-                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-
+                    transition: all 0.3s ease-in;
                 }
 
                 .rotated {
@@ -600,64 +594,114 @@
                 }
 
             }
+        }
 
-            .container-rows-exercises {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
+        .container-rows-exercises {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: height 0.3s ease-in;
+
+            h5 {
+                flex: 1;
+                margin: 0;
+                padding: 0;
+                color: var(--text-color-heading-2);
+            }
+
+            &--default {
                 justify-content: flex-start;
                 gap: 0;
                 width: 100%;
-                max-height: 0;
+                height: 0px;
                 margin: 0;
                 padding: 0;
                 overflow: hidden;
-                transition: max-height 0.3s ease-in;
+            }
 
+            &--search {
+                justify-content: flex-start;
+                gap: 6px;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 16px 0 10px 0;
+                box-sizing: border-box;
 
-                .row-exercise {
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    gap: 12px;
-                    padding: 6px 24px 6px 32px;
-                    width: 100%;
-                    height: fit-content;
-                    box-sizing: border-box;
+            }
 
-                    .image {
-                        height: 44px;
-                        width: 44px;
-                        background-color: red;
-                    }
-
-                    .checked-icon {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        border: none;
-                        border-radius: 8px;
-                        font-size: var(--body-text);
-                        font-weight: 600;
-                    }
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(8px);
                 }
 
-                label {
-                    transition: all 0.1s ease;
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
                 }
+            }
 
-                label:has(input[type="checkbox"]:checked) {
+            .animate-fadeIn {
+                animation: fadeIn 0.3s ease-out forwards;
+            }
+
+
+            .row-exercise {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 12px;
+                padding: 6px 24px 6px 32px;
+                width: 100%;
+                height: fit-content;
+                min-height: fit-content;
+                box-sizing: border-box;
+                cursor: pointer;
+
+                &--checked {
                     background-color: var(--blue-light);
                 }
 
+                .image {
+                    height: 44px;
+                    width: 44px;
+                    background-color: red;
+                }
 
+                .checked-icon {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: var(--body-text);
+                    font-weight: 600;
+                }
 
+                &:hover {
+                    background-color: var(--blue-light);
+                }
+
+                // &:active {
+                //     background-color: var(--blue-medium-light);
+                // }
+
+                .highlighted {
+                    background-color: var(--blue-light-dark);
+                }
             }
 
-            .show-container-rows-exercises {
-                max-height: 200px;
-                transition: max-height 0.3s ease-in;
+            label {
+                transition: background-color 0.1s ease;
             }
+
+            // label:has(input[type="checkbox"]:checked) {
+            //     background-color: var(--blue-light);
+            // }
+
+
+
         }
     }
 }
