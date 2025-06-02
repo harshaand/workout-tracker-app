@@ -110,7 +110,7 @@ function TemplatesScreen() {
                                             <ModalSessionOverview template={template} selectedModal={selectedTemplateOverviewModal}
                                                 setSelectedModal={setSelectedTemplateOverviewModal}
                                                 handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
-                                                handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', { ...template }, 'editTemplate')} />
+                                                handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
                                         </>
                                     ))}
                                 </div>

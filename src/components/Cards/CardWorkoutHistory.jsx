@@ -10,13 +10,13 @@ import {
 
 
 
-function CardWorkoutHistory({ history, customClasses }) {
+function CardWorkoutHistory({ history, customClasses, onClick }) {
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
-    function formatTime(totalSeconds) {
+    function formatDuration(totalSeconds) {
         const hrs = Math.floor(totalSeconds / 3600);
         const mins = Math.floor((totalSeconds % 3600) / 60);
         const secs = totalSeconds % 60;
@@ -33,7 +33,7 @@ function CardWorkoutHistory({ history, customClasses }) {
 
     };
     return (
-        <div className={`card-workout-history ${customClasses ? customClasses : 'card-workout-history--default'}`}>
+        <div className={`card-workout-history ${customClasses ? customClasses : 'card-workout-history--default'}`} onClick={onClick}>
             <ButtonSmall type='options1' customClasses='options-button'></ButtonSmall>
             <div className='heading'><h3>{history.name}</h3></div>
 
@@ -43,7 +43,7 @@ function CardWorkoutHistory({ history, customClasses }) {
                 <div className='stats'>
                     <div className='stat duration'>
                         <Clock />
-                        <p>{formatTime(history.duration)}</p>
+                        <p>{formatDuration(history.duration)}</p>
                     </div>
                     <div className='stat volume'>
                         <Weight />

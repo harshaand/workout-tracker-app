@@ -23,12 +23,16 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
     let modalComponent;
     let updateTemplateButton = null;
 
-    let exercisesNewPRs = {};
+    const exercisesNewPRs = React.useRef({});
     let totalPRs = 0;
     let totalVolume = 0;
     let totalReps = 0;
     const totalNumberOfWorkouts = React.useRef(data.history.length)
-    const workoutHistory = generateHistory()
+    //Lazy init to make sure workoutHistory is only init once & generateHistory() is only run once
+    const workoutHistory = React.useRef(null);
+    if (workoutHistory.current === null) {
+        workoutHistory.current = generateHistory();
+    }
 
     React.useEffect(() => {
         const timer = setTimeout(() => {
@@ -263,8 +267,8 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 const exerciseData = data.exercises.find(ex => ex.name === exerciseName)
 
                 if (exerciseData) {
-                    exercisesNewPRs = {
-                        ...exercisesNewPRs,
+                    exercisesNewPRs.current = {
+                        ...exercisesNewPRs.current,
                         [exerciseName]: { ...exerciseData.PRs }
                     }
                     const prKeys = Object.keys(exerciseData.PRs);
@@ -312,9 +316,9 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                             if (value === highestValue && !assigned && value > exerciseData.PRs[prKey]) {
                                 set.PRs[prKey] = true;
                                 assigned = true;
-                                exercisesNewPRs = {
-                                    ...exercisesNewPRs,
-                                    [exerciseName]: { ...exercisesNewPRs[exerciseName], [prKey]: value }
+                                exercisesNewPRs.current = {
+                                    ...exercisesNewPRs.current,
+                                    [exerciseName]: { ...exercisesNewPRs.current[exerciseName], [prKey]: value }
                                 }
                                 totalPRs++
                             } else {
@@ -355,7 +359,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
                 history: [
                     ...prevData.history,
-                    workoutHistory
+                    workoutHistory.current
                 ],
             }
 
@@ -365,8 +369,8 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
         //--------------------------UPDATING EXERCISE OBJECT--------------------------
         let updatedExerciseObjects = {}
-        console.log('workoutHistoryExercises 2!!!', workoutHistory.exercises)
-        workoutHistory.exercises.forEach(exercise => {
+        console.log('workoutHistoryExercises 2!!!', workoutHistory.current.exercises)
+        workoutHistory.current.exercises.forEach(exercise => {
             const exerciseName = exercise.name;
             const exerciseData = data.exercises.find(ex => ex.name === exerciseName);
             const history = exerciseData.history.find(history => history.workoutId === workoutId);
@@ -376,7 +380,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     ...updatedExerciseObjects,
                     [exerciseName]: {
                         ...history,
-                        newPRs: exercisesNewPRs[exerciseName],
+                        newPRs: exercisesNewPRs.current[exerciseName],
                         sets: [
                             ...history.sets,
                             ...exercise.sets.map(set => (
@@ -395,7 +399,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     [exerciseName]: {
                         currentWeight: userCurrentWeight,
                         currentPRs: exerciseData.PRs,
-                        newPRs: exercisesNewPRs[exerciseName],
+                        newPRs: exercisesNewPRs.current[exerciseName],
                         date: currentDate,
                         workoutId: workoutId,
                         sets: [
@@ -420,7 +424,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
                             return {
                                 ...exercise,
-                                PRs: exercisesNewPRs[exercise.name],
+                                PRs: exercisesNewPRs.current[exercise.name],
                                 history: exercise.history.find(history => history.workoutId === workoutId) ?
                                     [...exercise.history.map(history => {
                                         if (history.workoutId === workoutId) {
@@ -568,7 +572,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 </div>
 
                 <div className='container-template-card'>
-                    <CardWorkoutHistory history={workoutHistory} customClasses='card-workout-history-finished-workout-screen' />
+                    <CardWorkoutHistory history={workoutHistory.current} customClasses='card-workout-history-finished-workout-screen' />
                 </div>
             </div>
 

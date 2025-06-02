@@ -108,12 +108,12 @@ const dataObject = {
     ],
     history: [
         {
-            id: '4213313',
+            id: '100',
             name: 'Supreme Back workout history',
             duration: 3780,
             notes: 'Wore lifting shoes',
 
-            workoutId: 90210,
+            workoutId: 1,
             date: new Date(2025, 2, 17, 14, 30, 30),
             volume: 100,
             reps: 10,
@@ -127,7 +127,7 @@ const dataObject = {
                     sets:
                         [
                             {
-                                id: '0plkjn',
+                                id: '100',
                                 value: 1,
                                 num: 1,
                                 weight: 96,
@@ -137,13 +137,111 @@ const dataObject = {
                                 bestSet: false
                             },
                             {
-                                id: '876tg',
+                                id: '101',
                                 value: 2,
                                 num: 2,
                                 weight: 10,
                                 reps: 20,
                                 completed: true,
-                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: true
+                            },
+                            {
+                                id: '102',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: true
+                            },
+                            {
+                                id: '103',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: true
+                            }, {
+                                id: '104',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: true
+                            },
+                            {
+                                id: '104',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: true
+                            },
+                            {
+                                id: '104',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: true
+                            },
+                            {
+                                id: '104',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: true
+                            },
+                            {
+                                id: '104',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: true
+                            },
+                            {
+                                id: '104',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: true
+                            },
+                            {
+                                id: '104',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: true
+                            }, {
+                                id: '104',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
                                 bestSet: true
                             }
                         ]
@@ -171,7 +269,7 @@ const dataObject = {
                                 weight: 666,
                                 reps: 666,
                                 completed: true,
-                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
                                 bestSet: false
                             },
                             {
@@ -181,7 +279,7 @@ const dataObject = {
                                 weight: 10,
                                 reps: 20,
                                 completed: true,
-                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
                                 bestSet: false
                             }
                             ,
@@ -192,7 +290,167 @@ const dataObject = {
                                 weight: 666,
                                 reps: 666,
                                 completed: true,
-                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
+                                bestSet: false
+                            },
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': false, weight: false, reps: false, volume: false },
                                 bestSet: false
                             }
                         ]
@@ -200,12 +458,12 @@ const dataObject = {
             ]
         },
         {
-            id: '4213313',
+            id: '101',
             name: 'Supreme Chest workout history',
             duration: 3780,
             notes: 'Wore lifting shoes',
 
-            workoutId: 90210,
+            workoutId: 2,
             date: new Date('2023-01-15'),
             volume: 100,
             reps: 10,
@@ -292,12 +550,12 @@ const dataObject = {
             ]
         },
         {
-            id: '4213313',
+            id: '102',
             name: 'Supreme Legs workout history',
             duration: 3780,
             notes: 'Wore lifting shoes',
 
-            workoutId: 90210,
+            workoutId: 3,
             date: new Date('2022-12-25'),
             volume: 100,
             reps: 10,
@@ -384,12 +642,12 @@ const dataObject = {
             ]
         },
         {
-            id: '4213313',
+            id: '103',
             name: 'Supreme Glutes workout history',
             duration: 3780,
             notes: 'Wore lifting shoes',
 
-            workoutId: 90210,
+            workoutId: 4,
             date: new Date('2024-01-03'),
             volume: 100,
             reps: 10,
@@ -494,7 +752,7 @@ const dataObject = {
                     currentPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
                     newPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
                     date: new Date(2025, 0, 1),
-                    workoutId: 90210,
+                    workoutId: 1,
                     sets: [
                         { weight: 5, reps: 1, PRs: { '1RM': true, weight: true, reps: false, vol: false } },
                         { weight: 3, reps: 3, PRs: { '1RM': false, weight: false, reps: false, vol: true } },
@@ -506,7 +764,7 @@ const dataObject = {
                     currentPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
                     newPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
                     date: new Date(2025, 2, 1),
-                    workoutId: 90210,
+                    workoutId: 2,
                     sets: [
                         { weight: 5, reps: 1, PRs: { '1RM': true, weight: true, reps: false, vol: false } },
                         { weight: 3, reps: 3, PRs: { '1RM': false, weight: false, reps: false, vol: true } },
@@ -518,7 +776,7 @@ const dataObject = {
                     currentPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
                     newPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
                     date: new Date(2025, 5, 1),
-                    workoutId: 90210,
+                    workoutId: 3,
                     sets: [
                         { weight: 5, reps: 1, PRs: { '1RM': true, weight: true, reps: false, vol: false } },
                         { weight: 3, reps: 3, PRs: { '1RM': false, weight: false, reps: false, vol: true } },
@@ -530,7 +788,7 @@ const dataObject = {
                     currentPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
                     newPRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
                     date: new Date(2025, 0, 5),
-                    workoutId: 90210,
+                    workoutId: 4,
                     sets: [
                         { weight: 5, reps: 1, PRs: { '1RM': true, weight: true, reps: false, vol: false } },
                         { weight: 3, reps: 3, PRs: { '1RM': false, weight: false, reps: false, vol: true } },

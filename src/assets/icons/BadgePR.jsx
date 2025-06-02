@@ -1,10 +1,11 @@
 import React from 'react'
 import { TrophySmall } from './icons.js';
+import '../../css/cards.scss'
 function BadgePR({ metric }) {
     return (
         <div className='badge-PR'>
             <TrophySmall />
-            <p className='text'>{metric.toUpperCase()}</p>
+            <span className='text'>{metric.toUpperCase()}</span>
         </div>
     )
 }

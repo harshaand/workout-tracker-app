@@ -2,16 +2,22 @@ import React from 'react'
 import Navbar from '../components/Navbar.jsx'
 import '../css/screens.scss'
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
+import ModalHistoryWorkout from '../components/Modals/session/HistoryWorkout.jsx'
 import { useData } from '../DataContext.jsx'
+import { RoutingContext } from '../App.jsx'
 
 
 
 function HistoryScreen() {
     const data = useData()
+    const { handleScreenChange } = React.useContext(RoutingContext)
+
     const months = [
         'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
         'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
     ];
+    const [selectedHistoryWorkoutModal, setSelectedHistoryWorkoutModal] = React.useState(null)
+
 
     function renderHistoryCards() {
         const groupedWorkouts = {};
@@ -48,12 +54,22 @@ function HistoryScreen() {
             //?????
             const sortedWorkouts = group.workouts.sort((a, b) => b - a);
 
-            return <div className='history__main__container-month'>
-                <p className='heading'>{`${months[group.month]} ${group.year}`}</p>
-                {sortedWorkouts.map(history => {
-                    return <CardWorkoutHistory history={history} />
-                })}
-            </div>
+            return <>
+                <div className='history__main__container-month'>
+                    <p className='heading'>{`${months[group.month]} ${group.year}`}</p>
+                    {sortedWorkouts.map(history => {
+                        return <>
+                            <CardWorkoutHistory history={history} onClick={() => {
+                                setSelectedHistoryWorkoutModal(history.workoutId)
+
+                            }} />
+                            <ModalHistoryWorkout history={history} selectedModal={selectedHistoryWorkoutModal}
+                                setSelectedModal={setSelectedHistoryWorkoutModal}
+                                handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', history, 'editSession')} />
+                        </>
+                    })}
+                </div>
+            </>
 
         });
 
