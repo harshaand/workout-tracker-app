@@ -931,6 +931,16 @@ function useDataUpdate() {
 
 function DataProvider({ children }) {
     const [data, setData] = React.useState(dataObject)
+
+    function saveData(func) {
+        // Add main function for updating data in localstorage/database here.
+        /* Update setData here aswell
+         to app's state updates e.g. data on history screen updating after finishing workout
+         make this the main saveData then add this function to   <DataUpdateContext value={saveData}>
+         instread of <DataUpdateContext value={setData}> */
+        // save to local storage
+    }
+
     return (
         <DataContext.Provider value={data}>
             <DataUpdateContext value={setData}>

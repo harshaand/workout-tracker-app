@@ -574,7 +574,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                             </div>
 
                             {(screenVariant === 'newSession' || screenVariant === 'newEmptySession') && <p>{formatTime(sessionDuration)}</p>}
-                            {(screenVariant === 'editSession') && <p>{formatTime(3780)}</p>}
+                            {(screenVariant === 'editSession') && <p>{formatTime(template.duration)}</p>}
                         </div>
 
                         <textarea ref={notes} defaultValue={template.notes} placeholder='Notes' rows={1} onInput={(e) => {
