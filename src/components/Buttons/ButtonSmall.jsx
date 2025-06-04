@@ -1,7 +1,7 @@
 // components/Button.jsx
 import React from 'react';
 import {
-    AddMedium, ArrowLeft, ArrowRight, BlankNarrow, Cross, Ellipsis,
+    AddSmall, AddMedium, ArrowLeft, ArrowRight, BlankNarrow, Cross, Ellipsis,
     Folder, Question, Target, Tick, Timer
 } from '../../assets/icons/icons.js';
 
@@ -21,7 +21,9 @@ function ButtonSmall({ type, onClick, customClasses = '', children }) {
         addTemplate: AddMedium,
         timer: Timer,
         backScreen: ArrowLeft,
-        addExercise: AddMedium
+        backModal: ArrowLeft,
+        addExercise: AddSmall,
+        add: AddMedium
     }
 
     const CLASSES_MAP = {
@@ -38,8 +40,10 @@ function ButtonSmall({ type, onClick, customClasses = '', children }) {
         addTemplate: 'btn--add-template btn--blue-soft',
         timer: 'btn__icon--big btn--gray',
         backScreen: 'btn__icon--big btn--gray',
+        backModal: 'btn__icon--small btn--gray',
         addExercise: 'btn__icon--big btn--blue-soft',
-        setNumber: 'btn__icon--small btn--set-number'
+        setNumber: 'btn__icon--small btn--set-number',
+        add: 'btn__icon--small btn--gray'
     }
 
     const IconComponent = ICONS_MAP[type];

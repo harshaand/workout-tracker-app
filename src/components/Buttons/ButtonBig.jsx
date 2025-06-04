@@ -1,10 +1,10 @@
 // components/Button.jsx
 import React from 'react';
-import { AddSmall } from '../../assets/icons/icons.js';
+import { AddMedium } from '../../assets/icons/icons.js';
 
 function ButtonBig({ children, size = 'default', color = 'blue', icon, onClick }) {
     const ICONS_MAP = {
-        add: AddSmall
+        add: AddMedium
     }
 
     const SIZE_MAP = {
