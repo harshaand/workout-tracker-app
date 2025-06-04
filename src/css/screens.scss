@@ -255,9 +255,14 @@
                         padding: 0;
                     }
 
-                    h2 {
+                    .template-name {
+                        all: unset;
+                        font-size: var(--h2);
+                        font-weight: 600;
+                        width: 100%;
                         margin: 0;
                         padding: 0;
+                        color: var(--text-color-heading-1);
                     }
 
                     p {
@@ -269,7 +274,7 @@
 
                 }
 
-                textarea {
+                .notes {
                     width: 100%;
                     min-height: 1em;
                     resize: none;

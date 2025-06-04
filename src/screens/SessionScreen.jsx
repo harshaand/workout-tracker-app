@@ -51,6 +51,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
     const currentWeightInExHistory = React.useRef(null)
     const userCurrentWeight = React.useRef(null)
 
+    const templateName = React.useRef(null)
     const notes = React.useRef(null)
 
     React.useEffect(() => {
@@ -413,7 +414,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                 }
             })
         ]
-
+        console.log('TEMPLATE NAME', templateName.current.value)
         setData(prevData => {
             return {
                 ...prevData,
@@ -422,6 +423,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                         if (history.workoutId === workoutId) {
                             return {
                                 ...history,
+                                name: templateName.current.value,
                                 notes: notes.current.value,
 
                                 exercises: workoutHistoryExercises,
@@ -551,7 +553,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
             }
         })
     }
-    const renderActionButton = () => {
+    function renderActionButton() {
         switch (screenVariant) {
             case "newSession":
                 return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
@@ -565,6 +567,15 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                 return <ButtonBig size='hug' color='blue' onClick={() => setShowSaveTemplateModal(true)}>Save</ButtonBig>;
             default:
                 return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
+        }
+    }
+    function handleTextAreaInput(e) {
+        e.target.style.height = "auto";
+        e.target.style.height = `${e.target.scrollHeight}px`;
+        const raw = e.target.value;
+        const cleaned = raw.replace(/[^a-zA-Z0-9 ]/g, "");
+        if (raw !== cleaned) {
+            e.target.value = cleaned;
         }
     }
     return (
@@ -582,7 +593,15 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                     <div className='header'>
                         <div className='header__title-duration'>
                             <div className='header__title-duration__title'>
-                                <h2>{template.name}</h2>
+                                <textarea ref={templateName} defaultValue={template.name} className='template-name' type="text" rows={1}
+                                    onInput={handleTextAreaInput}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            e.preventDefault();
+                                            e.target.blur();
+                                        }
+                                    }}
+                                />
                                 <ButtonSmall type='options' />
                             </div>
 
@@ -590,10 +609,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                             {(screenVariant === 'editSession') && <p>{formatTime(template.duration)}</p>}
                         </div>
 
-                        <textarea ref={notes} defaultValue={template.notes} placeholder='Notes' rows={1} onInput={(e) => {
-                            e.target.style.height = "auto";
-                            e.target.style.height = `${e.target.scrollHeight}px`;
-                        }} />
+                        <textarea ref={notes} defaultValue={template.notes} placeholder='Notes' className='notes' type="text" rows={1} onInput={handleTextAreaInput} />
                     </div>
 
 
@@ -629,7 +645,8 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
                     {/*newSession*/}
                     <ModalFinishWorkout screenVariant={screenVariant} showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
-                        handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, template.exercises, exercises, template.id, workoutId, currentDate, sessionDuration, notes.current.value)} />
+                        handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, template.exercises, exercises, template.id, workoutId, currentDate,
+                            sessionDuration, templateName.current.value, notes.current.value)} />
 
 
                     {/*editSession*/}

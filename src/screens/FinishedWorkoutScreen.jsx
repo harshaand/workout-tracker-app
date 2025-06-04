@@ -8,7 +8,8 @@ import { ThreeStarsRow } from '../assets/icons/icons.js';
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx';
 
 
-function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration, notes }) {
+function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration, templateName, notes }) {
+    console.log('TEMPLATE NAME', templateName)
     const data = useData()
     const setData = useDataUpdate()
     const [showModal, setShowModal] = React.useState(false)
@@ -338,7 +339,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
         return {
             id: template.id,
-            name: template.name,
+            name: templateName,
             duration: duration,
             notes: notes,
             workoutId: workoutId,
@@ -538,6 +539,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     prevData.templates.map((template) => {
                         if (template.id === templateId) return {
                             ...template,
+                            name: templateName,
                             notes: notes,
                             lastDone: currentDate,
                             exercises: finalExercises
@@ -548,6 +550,8 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                         ...prevData.templates,
                         {
                             ...template,
+                            name: templateName,
+                            notes: notes,
                             lastDone: currentDate,
                             exercises: finalExercises
                         }
