@@ -6,7 +6,7 @@ import {
 } from '../../assets/icons/icons.js';
 
 
-function ButtonSmall({ type, onClick, customClasses = '', children }) {
+function ButtonSmall({ type, onClick, customClasses = '', disabled = false, children }) {
     const ICONS_MAP = {
         options1: Ellipsis,
         options2: Ellipsis,
@@ -49,7 +49,7 @@ function ButtonSmall({ type, onClick, customClasses = '', children }) {
     const IconComponent = ICONS_MAP[type];
 
     return (
-        <button className={`${CLASSES_MAP[type]} ${customClasses}`} onClick={onClick}>
+        <button className={`${CLASSES_MAP[type]} ${customClasses}`} onClick={onClick} disabled={disabled}>
             {IconComponent && <IconComponent />}{children}
         </button>
     );

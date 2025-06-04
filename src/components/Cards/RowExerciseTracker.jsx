@@ -65,24 +65,26 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
                     <motion.div className="exercise-row-container" drag="x" dragConstraints={{ left: 0, right: 0 }} onDragEnd={(_, info) => deleteRow(info)}>
                         <div className={`exercise-row ${set.completed ? 'exercise-row--completed' : 'exercise-row--uncompleted'}`}>
 
-                            <div className='testing'><ButtonSmall type='setNumber' customClasses={set.completed ? 'completed' : ''} onClick={() => toggleShowModal()}>{set.value}</ButtonSmall>
+                            <div className='testing'><ButtonSmall type='setNumber' disabled={set.completed} customClasses={set.completed ? 'completed' : ''} onClick={() => toggleShowModal()}>{set.value}</ButtonSmall>
                                 {showModal && (
-                                    <div className="set-options">
-                                        <button className="set-options__btn" onClick={() => {
-                                            handleOptionClick('W', exerciseName, set.id)
-                                            toggleShowModal()
-                                        }}>W</button>
-                                        <button className="set-options__btn" onClick={() => {
-                                            handleOptionClick('D', exerciseName, set.id)
-                                            toggleShowModal()
-                                        }}> D</button>
-                                        <button className="set-options__btn" onClick={() => {
-                                            handleOptionClick('F', exerciseName, set.id)
-                                            toggleShowModal()
-                                        }}>F</button>
-                                    </div>)}
+                                    set.completed === false ?
+                                        <div className="set-options">
+                                            <button className="set-options__btn" onClick={() => {
+                                                handleOptionClick('W', exerciseName, set.id)
+                                                toggleShowModal()
+                                            }}>W</button>
+                                            <button className="set-options__btn" onClick={() => {
+                                                handleOptionClick('D', exerciseName, set.id)
+                                                toggleShowModal()
+                                            }}> D</button>
+                                            <button className="set-options__btn" onClick={() => {
+                                                handleOptionClick('F', exerciseName, set.id)
+                                                toggleShowModal()
+                                            }}>F</button>
+                                        </div>
+                                        : setShowModal(false))}
                             </div>
-                            <button className={`btn--prev-volume ${valuesFilled ? 'btn--prev-volume--active' : 'btn--prev-volume--inactive'}`} onClick={set.weight === 0 && set.reps === 0 ? () => { } : fillValues}>{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                            <button disabled={set.completed} className={`btn--prev-volume ${valuesFilled ? 'btn--prev-volume--active' : 'btn--prev-volume--inactive'}`} onClick={set.weight === 0 && set.reps === 0 ? () => { } : fillValues}>{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
                             <div className='testing'><input ref={weightRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight === 0 && set.reps === 0 ? '' : set.weight} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><input ref={repsRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight === 0 && set.reps === 0 ? '' : set.reps} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn--green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
@@ -100,24 +102,26 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
                 <motion.li key={set.id} exit={delete_animation} transition={delete_transition}>
                     <motion.div className="exercise-row-container" drag="x" dragConstraints={{ left: 0, right: 0 }} onDragEnd={(_, info) => deleteRow(info)}>
                         <div className={`exercise-row ${set.completed ? 'exercise-row--completed' : 'exercise-row--uncompleted'}`}>
-                            <div className='testing'><ButtonSmall type='setNumber' customClasses={set.completed ? 'completed' : ''} onClick={() => toggleShowModal()}>{set.value}</ButtonSmall>
+                            <div className='testing'><ButtonSmall type='setNumber' disabled={set.completed} customClasses={set.completed ? 'completed' : ''} onClick={() => toggleShowModal()}>{set.value}</ButtonSmall>
                                 {showModal && (
-                                    <div className="set-options">
-                                        <button className="set-options__btn" onClick={() => {
-                                            handleOptionClick('W', exerciseName, set.id)
-                                            toggleShowModal()
-                                        }}>W</button>
-                                        <button className="set-options__btn" onClick={() => {
-                                            handleOptionClick('D', exerciseName, set.id)
-                                            toggleShowModal()
-                                        }}> D</button>
-                                        <button className="set-options__btn" onClick={() => {
-                                            handleOptionClick('F', exerciseName, set.id)
-                                            toggleShowModal()
-                                        }}>F</button>
-                                    </div>)}
+                                    set.completed === false ?
+                                        <div className="set-options">
+                                            <button className="set-options__btn" onClick={() => {
+                                                handleOptionClick('W', exerciseName, set.id)
+                                                toggleShowModal()
+                                            }}>W</button>
+                                            <button className="set-options__btn" onClick={() => {
+                                                handleOptionClick('D', exerciseName, set.id)
+                                                toggleShowModal()
+                                            }}> D</button>
+                                            <button className="set-options__btn" onClick={() => {
+                                                handleOptionClick('F', exerciseName, set.id)
+                                                toggleShowModal()
+                                            }}>F</button>
+                                        </div>
+                                        : setShowModal(false))}
                             </div>
-                            <button className='btn--prev-volume btn--prev-volume--active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                            <button disabled={set.completed} className='btn--prev-volume btn--prev-volume--active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
                             <div className='testing'><input ref={weightRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.weight} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><input ref={repsRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.reps} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn--green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
@@ -145,24 +149,26 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
                 <motion.li key={set.id} exit={delete_animation} transition={delete_transition}>
                     <motion.div className="exercise-row-container" drag="x" dragConstraints={{ left: 0, right: 0 }} onDragEnd={(_, info) => deleteRow(info)}>
                         <div className={`exercise-row ${set.completed ? 'exercise-row--completed' : 'exercise-row--uncompleted'}`}>
-                            <div className='testing'><ButtonSmall type='setNumber' customClasses={set.completed ? 'completed' : ''} onClick={() => toggleShowModal()}>{set.value}</ButtonSmall>
+                            <div className='testing'><ButtonSmall type='setNumber' disabled={set.completed} customClasses={set.completed ? 'completed' : ''} onClick={() => toggleShowModal()}>{set.value}</ButtonSmall>
                                 {showModal && (
-                                    <div className="set-options">
-                                        <button className="set-options__btn" onClick={() => {
-                                            handleOptionClick('W', exerciseName, set.id)
-                                            toggleShowModal()
-                                        }}>W</button>
-                                        <button className="set-options__btn" onClick={() => {
-                                            handleOptionClick('D', exerciseName, set.id)
-                                            toggleShowModal()
-                                        }}> D</button>
-                                        <button className="set-options__btn" onClick={() => {
-                                            handleOptionClick('F', exerciseName, set.id)
-                                            toggleShowModal()
-                                        }}>F</button>
-                                    </div>)}
+                                    set.completed === false ?
+                                        <div className="set-options">
+                                            <button className="set-options__btn" onClick={() => {
+                                                handleOptionClick('W', exerciseName, set.id)
+                                                toggleShowModal()
+                                            }}>W</button>
+                                            <button className="set-options__btn" onClick={() => {
+                                                handleOptionClick('D', exerciseName, set.id)
+                                                toggleShowModal()
+                                            }}> D</button>
+                                            <button className="set-options__btn" onClick={() => {
+                                                handleOptionClick('F', exerciseName, set.id)
+                                                toggleShowModal()
+                                            }}>F</button>
+                                        </div>
+                                        : setShowModal(false))}
                             </div>
-                            <button className='btn--prev-volume btn--prev-volume--active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                            <button disabled={set.completed} className='btn--prev-volume btn--prev-volume--active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
                             <div className='testing'><input ref={weightRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.weight} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><input ref={repsRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.reps} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><ButtonSmall type='checkboxLocked' customClasses={set.completed ? 'btn--green' : ''} ></ButtonSmall></div>
