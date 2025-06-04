@@ -144,21 +144,34 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
         });
     };
 
-    function createExercise(exerciseName) {
+    function createExercise(exerciseName, targetMuscleGroups, prMetric) {
+        console.log(exerciseName, targetMuscleGroups)
         setData(prevData => {
+
+            const updatedStrengthScores = { ...prevData.strengthScores };
+            targetMuscleGroups.forEach(muscleGroup => {
+                if (updatedStrengthScores[muscleGroup]) {
+                    updatedStrengthScores[muscleGroup] = {
+                        ...updatedStrengthScores[muscleGroup],
+                        [exerciseName]: undefined
+                    };
+                }
+            });
+
             return {
                 ...prevData,
                 exercises: [
                     ...prevData.exercises,
                     {
                         name: exerciseName,
-                        prMetric: 'volume',
-                        PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                        prMetric: prMetric,
+                        PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0 },
                         thumbnail: '',
                         instructions: { media: '', text: '' },
                         history: []
                     }
-                ]
+                ],
+                strengthScores: updatedStrengthScores
             }
         })
         setShowAddExercisesModal(false)

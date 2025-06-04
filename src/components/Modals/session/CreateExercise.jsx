@@ -11,7 +11,7 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
     const [currentTargetMuscleGroups, setCurrentTargetMuscleGroups] = React.useState([])
 
     function handleSubmit(formData) {
-        createExercise(formData.get('exerciseName'))
+        createExercise(formData.get('exerciseName'), targetMuscleGroups, formData.get('prMetric'))
         setShowCreateExerciseModal(false)
         setShowAddExercisesModal(true)
     }
@@ -59,10 +59,10 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
                                 }} />}
                             <p>Create New Exercise</p>
                             {(currentSection === 'exerciseInfo') &&
-                                <button type='submit' className='btn-save'>Save</button>
+                                <button type='submit' className='btn-CTA'>Save</button>
                             }
                             {(currentSection === 'targetMuscleGroups') &&
-                                <button className='btn-save' onClick={(e) => {
+                                <button className='btn-CTA' onClick={(e) => {
                                     setCurrentSection('exerciseInfo')
                                     syncTargetMuscleGroups()
                                 }}>Add</button>
@@ -77,7 +77,22 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
                                 <div className='search-bar'>
                                     <input name='exerciseName' placeholder='Bench Press' type="text" id="" />
                                 </div>
-                                <div className='container-target-muscles'>
+
+                                <div className='container-content'>
+                                    <div className='header'>
+                                        <p className='text'>Select your desired PR metric</p>
+                                    </div>
+
+                                    <div className='container-tags' >
+                                        <label key='volume' className='tag'>Volume<input type="radio" name="prMetric" value='volume' defaultChecked /></label>
+                                        <label key='1RM' className='tag'>    1RM  <input type="radio" name="prMetric" value='1RM' />   </label>
+                                        <label key='weight' className='tag'>Weight<input type="radio" name="prMetric" value='weight' /></label>
+                                        <label key='reps' className='tag'>   Reps <input type="radio" name="prMetric" value='reps' />  </label>
+                                    </div>
+                                </div>
+
+
+                                <div className='container-content'>
                                     <div className='header'>
                                         <p className='text'>Select at least one target muscle</p>
                                         <ButtonSmall type='add' onClick={(e) => {
@@ -86,13 +101,12 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
                                         }} />
                                     </div>
 
-                                    <div className='container-tags-target-muscle' >
-                                        {targetMuscleGroups.map(muscleGroup => <span className='tag-target-muscle'
+                                    <div className='container-tags' >
+                                        {targetMuscleGroups.map(muscleGroup => <span className='tag tag-target-muscle'
                                             onClick={() => removeTargetMuscleGroup(muscleGroup)}>
                                             {muscleGroup}
                                         </span>)}
                                     </div>
-
                                 </div>
                             </div>
                         </div>
