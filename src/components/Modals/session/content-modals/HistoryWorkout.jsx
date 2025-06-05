@@ -1,10 +1,10 @@
 import React from 'react'
-import ButtonSmall from '../../Buttons/ButtonSmall'
-import '../../../css/modals.scss'
+import ButtonSmall from '../../../Buttons/ButtonSmall'
+import '../../../../css/modals.scss'
 import {
     Clock, Weight, TrophyMedium
-} from '../../../assets/icons/icons'
-import BadgePR from '../../../assets/icons/BadgePR';
+} from '../../../../assets/icons/icons'
+import BadgePR from '../../../../assets/icons/BadgePR';
 
 
 function HistoryWorkout({ history, selectedModal, setSelectedModal, handleScreenChangeEditTemplate, exercise = "" }) {

@@ -1,6 +1,6 @@
 import React from 'react'
-import ButtonBig from '../../Buttons/ButtonBig'
-import ButtonSmall from '../../Buttons/ButtonSmall'
+import ButtonBig from '../../../Buttons/ButtonBig'
+import ButtonSmall from '../../../Buttons/ButtonSmall'
 
 function TemplateOverview({ template, selectedModal, setSelectedModal, handleScreenChangeNewSession,
     handleScreenChangeEditTemplate }) {

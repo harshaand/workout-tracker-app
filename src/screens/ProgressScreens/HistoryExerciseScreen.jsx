@@ -4,7 +4,7 @@ import Navbar from '../../components/Navbar.jsx'
 import CardExerciseHistory from '../../components/Cards/CardExerciseHistory.jsx'
 import ButtonSmall from '../../components/Buttons/ButtonSmall.jsx'
 import { RoutingContext } from '../../App.jsx'
-import ModalHistoryWorkout from '../../components/Modals/session/HistoryWorkout.jsx'
+import ModalHistoryWorkout from '../../components/Modals/session/content-modals/HistoryWorkout.jsx'
 
 function HistoryExerciseScreen({ exercise = 'Back Squat' }) {
     const { handleScreenChange } = React.useContext(RoutingContext)

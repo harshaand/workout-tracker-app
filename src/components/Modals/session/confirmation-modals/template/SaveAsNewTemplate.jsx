@@ -1,5 +1,5 @@
 import React from 'react'
-import ButtonBig from '../../Buttons/ButtonBig'
+import ButtonBig from '../../../../Buttons/ButtonBig'
 //If user creates new session, will ask them if they want to save as template
 function SaveAsNewTemplate({ setShowModal, handleScreenChange, emptySets }) {
     const message = 'All invalid or empty sets will be removed. All valid sets will be marked as completed'

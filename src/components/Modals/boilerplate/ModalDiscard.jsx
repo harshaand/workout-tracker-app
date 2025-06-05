@@ -1,5 +1,5 @@
 import React from 'react'
-import '../../css/modals.scss';
+import '../../../css/modals.scss';
 import ButtonBig from '../../Buttons/ButtonBig.jsx'
 
 function ModalDiscard() {

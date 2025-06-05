@@ -1,7 +1,7 @@
 import React from 'react'
-import ButtonSmall from '../../Buttons/ButtonSmall'
-import { Tick } from '../../../assets/icons/icons'
-import { useData, useDataUpdate } from '../../../DataContext'
+import ButtonSmall from '../../../Buttons/ButtonSmall'
+import { Tick } from '../../../../assets/icons/icons'
+import { useData, useDataUpdate } from '../../../../DataContext'
 
 
 function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAddExercisesModal }) {

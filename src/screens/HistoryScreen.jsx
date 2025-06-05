@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '../components/Navbar.jsx'
 import '../css/screens.scss'
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
-import ModalHistoryWorkout from '../components/Modals/session/HistoryWorkout.jsx'
+import ModalHistoryWorkout from '../components/Modals/session/content-modals/HistoryWorkout.jsx'
 import { useData } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'
 

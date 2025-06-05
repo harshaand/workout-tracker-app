@@ -1,5 +1,5 @@
 import React from 'react'
-import ButtonBig from '../../Buttons/ButtonBig'
+import ButtonBig from '../../../../Buttons/ButtonBig'
 
 function SaveEditedTemplate({ showSaveTemplateModal, setShowSaveTemplateModal, handleScreenChange, handleUpdateTemplate }) {
     if (!showSaveTemplateModal) return null

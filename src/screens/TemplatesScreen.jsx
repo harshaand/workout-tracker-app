@@ -4,7 +4,7 @@ import React from 'react'
 import ButtonSmall from '../components/Buttons/ButtonSmall.jsx'
 import ButtonBig from '../components/Buttons/ButtonBig.jsx'
 import CardWorkoutTemplate from '../components/Cards/CardWorkoutTemplate.jsx'
-import ModalSessionOverview from '../components/Modals/session/TemplateOverview.jsx';
+import ModalSessionOverview from '../components/Modals/session/content-modals/TemplateOverview.jsx';
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import FolderList from '../OTHER/FoldersFunctionality.jsx'

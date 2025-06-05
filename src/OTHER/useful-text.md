@@ -96,32 +96,41 @@ edit
 
 
 
-import ModalOptionsTemplate from '../components/Modals/ModalOptionsTemplate.jsx'
-import ModalOptionsHistory from '../components/Modals/ModalOptionsHistory.jsx'
-import ModalOptionsFolder from '../components/Modals/ModalOptionsFolder.jsx'
-import ModalOptionsEditTemplateScreen from '../components/Modals/ModalOptionsEditTemplateScreen.jsx'
+import ModalOptionsTemplate from '../components/Modals/template/ModalOptionsTemplate.jsx'
+import ModalOptionsHistory from '../components/Modals/template/ModalOptionsHistory.jsx'
+import ModalOptionsFolder from '../components/Modals/template/ModalOptionsFolder.jsx'
+import ModalOptionsEditTemplateScreen from '../components/Modals/template/ModalOptionsEditTemplateScreen.jsx'
 
-import ModalDelete from '../components/Modals/ModalDelete.jsx'
-import ModalDiscard from '../components/Modals/ModalDiscard.jsx'
-import ModalSaveInputDescr from '../components/Modals/ModalSaveInputDescr.jsx'
-import ModalSaveInputNoDescr from '../components/Modals/ModalSaveInputNoDescr.jsx'
-import ModalSave from '../components/Modals/ModalSave.jsx'
-import ModalAdd from '../components/Modals/ModalAdd.jsx'
-import ModalSelect from '../components/Modals/ModalSelect.jsx'
+import ModalDelete from '../components/Modals/boilerplate/ModalDelete.jsx'
+import ModalDiscard from '../components/Modals/boilerplate/ModalDiscard.jsx'
+import ModalSaveInputDescr from '../components/Modals/boilerplate/ModalSaveInputDescr.jsx'
+import ModalSaveInputNoDescr from '../components/Modals/boilerplate/ModalSaveInputNoDescr.jsx'
+import ModalSave from '../components/Modals/boilerplate/ModalSave.jsx'
+import ModalAdd from '../components/Modals/boilerplate/ModalAdd.jsx'
+import ModalSelect from '../components/Modals/boilerplate/ModalSelect.jsx'
 
+
+
+
+{/* Options modals on templates screen */}
 <ModalOptionsTemplate />
 <ModalOptionsHistory />
 <ModalOptionsFolder />
 <ModalOptionsEditTemplateScreen />
-
-<ModalDelete />
-<ModalDiscard />
-<ModalSaveInputDescr />
-<ModalSaveInputNoDescr />
-<ModalSave />
+{/* Add new folder (has an inputfield) */}
 <ModalAdd />
+{/* Select folder */}
 <ModalSelect />
 
+{/* FIXED POSITION MODALS */}
+<ModalDelete />
+<ModalDiscard />
+<ModalSave />
+
+{/* Save new template? Choose name for template + inputfield */}
+<ModalSaveInputDescr />
+{/* Choose template name + inputfield */}
+<ModalSaveInputNoDescr />
 
 
 

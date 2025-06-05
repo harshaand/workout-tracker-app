@@ -1,5 +1,5 @@
 import React from 'react'
-import ButtonBig from '../../Buttons/ButtonBig'
+import ButtonBig from '../../../../Buttons/ButtonBig'
 function FinishWorkout({ showFinishModal, setShowFinishModal, handleScreenChange, clearInterval }) {
 
     if (!showFinishModal) return null
