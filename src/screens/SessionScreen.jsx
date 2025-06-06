@@ -13,25 +13,31 @@ import ModalAddExercises from '../components/Modals/session/content-modals/AddEx
 import ModalCreateExercise from '../components/Modals/session/content-modals/CreateExercise.jsx'
 
 import ModalFinishWorkout from '../components/Modals/session/confirmation-modals/session/FinishWorkout.jsx'
-import ModalSaveAsNewTemplate from '../components/Modals/session/confirmation-modals/template/SaveAsNewTemplate.jsx'
 import ModalSaveWorkout from '../components/Modals/session/confirmation-modals/edit-session/SaveEditedWorkout.jsx'
 import ModalSaveTemplate from '../components/Modals/session/confirmation-modals/template/SaveEditedTemplate.jsx'
 import FinishedWorkoutScreen from './FinishedWorkoutScreen.jsx'
+
+import ModalCancelWorkout from '../components/Modals/session/confirmation-modals/session/CancelWorkout.jsx'
+import ModalRevertChanges from '../components/Modals/session/confirmation-modals/RevertChanges.jsx'
+import ModalDiscardTemplate from '../components/Modals/session/confirmation-modals/template/DiscardTemplate.jsx'
+import ModalDeleteTemplate from '../components/Modals/session/confirmation-modals/template/DeleteTemplate.jsx'
+import ModalDeleteWorkout from '../components/Modals/session/confirmation-modals/edit-session/DeleteWorkout.jsx'
 
 import { useData, useDataUpdate } from '../DataContext.jsx'
 
 import { RoutingContext } from '../App.jsx'
 
 function SessionScreen({ template, screenVariant = 'newSession' }) {
+    /* SCREEN VARIANTS
+        1. newSession ------new key
+        2. editSession -----old key
+        3. editTemplate   
+        4. newEmptyTemplate
+        5. newEmptySession -new key*/
+
     const data = useData()
     const setData = useDataUpdate()
-    /* SCREEN VARIANTS
-    1. newSession ------new key
-    2. editSession -----old key
-    3. editTemplate   
-    4. newEmptyTemplate
-    5. newEmptySession -new key
-    */
+
     const [sessionDuration, setSessionDuration] = React.useState(0);
     const intervalRef = React.useRef(null);
 
@@ -42,8 +48,8 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
     //Finish modals
     const [showFinishModal, setShowFinishModal] = React.useState(false)
-    const [showSaveWorkoutModal, setShowSaveWorkoutModal] = React.useState(false)
-    const [showSaveTemplateModal, setShowSaveTemplateModal] = React.useState(false)
+    const [showCloseModal, setShowCloseModal] = React.useState(false)
+    const [showDeleteModal, setShowDeleteModal] = React.useState(false)
 
     const workoutId = template.workoutId
     const currentDate = new Date();
@@ -518,6 +524,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
             })
         })
     }
+
     function handleUpdateTemplate() {
         const finalExercises = exercises.map(exercise => {
             return {
@@ -553,22 +560,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
             }
         })
     }
-    function renderActionButton() {
-        switch (screenVariant) {
-            case "newSession":
-                return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
-            case "editSession":
-                return <ButtonBig size='hug' color='blue' onClick={() => setShowSaveWorkoutModal(true)}>Save</ButtonBig>;
-            case "newEmptySession":
-                return <ButtonBig size='hug' color='green' onClick={() => { setShowFinishModal(true) }}>Save</ButtonBig>;
-            case "editTemplate":
-                return <ButtonBig size='hug' color='blue' onClick={() => setShowSaveTemplateModal(true)}>Save</ButtonBig>;
-            case "newEmptyTemplate":
-                return <ButtonBig size='hug' color='blue' onClick={() => setShowSaveTemplateModal(true)}>Save</ButtonBig>;
-            default:
-                return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
-        }
-    }
+
     function handleTextAreaInput(e) {
         e.target.style.height = "auto";
         e.target.style.height = `${e.target.scrollHeight}px`;
@@ -578,14 +570,66 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
             e.target.value = cleaned;
         }
     }
+
+    function deleteWorkoutHistory() {
+        setData(prevData =>
+        ({
+            ...prevData,
+            history: data.history.filter(history => history.workoutId !== template.workoutId)
+        }))
+    }
+
+    function deleteTemplate() {
+        setData(prevData =>
+        ({
+            ...prevData,
+            templates: data.templates.filter(databaseTemplate => databaseTemplate.id !== template.id)
+        }))
+    }
+
+    function renderFinishButton() {
+        switch (screenVariant) {
+            case "newSession":
+            case "newEmptySession":
+                return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
+
+            case "editSession":
+            case "editTemplate":
+            case "newEmptyTemplate":
+                return <ButtonBig size='hug' color='blue' onClick={() => setShowFinishModal(true)}>Save</ButtonBig>;
+
+            default:
+                return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
+        }
+    }
+
+    function renderAbortButton() {
+        switch (screenVariant) {
+            case "newSession":
+            case "newEmptySession":
+                return <ButtonBig color='redSoft' onClick={() => setShowCloseModal(true)}>Cancel Workout</ButtonBig>;
+
+            case "editSession":
+                return <ButtonBig color='redSoft' onClick={() => { setShowDeleteModal(true) }}>Delete Workout</ButtonBig>;
+
+            case "editTemplate":
+                return <ButtonBig color='redSoft' onClick={() => { setShowDeleteModal(true) }}>Delete Template</ButtonBig>;
+
+            case "newEmptyTemplate":
+                return '';
+
+            default:
+                return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
+        }
+    }
     return (
         <div className="session__container">
 
             <div className='session__main'>
 
                 <div className="session__main__header">
-                    <ButtonSmall type='closeScreen' onClick={() => handleScreenChange('TemplatesScreen')} />
-                    {renderActionButton()}
+                    <ButtonSmall type='closeScreen' onClick={() => setShowCloseModal(true)} />
+                    {renderFinishButton()}
                 </div>
 
 
@@ -618,13 +662,13 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                             {exercises.map(exercise => (
                                 <CardExerciseTracker exercise={exercise} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
                                     deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
-                                    showFinishModal={showFinishModal} showSaveWorkoutModal={showSaveWorkoutModal} showSaveTemplateModal={showSaveTemplateModal}
+                                    showFinishModal={showFinishModal}
                                     screenVariant={screenVariant} />
                             ))}
                         </div>
                         <div className='container-buttons'>
                             <ButtonBig color='blueSoft' onClick={() => setShowAddExercisesModal(true)}>Add Exercise</ButtonBig>
-                            <ButtonBig color='redSoft' onClick={() => setShowAddExercisesModal(true)}>Cancel Workout</ButtonBig>
+                            {renderAbortButton()}
                         </div>
 
                     </div>
@@ -633,30 +677,54 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                 </div>
 
 
-
-
-
-
-
                 <div>
                     {/*Add exercise + creat exercise modals*/}
                     {showAddExercisesModal && <ModalAddExercises addExercises={addExercises} setShowAddExercisesModal={setShowAddExercisesModal} setShowCreateExerciseModal={setShowCreateExerciseModal} />}
                     {showCreateExerciseModal && <ModalCreateExercise createExercise={createExercise} setShowCreateExerciseModal={setShowCreateExerciseModal} setShowAddExercisesModal={setShowAddExercisesModal} />}
 
-                    {/*newSession*/}
-                    <ModalFinishWorkout screenVariant={screenVariant} showFinishModal={showFinishModal} setShowFinishModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
-                        handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, template.exercises, exercises, template.id, workoutId, currentDate,
-                            sessionDuration, templateName.current.value, notes.current.value)} />
+                    {/*newSession + newEmptySession*/}
+                    {(screenVariant === 'newSession' || screenVariant === 'newEmptySession') &&
+                        <>
+                            <ModalFinishWorkout screenVariant={screenVariant} showModal={showFinishModal} setShowModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
+                                handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, template.exercises, exercises, template.id, workoutId, currentDate,
+                                    sessionDuration, templateName.current.value, notes.current.value)} />
+                            <ModalCancelWorkout showModal={showCloseModal} setShowModal={setShowCloseModal}
+                                handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+                        </>}
 
 
                     {/*editSession*/}
-                    <ModalSaveWorkout showSaveWorkoutModal={showSaveWorkoutModal} setShowSaveWorkoutModal={setShowSaveWorkoutModal} saveToHistory={saveToHistory}
-                        handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+                    {screenVariant === 'editSession' &&
+                        <>
+                            <ModalSaveWorkout showModal={showFinishModal} setShowModal={setShowFinishModal} saveToHistory={saveToHistory}
+                                handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+                            <ModalRevertChanges showModal={showCloseModal} setShowModal={setShowCloseModal}
+                                handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+                            <ModalDeleteWorkout showModal={showDeleteModal} setShowModal={setShowDeleteModal} deleteWorkoutHistory={deleteWorkoutHistory}
+                                handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+                        </>}
 
 
-                    {/*editTemplate + newEmptyTemplate*/}
-                    <ModalSaveTemplate showSaveTemplateModal={showSaveTemplateModal} setShowSaveTemplateModal={setShowSaveTemplateModal} handleUpdateTemplate={handleUpdateTemplate}
-                        handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+                    {/*editTemplate */}
+                    {screenVariant === 'editTemplate' &&
+                        <>
+                            <ModalSaveTemplate showModal={showFinishModal} setShowModal={setShowFinishModal} handleUpdateTemplate={handleUpdateTemplate}
+                                handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+                            <ModalRevertChanges showModal={showCloseModal} setShowModal={setShowCloseModal}
+                                handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+                            <ModalDeleteTemplate showModal={showDeleteModal} setShowModal={setShowDeleteModal} deleteTemplate={deleteTemplate}
+                                handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+                        </>}
+
+
+                    {/*newEmptyTemplate*/}
+                    {screenVariant === 'newEmptyTemplate' &&
+                        <>
+                            <ModalSaveTemplate showModal={showFinishModal} setShowModal={setShowFinishModal} handleUpdateTemplate={handleUpdateTemplate}
+                                handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+                            <ModalDiscardTemplate showModal={showCloseModal} setShowModal={setShowCloseModal}
+                                handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
+                        </>}
 
                 </div>
             </div>

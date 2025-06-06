@@ -1,12 +1,12 @@
 import React from 'react'
 import ButtonBig from '../../../../Buttons/ButtonBig'
-function FinishWorkout({ showFinishModal, setShowFinishModal, handleScreenChange, clearInterval }) {
+function FinishWorkout({ showModal, setShowModal, handleScreenChange, clearInterval }) {
 
-    if (!showFinishModal) return null
+    if (!showModal) return null
     else {
         return (
             <>
-                <button className='modal-overlay' onClick={() => setShowFinishModal(false)}></button>
+                <button className='modal-overlay' onClick={() => setShowModal(false)}></button>
                 <div className='modal modal-spacing--no-body-text'>
                     <div className='modal-spacing--emoji-text'>
                         <div className='emoji'>🎉</div>
@@ -14,9 +14,9 @@ function FinishWorkout({ showFinishModal, setShowFinishModal, handleScreenChange
                     </div>
                     <div className='content-spacing--no-body-text'>
                         <div className='modal__buttons--horizontal'>
-                            <ButtonBig color='gray' onClick={() => setShowFinishModal(false)}>Cancel</ButtonBig>
+                            <ButtonBig color='gray' onClick={() => setShowModal(false)}>Cancel</ButtonBig>
                             <ButtonBig color='green' onClick={() => {
-                                setShowFinishModal(false)
+                                setShowModal(false)
                                 clearInterval()
                                 handleScreenChange()
                             }}>Finish</ButtonBig>

@@ -22,6 +22,12 @@ import ModalSave from '../components/Modals/boilerplate/ModalSave.jsx'
 import ModalAdd from '../components/Modals/boilerplate/ModalAdd.jsx'
 import ModalSelect from '../components/Modals/boilerplate/ModalSelect.jsx'
 
+import ModalCancelWorkout from '../components/Modals/session/confirmation-modals/session/CancelWorkout.jsx'
+import ModalDeleteWorkout from '../components/Modals/session/confirmation-modals/edit-session/DeleteWorkout.jsx'
+import ModalDiscardTemplate from '../components/Modals/session/confirmation-modals/template/DiscardTemplate.jsx'
+import ModalDeleteTemplate from '../components/Modals/session/confirmation-modals/template/DeleteTemplate.jsx'
+import ModalRevertChanges from '../components/Modals/session/confirmation-modals/RevertChanges.jsx'
+
 
 import { useData } from '../DataContext.jsx'
 import SessionScreen from './SessionScreen.jsx'
@@ -217,10 +223,16 @@ function TestingScreen() {
         <Navbar />
         <div className="container-app">
             <h2>hello</h2>
-            {/* {temporary} */}
+            {temporary}
             {/* {allModals} */}
             {/* <ModalDelete /> */}
-            <ModalDiscard />
+            {/* <ModalDiscard /> */}
+
+            {/* <ModalCancelWorkout /> */}
+            {/* <ModalDeleteWorkout /> */}
+            {/* <ModalDiscardTemplate /> */}
+            {/* <ModalDeleteTemplate /> */}
+            {/* <ModalRevertChanges /> */}
         </div>
     </>
     )

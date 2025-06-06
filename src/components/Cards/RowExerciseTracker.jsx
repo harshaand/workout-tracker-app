@@ -4,8 +4,8 @@ import { Tick, Lock, BlankWide } from '../../assets/icons/icons.js';
 import { motion, AnimatePresence } from "framer-motion"
 
 
-function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exerciseName, deleteSet, handleOptionClick, saveTemplateValues,
-    showFinishModal, showSaveWorkoutModal, showSaveTemplateModal, screenVariant = 'newSession' }) {
+function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exerciseName, deleteSet, handleOptionClick,
+    saveTemplateValues, showFinishModal, screenVariant = 'newSession' }) {
 
     const [showModal, setShowModal] = React.useState(false);
     const weightRef = React.useRef(null);
@@ -33,7 +33,7 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
             return;
         }
         saveTemplateValues(exerciseName, set.id, weightRef.current.value, repsRef.current.value)
-    }, [showFinishModal, showSaveWorkoutModal, showSaveTemplateModal])
+    }, [showFinishModal])
 
 
     function toggleShowModal() {

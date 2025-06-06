@@ -6,8 +6,8 @@ import { useData, useDataUpdate } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'
 import { ThreeStarsRow } from '../assets/icons/icons.js';
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx';
-
-
+import ModalUpdateTemplate from '../components/Modals/session/confirmation-modals/finished-session/UpdateTemplate.jsx'
+import ModalSaveAsNewTemplate from '../components/Modals/session/confirmation-modals/finished-session/SaveAsNewTemplate.jsx'
 function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration, templateName, notes }) {
     console.log('TEMPLATE NAME', templateName)
     const data = useData()
@@ -15,14 +15,6 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
     const [showModal, setShowModal] = React.useState(false)
     const userCurrentWeight = data.user.weight
     const { handleScreenChange } = React.useContext(RoutingContext)
-
-    console.log('NEW EXERCISES!!!!!!!!:', newExercises)//BUG, showing something unexpected after saveToHistory
-    let updatedValues = false;
-    let updatedValuesMessage = '';
-    let removedValues = false;
-    let updateTemplateMessage = '';
-    let modalComponent;
-    let updateTemplateButton = null;
 
     const exercisesNewPRs = React.useRef({});
     let totalPRs = 0;
@@ -35,6 +27,8 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         workoutHistory.current = generateHistory();
     }
 
+    const exercisesSame = JSON.stringify(newExercises) === JSON.stringify(oldExercises);
+
     React.useEffect(() => {
         const timer = setTimeout(() => {
             setShowModal(true)
@@ -42,214 +36,6 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
         return () => clearTimeout(timer)
     }, [])
-
-    const exercisesSame = JSON.stringify(newExercises) === JSON.stringify(oldExercises);
-    console.log('screenVariant!!!!!', screenVariant)
-    if (screenVariant === 'newEmptySession') {
-        modalComponent = (
-            <>
-                <button className='modal-overlay' onClick={() => setShowModal(false)}></button>
-                <div className='modal modal-spacing--default'>
-                    <h3>Save as new Template?</h3>
-                    <div className='content-spacing--default'>
-                        <p>Save this workout as a template so you can perform it again in the future?</p>
-                        <div className='modal__buttons--vertical'>
-                            <ButtonBig color='blue' onClick={() => {
-                                handleUpdateTemplate()
-                                saveToHistory()
-                                setShowModal(false)
-                                // handleScreenChange('TemplatesScreen')
-                            }}>Save as Template</ButtonBig>
-                            <ButtonBig color='gray' onClick={() => setShowModal(false)}>No thanks!</ButtonBig>
-                        </div>
-                    </div>
-                </div>
-            </>
-        );
-    }
-
-    else if (!exercisesSame && screenVariant === 'newSession') {
-
-        // Array to collect all change messages
-        const changes = [];
-
-        // NUMBER OF EXERCISES REMOVED BY USER
-        const newExercisesNames = new Set(newExercises.map(exercise => exercise.name));
-        const userRemovedExercises = oldExercises.filter(ex => !newExercisesNames.has(ex.name));
-        const uncompletedExercises = newExercises.filter(exercise => !exercise.sets.some(set => set.completed === true));
-        const toBeRemovedExercisesCount = userRemovedExercises.length + uncompletedExercises.length
-        if (toBeRemovedExercisesCount > 0) {
-            removedValues = true;
-            const message = `Remove ${toBeRemovedExercisesCount} exercise${toBeRemovedExercisesCount > 1 ? 's' : ''}`;
-            changes.push({ priority: 1, type: 'remove_exercises', message });
-        }
-
-        // NUMBER OF EXERCISES ADDED BY USER
-        const oldExercisesNames = new Set(oldExercises.map(exercise => exercise.name));
-        const userAddedExercises = newExercises.filter(ex => !oldExercisesNames.has(ex.name));
-        const toBeAddedExercisesCount = userAddedExercises.filter(exercise => exercise.sets.some(set => set.completed === true)).length;
-        if (toBeAddedExercisesCount > 0) {
-            const message = `Add ${toBeAddedExercisesCount} exercise${toBeAddedExercisesCount > 1 ? 's' : ''}`;
-            changes.push({ priority: 2, type: 'add_exercises', message });
-        }
-
-        // CHECK IF EXERCISE ORDER IS DIFFERENT
-        let orderDifferent = false;
-        //REPLACEMENT CODE:
-        //-when user drags&drops to change order, have a useRef called orderDifferent and switch it to true.
-        //otherwise will need to write me a long algorithm for minimum utility
-        //orignal code is there on the commit on May 6, 2025 for this file.
-
-        if (orderDifferent) {
-            const message = 'Reorder exercises';
-            changes.push({ priority: 3, type: 'reorder', message });
-        }
-
-        // CALCULATING DIFFERENCES IN SETS
-        const oldExercisesMap = new Map();
-        oldExercises.forEach(exercise => {
-            oldExercisesMap.set(exercise.name, exercise);
-        });
-
-        let totalDifferentSets = 0;
-        let totalMoreSets = 0;
-        let totalLessSets = 0;
-
-        for (const persistedExercise of newExercises) {
-            const oldExercise = oldExercisesMap.get(persistedExercise.name);
-
-            // skip if exercise doesn't exist in the old template
-            if (!oldExercise) continue;
-            const completedSetsCount = persistedExercise.sets.filter(set => set.completed === true).length;
-
-            // difference in number of sets
-            if (completedSetsCount > oldExercise.sets.length) {
-                totalMoreSets += (completedSetsCount - oldExercise.sets.length);
-            }
-            /*if exercises doesn't have any completed sets, don't need to calculate number of
-             sets to be removed because the whole exercise will be removed */
-            if (persistedExercise.sets.some(set => set.completed === true)
-                && oldExercise.sets.length > completedSetsCount) {
-                totalLessSets += (oldExercise.sets.length - completedSetsCount);
-            }
-
-            // number of sets with different values for weight/reps
-            const minSetsLength = Math.min(oldExercise.sets.length, persistedExercise.sets.length);
-            for (let i = 0; i < minSetsLength; i++) {
-                const oldSet = oldExercise.sets[i];
-                const newSet = persistedExercise.sets[i];
-
-                if (newSet.completed === true && (oldSet.weight !== newSet.weight || oldSet.reps !== newSet.reps)) {
-                    totalDifferentSets++;
-                }
-            }
-        }
-
-        if (totalDifferentSets > 0) {
-            updatedValues = true;
-            updatedValuesMessage = `Update values for ${totalDifferentSets} sets`
-        }
-
-        if (totalMoreSets > 0) {
-            const message = `Add ${totalMoreSets} set${totalMoreSets > 1 ? 's' : ''}`;
-            changes.push({ priority: 2, type: 'add_sets', message });
-        }
-
-        if (totalLessSets > 0) {
-            removedValues = true;
-            const message = `Remove ${totalLessSets} set${totalLessSets > 1 ? 's' : ''}`;
-            changes.push({ priority: 1, type: 'remove_sets', message });
-        }
-
-
-        // SORT BY PRIORITY ORDER
-        changes.sort((a, b) => {
-            if (a.priority !== b.priority) {
-                return a.priority - b.priority;
-            }
-
-            const typeOrder = {
-                'remove_exercises': 1,
-                'remove_sets': 2,
-                'add_exercises': 3,
-                'add_sets': 4,
-                'reorder': 5,
-                'update_sets': 6
-            };
-
-            return typeOrder[a.type] - typeOrder[b.type];
-        });
-
-        // combine messages into 1 string
-        if (changes.length > 0) {
-            updateTemplateMessage = changes.map(change => change.message).join('. ');
-        }
-
-
-        if (updateTemplateMessage.length > 0) {
-            if (removedValues) {
-                updateTemplateButton = <ButtonBig onClick={() => {
-                    handleUpdateTemplate()
-                    saveToHistory()
-                    setShowModal(false)
-                    // handleScreenChange('TemplatesScreen')
-                }} color="redSoft">
-                    <div>
-                        <div className='main-text'>Update Template and Values</div>
-                        <div className='supporting-text'>{updateTemplateMessage}</div>
-                    </div>
-                </ButtonBig>;
-            } else {
-                updateTemplateButton = <ButtonBig onClick={() => {
-                    handleUpdateTemplate()
-                    saveToHistory()
-                    setShowModal(false)
-                    // handleScreenChange('TemplatesScreen')
-                }} color="blueSoft">
-                    <div>
-                        <div className='main-text'>Update Template and Values</div>
-                        <div className='supporting-text'>{updateTemplateMessage}</div>
-                    </div>
-                </ButtonBig>;
-            }
-        }
-
-        modalComponent = (
-            <>
-                <button className='modal-overlay' onClick={() => setShowModal(false)}></button>
-                <div className='modal modal-spacing--default'>
-                    <h3>Update Template?</h3>
-                    <div className='content-spacing--default'>
-                        <p>You've made changes from your original template. Would you like to update it?</p>
-                        <div className='modal__buttons--vertical'>
-
-                            {updatedValues &&
-                                <ButtonBig onClick={() => {
-                                    handleUpdateValues()
-                                    saveToHistory()
-                                    setShowModal(false)
-                                    // handleScreenChange('TemplatesScreen')
-                                }}>
-                                    <div>
-                                        <div className='main-text'>Update Values Only</div>
-                                        <div className='supporting-text'>{updatedValuesMessage}</div>
-                                    </div>
-                                </ButtonBig>}
-
-                            {updateTemplateButton}
-
-                            <ButtonBig color="gray" onClick={() => {
-                                saveToHistory()
-                                setShowModal(false)
-                                // handleScreenChange('TemplatesScreen')
-                            }}>Keep Orignal</ButtonBig>
-
-                        </div>
-                    </div>
-                </div>
-            </>
-        );
-    }
 
     function generateHistory() {
         //--------------------------APPENDING WORKOUT TO HISTORY--------------------------
@@ -353,17 +139,14 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
     }
 
     function saveToHistory() {
-
         setData(prevData => {
             return {
                 ...prevData,
-
                 history: [
                     ...prevData.history,
                     workoutHistory.current
                 ],
             }
-
         })
 
 
@@ -580,7 +363,13 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 </div>
             </div>
 
-            {showModal && modalComponent}
+            {screenVariant === 'newEmptySession' &&
+                <ModalSaveAsNewTemplate showModal={showModal} setShowModal={setShowModal}
+                    handleUpdateTemplate={handleUpdateTemplate} saveToHistory={saveToHistory} />}
+
+            {screenVariant === 'newSession' && !exercisesSame &&
+                <ModalUpdateTemplate showModal={showModal} setShowModal={setShowModal} oldExercises={oldExercises} newExercises={newExercises}
+                    saveToHistory={saveToHistory} handleUpdateValues={handleUpdateValues} handleUpdateTemplate={handleUpdateTemplate} />}
         </div>
     )
 }
