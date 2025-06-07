@@ -29,7 +29,7 @@ function StrScFullBodyScreen({ musclesThresholdBrackets }) {
 
                 <div className='container-rows-strength-scores'>
                     {Object.entries(data.strengthScores).map(([muscleGroup, exercises]) => {
-                        const highestScore = Math.max(...Object.values(exercises));
+                        const highestScore = Math.max(...Object.values(exercises).filter(value => value !== "not eligible"));
                         return <RowStrengthScore muscleGroup={muscleGroup} score={highestScore} type='muscle-group' onClick={() => handleStrScScreenChange('StrScMuscleScreen', musclesThresholdBrackets, muscleGroup, undefined)} />
                     }
                     )}

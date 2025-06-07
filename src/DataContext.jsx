@@ -739,7 +739,7 @@ const dataObject = {
         {
             name: 'Back Squat',
             prMetric: 'reps',
-            PRs: { '1RM': 120, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+            PRs: { '1RM': 120, weight: 0, reps: 0, volume: 0, strengthScore: 1 },
             thumbnail: '',
             instructions: { media: '', text: 'Sit a 90* angle...' },
             thresholds: {
@@ -812,7 +812,7 @@ const dataObject = {
         {
             name: 'Hip Thrust',
             prMetric: 'reps',
-            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+            PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0, strengthScore: 1 },
             thumbnail: '',
             instructions: { media: '', text: 'Sit a 90* angle...' },
             thresholds: {

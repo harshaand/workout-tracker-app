@@ -17,6 +17,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
     const { handleScreenChange } = React.useContext(RoutingContext)
 
     const exercisesNewPRs = React.useRef({});
+    const exercisesNewStrengthScores = React.useRef({});
     let totalPRs = 0;
     let totalVolume = 0;
     let totalReps = 0;
@@ -62,7 +63,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
                     prKeys.forEach(prKey => {
 
-                        const getPRValue = set => {
+                        function getPRValue(set) {
                             const reps = Number(set.reps)
                             const weight = Number(set.weight)
                             const oneRepMax = reps < 37 ? weight * (36 / (37 - reps)) : 0
@@ -76,7 +77,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                             }
                         };
 
-                        let highestValue = Math.max(...exercise.sets.map(getPRValue));
+                        let highestValue = Math.max(...exercise.sets.map(set => getPRValue(set)));
                         let assigned = false;
 
                         exercise.sets.forEach(set => {
@@ -94,6 +95,14 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                             }
                             if (prKey === 'reps') {
                                 totalReps += value;
+                            }
+                            /* storing strength scores that have surpassed previous ones so that can update strength scores of corresponding exercise
+                            in data.strengthScores object */
+                            if (prKey === 'strengthScore' && value === highestValue && !assigned && value > exerciseData.PRs['strengthScore']) {
+                                exercisesNewStrengthScores.current = {
+                                    ...exercisesNewStrengthScores.current,
+                                    [exerciseName]: Number(value.toFixed(1))
+                                }
                             }
                             //identifying best set in exercise
                             if (value === highestValue && !assigned && prKey === exerciseData.prMetric) {
@@ -140,12 +149,26 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
     function saveToHistory() {
         setData(prevData => {
+            const strengthScores = Object.fromEntries(
+                Object.entries(prevData.strengthScores).map(([muscleGroup, exercises]) => {
+                    const updatedExercises = { ...exercises };
+
+                    for (const [exercise, newScore] of Object.entries(exercisesNewStrengthScores.current)) {
+                        if (exercise in updatedExercises) {
+                            updatedExercises[exercise] = newScore;
+                        }
+                    }
+
+                    return [muscleGroup, updatedExercises];
+                })
+            );
             return {
                 ...prevData,
                 history: [
                     ...prevData.history,
                     workoutHistory.current
                 ],
+                strengthScores: strengthScores
             }
         })
 
@@ -159,7 +182,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
             const exerciseData = data.exercises.find(ex => ex.name === exerciseName);
             const history = exerciseData.history.find(history => history.workoutId === workoutId);
 
-            exerciseData && history ?
+            if (exerciseData && history) {
                 updatedExerciseObjects = {
                     ...updatedExerciseObjects,
                     [exerciseName]: {
@@ -177,7 +200,8 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                         ]
                     }
                 }
-                :
+            }
+            else {
                 updatedExerciseObjects = {
                     ...updatedExerciseObjects,
                     [exerciseName]: {
@@ -197,13 +221,12 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                         ]
                     }
                 }
-
-
+            }
             setData(prevData => {
                 return {
                     ...prevData,
 
-                    exercises: data.exercises.map((exercise, index) => {
+                    exercises: prevData.exercises.map((exercise, index) => {
                         if (exercise.name in updatedExerciseObjects) {
 
                             return {

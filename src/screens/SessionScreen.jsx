@@ -154,17 +154,17 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
     function createExercise(exerciseName, targetMuscleGroups, prMetric) {
         console.log(exerciseName, targetMuscleGroups)
         setData(prevData => {
-
+            //Adding new (created) exercise to strength scores object under correct muscle groups in main data object
             const updatedStrengthScores = { ...prevData.strengthScores };
             targetMuscleGroups.forEach(muscleGroup => {
                 if (updatedStrengthScores[muscleGroup]) {
                     updatedStrengthScores[muscleGroup] = {
                         ...updatedStrengthScores[muscleGroup],
-                        [exerciseName]: undefined
+                        [exerciseName]: 'not eligible'
                     };
                 }
             });
-
+            //Adding new (created) exercise to the exercises object in main data object
             return {
                 ...prevData,
                 exercises: [
@@ -187,8 +187,13 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
     function addExercises(exercises) {
         exercises = [...new Set(exercises)]
         exercises.forEach(selectedExercise => {
+            //Adding exercise to workout's history. User can decide to add it to template later on the finishing screen
+            /* getting reps and weight of the added exercise from most recent set from exercise's history IF it does exist. 
+            If not, weight & reps = 0 */
             const weight = data.exercises.find(exercise => exercise.name === selectedExercise).history?.at(-1)?.sets?.at(0)?.weight
             const reps = data.exercises.find(exercise => exercise.name === selectedExercise).history?.at(-1)?.sets?.at(0)?.reps
+            const exercisePRs = data.exercises.find(exercise => exercise.name === selectedExercise)?.PRs
+            const setPRs = Object.fromEntries(Object.keys(exercisePRs).map(key => [key, false]));
             setExercises(prevExercises => (
                 [
                     ...prevExercises,
@@ -204,7 +209,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                                     weight: weight === undefined ? 0 : weight,
                                     reps: reps === undefined ? 0 : reps,
                                     completed: false,
-                                    PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
+                                    PRs: setPRs,
                                     bestSet: false
                                 }
                             ]

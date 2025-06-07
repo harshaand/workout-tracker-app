@@ -64,15 +64,18 @@ export default function ProgressScreen() {
 
     let musclesThresholdBrackets = React.useRef({})
 
+    //Find highest bracket for exercise -> will be the bracket for the muscle group.
     Object.entries(data.strengthScores).forEach(([muscleGroup, exercises]) => {
         let exercisesBrackets = []
         Object.entries(exercises).forEach(([exercise, strengthScore]) => {
-            const exerciseData = data.exercises.find(exerciseObject => exerciseObject.name === exercise)
-            const eliteRatio = exerciseData.thresholds[data.user.sex].elite
-            const exerciseThreshold = Object.entries(exerciseData.thresholds[data.user.sex])
-                .find(([thresholdName, thresholdValue]) => (strengthScore / 100) * eliteRatio <= thresholdValue)?.[0] || 'beginner';
+            if (strengthScore !== "not eligible") {
+                const exerciseData = data.exercises.find(exerciseObject => exerciseObject.name === exercise)
+                const eliteRatio = exerciseData.thresholds[data.user.sex].elite
+                const exerciseThreshold = Object.entries(exerciseData.thresholds[data.user.sex])
+                    .find(([thresholdName, thresholdValue]) => (strengthScore / 100) * eliteRatio <= thresholdValue)?.[0] || 'beginner';
 
-            exercisesBrackets = [...exercisesBrackets, exerciseThreshold]
+                exercisesBrackets = [...exercisesBrackets, exerciseThreshold]
+            }
         })
         musclesThresholdBrackets.current = { ...musclesThresholdBrackets.current, [muscleGroup]: findHighestBracket(exercisesBrackets) }
     })

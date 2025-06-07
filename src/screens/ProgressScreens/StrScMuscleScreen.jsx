@@ -21,7 +21,8 @@ function StrScMuscleScreen({ musclesThresholdBrackets, muscleGroup }) {
             </div>
 
             <div className='main main--exercise-screen'>
-                <CardStrScMuscle strengthScore={`${Math.max(...Object.values(data.strengthScores[muscleGroup]))} (${musclesThresholdBrackets[muscleGroup].charAt(0).toUpperCase() + musclesThresholdBrackets[muscleGroup].slice(1)})`} >
+                <CardStrScMuscle strengthScore={`${Math.max(...Object.values(data.strengthScores[muscleGroup]).filter(value => value !== "not eligible"))} 
+                (${musclesThresholdBrackets[muscleGroup].charAt(0).toUpperCase() + musclesThresholdBrackets[muscleGroup].slice(1)})`} >
                     {muscleGroup === "Shoulders" ||
                         muscleGroup === "Chest" ||
                         muscleGroup === "Biceps" ||
@@ -36,10 +37,12 @@ function StrScMuscleScreen({ musclesThresholdBrackets, muscleGroup }) {
                         <h3>Eligible Exercises</h3>
                     </div>
 
-                    {Object.entries(data.strengthScores[muscleGroup]).map(([exercise, strengthScore]) => {
-                        return <RowStrengthScore muscleGroup={exercise} score={strengthScore} type='exercise-1' onClick={() => handleStrScScreenChange('StrScExerciseScreen', musclesThresholdBrackets, muscleGroup, exercise)} />
-                    }
-                    )}
+                    {Object.entries(data.strengthScores[muscleGroup])
+                        .filter(([exercise, strengthScore]) => strengthScore !== "not eligible")
+                        .map(([exercise, strengthScore]) => {
+                            return <RowStrengthScore muscleGroup={exercise} score={strengthScore} type='exercise-1' onClick={() => handleStrScScreenChange('StrScExerciseScreen', musclesThresholdBrackets, muscleGroup, exercise)} />
+                        }
+                        )}
                 </div>
             </div>
 
