@@ -72,7 +72,7 @@ export default function ProgressScreen() {
                 const exerciseData = data.exercises.find(exerciseObject => exerciseObject.name === exercise)
                 const eliteRatio = exerciseData.thresholds[data.user.sex].elite
                 const exerciseThreshold = Object.entries(exerciseData.thresholds[data.user.sex])
-                    .find(([thresholdName, thresholdValue]) => (strengthScore / 100) * eliteRatio <= thresholdValue)?.[0] || 'beginner';
+                    .findLast(([thresholdName, thresholdValue]) => (strengthScore / 100) * eliteRatio > thresholdValue)?.[0] || 'beginner';
 
                 exercisesBrackets = [...exercisesBrackets, exerciseThreshold]
             }

@@ -5,7 +5,7 @@ const defaultChild = <AnatomyFront height={300} width={105.84} />
 const exampleThresholds = { beginner: 0.75, novice: 1.25, intermediate: 1.5, advanced: 2.25, elite: 2.75 }
 
 function CardsStrScExercise({ children = defaultChild, strengthScore = 71, OneRepMax = 266.6, thresholds = exampleThresholds, userWeight = 88 }) {
-    const bracket = Object.entries(thresholds).find(([thresholdName, thresholdValue]) => (strengthScore / 100) * thresholds.elite <= thresholdValue)?.[0] || 'beginner';
+    const bracket = Object.entries(thresholds).findLast(([thresholdName, thresholdValue]) => (strengthScore / 100) * thresholds.elite > thresholdValue)?.[0] || 'beginner';
 
     return (
         <div className='cards-strength-exercise'>
