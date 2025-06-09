@@ -23,7 +23,7 @@ import ModalDiscardTemplate from '../components/Modals/session/confirmation-moda
 import ModalDeleteTemplate from '../components/Modals/session/confirmation-modals/template/DeleteTemplate.jsx'
 import ModalDeleteWorkout from '../components/Modals/session/confirmation-modals/edit-session/DeleteWorkout.jsx'
 
-import { useData, useDataUpdate } from '../DataContext.jsx'
+import { useData } from '../DataContext.jsx'
 
 import { RoutingContext } from '../App.jsx'
 
@@ -35,8 +35,8 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
         4. newEmptyTemplate
         5. newEmptySession -new key*/
 
-    const data = useData()
-    const setData = useDataUpdate()
+    const useLocalStorage = useData()
+    const [data, saveData] = useLocalStorage('userData')
 
     const [sessionDuration, setSessionDuration] = React.useState(0);
     const intervalRef = React.useRef(null);
@@ -153,7 +153,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
     function createExercise(exerciseName, targetMuscleGroups, prMetric) {
         console.log(exerciseName, targetMuscleGroups)
-        setData(prevData => {
+        saveData(prevData => {
             //Adding new (created) exercise to strength scores object under correct muscle groups in main data object
             const updatedStrengthScores = { ...prevData.strengthScores };
             targetMuscleGroups.forEach(muscleGroup => {
@@ -426,7 +426,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
             })
         ]
         console.log('TEMPLATE NAME', templateName.current.value)
-        setData(prevData => {
+        saveData(prevData => {
             return {
                 ...prevData,
                 history: [
@@ -500,7 +500,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
             console.log('workoutHistoryExercises2', workoutHistoryExercises)
 
-            setData(prevData => {
+            saveData(prevData => {
                 return {
                     ...prevData,
 
@@ -542,7 +542,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                 })
             }
         })
-        setData(prevData => {
+        saveData(prevData => {
             const templateExists = prevData.templates.find(templ => templ === template.id) ? true : false
             return {
                 ...prevData,
@@ -577,7 +577,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
     }
 
     function deleteWorkoutHistory() {
-        setData(prevData =>
+        saveData(prevData =>
         ({
             ...prevData,
             history: data.history.filter(history => history.workoutId !== template.workoutId)
@@ -585,7 +585,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
     }
 
     function deleteTemplate() {
-        setData(prevData =>
+        saveData(prevData =>
         ({
             ...prevData,
             templates: data.templates.filter(databaseTemplate => databaseTemplate.id !== template.id)

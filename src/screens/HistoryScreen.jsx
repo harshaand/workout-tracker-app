@@ -9,7 +9,8 @@ import { RoutingContext } from '../App.jsx'
 
 
 function HistoryScreen() {
-    const data = useData()
+    const useLocalStorage = useData()
+    const [data, saveData] = useLocalStorage('userData')
     const { handleScreenChange } = React.useContext(RoutingContext)
 
     const months = [
@@ -24,8 +25,8 @@ function HistoryScreen() {
 
         data.history.forEach(history => {
             // KEY = 'YYYY-MM' format
-            const year = history.date.getFullYear();
-            const month = history.date.getMonth();
+            const year = new Date(history.date).getFullYear();
+            const month = new Date(history.date).getMonth();
             const key = `${year}-${month.toString().padStart(2, '0')}`;
 
             if (!groupedWorkouts[key]) {
@@ -52,7 +53,7 @@ function HistoryScreen() {
 
         return sortedGroups.map(group => {
             //?????
-            const sortedWorkouts = group.workouts.sort((a, b) => b - a);
+            const sortedWorkouts = group.workouts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
             return <>
                 <div className='history__main__container-month'>

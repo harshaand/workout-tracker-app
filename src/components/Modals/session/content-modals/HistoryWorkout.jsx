@@ -54,7 +54,7 @@ function HistoryWorkout({ history, selectedModal, setSelectedModal, handleScreen
                         </div>
 
                         <div className='container-stats'>
-                            <p> {formatDate(history.date)}</p>
+                            <p> {formatDate(new Date(history.date))}</p>
                             <div className='stats'>
                                 <div className='stat duration'>
                                     <Clock />

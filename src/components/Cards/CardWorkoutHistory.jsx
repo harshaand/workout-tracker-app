@@ -39,7 +39,7 @@ function CardWorkoutHistory({ history, customClasses, onClick }) {
 
 
             <div className='container-stats'>
-                <p> {`${daysOfWeek[history.date.getDay()]}, ${history.date.getDate()} ${months[history.date.getMonth()]}`}</p>
+                <p> {`${daysOfWeek[new Date(history.date).getDay()]}, ${new Date(history.date).getDate()} ${months[new Date(history.date).getMonth()]}`}</p>
                 <div className='stats'>
                     <div className='stat duration'>
                         <Clock />

@@ -1,7 +1,3 @@
-// import ImageBenchPress from './bench-press.avif';
-// import ImageLateralRaise from './Dumbbell-Lateral-Raise.gif';
-// import ImageStock from './stock-img.jpg';
-
 import BentOverRow from './avif/back/bent-over-row.avif'
 import Deadlift from './avif/back/deadlift.avif'
 import LatPulldown from './avif/back/lat-pulldown.avif'
@@ -88,16 +84,3 @@ export {
     TricepPushdownCable
 }
 
-// export {
-//     ImageBenchPress,
-//     ImageLateralRaise,
-//     ImageStock
-// };
-
-// export {
-//     BentOverRow, Deadlift, LatPulldown, RowCable, RowDumbbell, BicepCurlBarbell, BicepCurlDumbbell, HammerCurlDumbbell,
-//     CalfRaiseBarbell, CalfRaiseDumbbell, CalfRaiseMachine, SeatedCalfRaise, BenchPressDumbbell, BenchPress,
-//     InclineBenchPressDumbbell, InclineBenchPress, CrunchCable, SeatedCrunchMachine, SideBendDumbbell, WoodChopperCable,
-//     BulgarianSplitSquatBarbell, BulgarianSplitSquatDumbbell, GluteBridgeBarbell, HipThrust, LegCurl, LegExtension,
-//     RomanianDeadlift, SledLegPress, Squat, LateralRaiseDumbbell, SeatedShoulderPressDumbbell, SkullCrusher, TricepPushdownCable
-// }

@@ -11,7 +11,8 @@ import { useData } from '../../DataContext.jsx'
 
 function StrScFullBodyScreen({ musclesThresholdBrackets }) {
     const { handleScreenChange, handleStrScScreenChange } = React.useContext(RoutingContext)
-    const data = useData()
+    const useLocalStorage = useData()
+    const [data, saveData] = useLocalStorage('userData')
 
     return (
         <div className='strength-score-sub-screen__container'>

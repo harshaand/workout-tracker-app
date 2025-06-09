@@ -16,7 +16,7 @@ function CardExerciseHistory({ history, customClasses, onClick }) {
 
     return (
         <div className={`card-exercise-history ${customClasses ? customClasses : 'card-workout-history--default'}`} onClick={onClick}>
-            <div className='heading'><h3>{`${daysOfWeek[history.date.getDay()]}, ${history.date.getDate()} ${months[history.date.getMonth()]}`}</h3></div>
+            <div className='heading'><h3>{`${daysOfWeek[new Date(history.date).getDay()]}, ${new Date(history.date).getDate()} ${months[new Date(history.date).getMonth()]}`}</h3></div>
             <div className='container-data-rows'>
                 {
                     history.sets.map((set, index) => {

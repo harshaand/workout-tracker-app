@@ -19,7 +19,7 @@ function CardWorkoutTemplate({ template, onClick }) {
 
 
         let lastDoneMessage = false
-        const diff = Math.abs(new Date() - template?.lastDone);
+        const diff = Math.abs(new Date() - new Date(template?.lastDone));
         if (template?.lastDone === undefined || diff === undefined) {
             lastDoneMessage = false
         }

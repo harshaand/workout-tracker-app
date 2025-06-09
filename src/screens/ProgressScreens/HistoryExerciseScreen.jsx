@@ -15,7 +15,8 @@ import {
 
 function HistoryExerciseScreen({ exercise = 'Back Squat' }) {
     const { handleScreenChange } = React.useContext(RoutingContext)
-    const data = useData()
+    const useLocalStorage = useData()
+    const [data, saveData] = useLocalStorage('userData')
     const [selectedHistoryWorkoutModal, setSelectedHistoryWorkoutModal] = React.useState(null)
 
     const months = [
@@ -29,9 +30,9 @@ function HistoryExerciseScreen({ exercise = 'Back Squat' }) {
 
         exerciseData.history.forEach(history => {
             // KEY = 'YYYY-MM' format
-            const year = history.date.getFullYear();
-            const month = history.date.getMonth();
-            const day = history.date.getDate(); // Extract day of month
+            const year = new Date(history.date).getFullYear();
+            const month = new Date(history.date).getMonth();
+            const day = new Date(history.date).getDate(); // Extract day of month
             const key = `${year}-${month.toString().padStart(2, '0')}`;
 
             if (!groupedWorkouts[key]) {

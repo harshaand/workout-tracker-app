@@ -4,6 +4,7 @@
         flex-direction: column;
         justify-content: flex-start;
         width: 100%;
+        min-height: 100vh;
         height: 100%;
         padding: 105px 0 200px 0;
         background-color: var(--white);
@@ -52,6 +53,7 @@
         flex-direction: column;
         justify-content: flex-start;
         width: 100%;
+        min-height: 100vh;
         height: 100%;
         padding: 105px 0 120px 0;
         background-color: var(--white);

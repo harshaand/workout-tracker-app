@@ -20,8 +20,8 @@ import { RoutingContext } from '../App.jsx'
 
 function TemplatesScreen() {
     const { currentScreen, handleScreenChange } = React.useContext(RoutingContext)
-    const data = useData()
-    //TESTING WITH HISTORY ATM
+    const useLocalStorage = useData()
+    const [data, saveData] = useLocalStorage('userData')
     /* SCREEN VARIANTS
     1. newSession ------new key
     2. editSession -----old key

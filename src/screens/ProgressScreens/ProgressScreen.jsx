@@ -17,7 +17,8 @@ import {
 
 export default function ProgressScreen() {
     const { handleScreenChange, handleStrScScreenChange } = React.useContext(RoutingContext)
-    const data = useData()
+    const useLocalStorage = useData()
+    const [data, saveData] = useLocalStorage('userData')
     const [activeTab, setActiveTab] = React.useState(0);
     const containerRef = React.useRef(null);
     const scrollProgress = React.useRef(0);

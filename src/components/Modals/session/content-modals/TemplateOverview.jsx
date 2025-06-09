@@ -1,7 +1,7 @@
 import React from 'react'
 import ButtonBig from '../../../Buttons/ButtonBig'
 import ButtonSmall from '../../../Buttons/ButtonSmall'
-import { useData, useDataUpdate } from '../../../../DataContext'
+import { useData } from '../../../../DataContext'
 import {
     BentOverRow, Deadlift, LatPulldown, RowCable, RowDumbbell, BicepCurlBarbell, BicepCurlDumbbell, HammerCurlDumbbell,
     CalfRaiseBarbell, CalfRaiseDumbbell, CalfRaiseMachine, SeatedCalfRaise, BenchPressDumbbell, BenchPress,
@@ -54,9 +54,10 @@ function TemplateOverview({ template, selectedModal, setSelectedModal, handleScr
         'Skull Crusher': SkullCrusher,
         'Tricep Pushdown (Cable)': TricepPushdownCable
     }
-    const data = useData()
+    const useLocalStorage = useData()
+    const [data, saveData] = useLocalStorage('userData')
     let lastDoneMessage = false
-    const diff = Math.abs(new Date() - template?.lastDone);
+    const diff = Math.abs(new Date() - new Date(template?.lastDone));
     if (template?.lastDone === undefined || diff === undefined) {
         lastDoneMessage = false
     }

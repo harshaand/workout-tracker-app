@@ -2,7 +2,7 @@ import React from 'react'
 import '../css/modals.scss'
 import ButtonBig from '../components/Buttons/ButtonBig';
 import ButtonSmall from '../components/Buttons/ButtonSmall.jsx';
-import { useData, useDataUpdate } from '../DataContext.jsx'
+import { useData } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'
 import { ThreeStarsRow } from '../assets/icons/icons.js';
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx';
@@ -10,8 +10,8 @@ import ModalUpdateTemplate from '../components/Modals/session/confirmation-modal
 import ModalSaveAsNewTemplate from '../components/Modals/session/confirmation-modals/finished-session/SaveAsNewTemplate.jsx'
 function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration, templateName, notes }) {
     console.log('TEMPLATE NAME', templateName)
-    const data = useData()
-    const setData = useDataUpdate()
+    const useLocalStorage = useData()
+    const [data, saveData] = useLocalStorage('userData')
     const [showModal, setShowModal] = React.useState(false)
     const userCurrentWeight = data.user.weight
     const { handleScreenChange } = React.useContext(RoutingContext)
@@ -148,7 +148,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
     }
 
     function saveToHistory() {
-        setData(prevData => {
+        saveData(prevData => {
             const strengthScores = Object.fromEntries(
                 Object.entries(prevData.strengthScores).map(([muscleGroup, exercises]) => {
                     const updatedExercises = { ...exercises };
@@ -222,7 +222,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     }
                 }
             }
-            setData(prevData => {
+            saveData(prevData => {
                 return {
                     ...prevData,
 
@@ -302,7 +302,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 })
             }
         })
-        setData(prevData => {
+        saveData(prevData => {
             return {
                 ...prevData,
                 templates: data.templates.map((template, index) => {
@@ -337,7 +337,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 })
             }
         })
-        setData(prevData => {
+        saveData(prevData => {
             const templateExists = prevData.templates.find(template => template.id === templateId) ? true : false
             return {
                 ...prevData,

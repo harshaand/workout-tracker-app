@@ -8,7 +8,8 @@ import { useData } from '../../DataContext.jsx'
 
 function StrScExerciseScreen({ musclesThresholdBrackets, muscleGroup, exercise }) {
     const { handleScreenChange } = React.useContext(RoutingContext)
-    const data = useData()
+    const useLocalStorage = useData()
+    const [data, saveData] = useLocalStorage('userData')
 
     const exerciseData = data.exercises.find(exerciseObject => exerciseObject.name === exercise)
     const strengthScore = data.strengthScores[muscleGroup][exercise]
