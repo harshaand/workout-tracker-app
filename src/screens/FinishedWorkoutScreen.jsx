@@ -64,15 +64,15 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                     prKeys.forEach(prKey => {
 
                         function getPRValue(set) {
-                            const reps = Number(set.reps)
-                            const weight = Number(set.weight)
+                            const reps = Number(Number(set.reps).toFixed(1))
+                            const weight = Number(Number(set.weight).toFixed(1))
                             const oneRepMax = reps < 37 ? weight * (36 / (37 - reps)) : 0
                             const eliteRatio = exerciseData.thresholds === undefined ? undefined : exerciseData.thresholds[data.user.sex].elite
                             const strengthScore = eliteRatio === undefined || oneRepMax === 0 ? 0 : Math.min(100, (oneRepMax / (userCurrentWeight * eliteRatio) * 100))
                             switch (prKey) {
-                                case 'volume': return reps * weight;
-                                case '1RM': return oneRepMax;
-                                case 'strengthScore': return strengthScore;
+                                case 'volume': return Number((reps * weight).toFixed(1));
+                                case '1RM': return Number(oneRepMax.toFixed(1));
+                                case 'strengthScore': return Number(strengthScore.toFixed(1));
                                 default: return Number(set[prKey]);
                             }
                         };

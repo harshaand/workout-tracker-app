@@ -5,6 +5,13 @@ import CardExerciseHistory from '../../components/Cards/CardExerciseHistory.jsx'
 import ButtonSmall from '../../components/Buttons/ButtonSmall.jsx'
 import { RoutingContext } from '../../App.jsx'
 import ModalHistoryWorkout from '../../components/Modals/session/content-modals/HistoryWorkout.jsx'
+import {
+    BentOverRow, Deadlift, LatPulldown, RowCable, RowDumbbell, BicepCurlBarbell, BicepCurlDumbbell, HammerCurlDumbbell,
+    CalfRaiseBarbell, CalfRaiseDumbbell, CalfRaiseMachine, SeatedCalfRaise, BenchPressDumbbell, BenchPress,
+    InclineBenchPressDumbbell, InclineBenchPress, CrunchCable, SeatedCrunchMachine, SideBendDumbbell, WoodChopperCable,
+    BulgarianSplitSquatBarbell, BulgarianSplitSquatDumbbell, GluteBridgeBarbell, HipThrust, LegCurl, LegExtension,
+    RomanianDeadlift, SledLegPress, Squat, LateralRaiseDumbbell, SeatedShoulderPressDumbbell, SkullCrusher, TricepPushdownCable
+} from '../../assets/exercise-images/index.js';
 
 function HistoryExerciseScreen({ exercise = 'Back Squat' }) {
     const { handleScreenChange } = React.useContext(RoutingContext)
@@ -80,6 +87,51 @@ function HistoryExerciseScreen({ exercise = 'Back Squat' }) {
         });
 
     };
+
+    const exerciseImages = {
+        'Bent Over Row (Barbell)': BentOverRow,
+        'Deadlift': Deadlift,
+        'Lat Pulldown': LatPulldown,
+        'Row (Cable)': RowCable,
+        '1 Arm Row (Dumbbell)': RowDumbbell,
+
+        'Bicep Curl (Barbell)': BicepCurlBarbell,
+        'Bicep Curl (Dumbbell)': BicepCurlDumbbell,
+        'Hammer Curl (Dumbbell)': HammerCurlDumbbell,
+
+        'Calf Raise (Barbell)': CalfRaiseBarbell,
+        'Calf Raise (Dumbbell)': CalfRaiseDumbbell,
+        'Calf Raise (Machine)': CalfRaiseMachine,
+        'Seated Calf Raise': SeatedCalfRaise,
+
+        'Bench Press (Dumbbell)': BenchPressDumbbell,
+        'Bench Press': BenchPress,
+        'Incline Bench Press (Dumbbell)': InclineBenchPressDumbbell,
+        'Incline Bench Press': InclineBenchPress,
+
+        'Crunch (Cable)': CrunchCable,
+        'Seated Crunch (Machine)': SeatedCrunchMachine,
+        'Side Bend (Dumbbell)': SideBendDumbbell,
+        'Woodchopper (Cable)': WoodChopperCable,
+
+        'Bulgarian Split Squat (Barbell)': BulgarianSplitSquatBarbell,
+        'Bulgarian Split Squat (Dumbbell)': BulgarianSplitSquatDumbbell,
+        'Glute Bridge (Barbell)': GluteBridgeBarbell,
+        'Hip Thrust': HipThrust,
+        'Leg Curl': LegCurl,
+        'Leg Extension': LegExtension,
+        'Romanian Deadlift': RomanianDeadlift,
+        'Sled Leg Press': SledLegPress,
+        'Squat': Squat,
+
+        'Lateral Raise (Dumbbell)': LateralRaiseDumbbell,
+        'Seated Shoulder Press (Dumbbell)': SeatedShoulderPressDumbbell,
+
+        'Skull Crusher': SkullCrusher,
+        'Tricep Pushdown (Cable)': TricepPushdownCable
+    }
+    const imageSource = exerciseImages[exercise]
+
     return (
         <div className='exercise-history__container'>
             <Navbar />
@@ -88,7 +140,10 @@ function HistoryExerciseScreen({ exercise = 'Back Squat' }) {
                 <div className='header'>
                     <ButtonSmall type='backScreen' onClick={() => handleScreenChange('ProgressScreen')} />
                     <div className='heading-and-image'>
-                        <div className='image'></div>
+                        {imageSource &&
+                            <div className='image' >
+                                <img src={imageSource} alt={exercise} />
+                            </div>}
                         <h1>{exercise}</h1>
                     </div>
 

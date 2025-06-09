@@ -7,7 +7,13 @@ import CardStrScOverview from '../../components/Cards/ProgressScreen/CardStrScOv
 import CardsStrScStats from '../../components/Cards/ProgressScreen/CardsStrScStats.jsx'
 import { RoutingContext } from '../../App.jsx'
 import { useData } from '../../DataContext.jsx'
-
+import {
+    BentOverRow, Deadlift, LatPulldown, RowCable, RowDumbbell, BicepCurlBarbell, BicepCurlDumbbell, HammerCurlDumbbell,
+    CalfRaiseBarbell, CalfRaiseDumbbell, CalfRaiseMachine, SeatedCalfRaise, BenchPressDumbbell, BenchPress,
+    InclineBenchPressDumbbell, InclineBenchPress, CrunchCable, SeatedCrunchMachine, SideBendDumbbell, WoodChopperCable,
+    BulgarianSplitSquatBarbell, BulgarianSplitSquatDumbbell, GluteBridgeBarbell, HipThrust, LegCurl, LegExtension,
+    RomanianDeadlift, SledLegPress, Squat, LateralRaiseDumbbell, SeatedShoulderPressDumbbell, SkullCrusher, TricepPushdownCable
+} from '../../assets/exercise-images/index.js';
 
 export default function ProgressScreen() {
     const { handleScreenChange, handleStrScScreenChange } = React.useContext(RoutingContext)
@@ -138,6 +144,50 @@ export default function ProgressScreen() {
                 part
         );
     };
+
+    const exerciseImages = {
+        'Bent Over Row (Barbell)': BentOverRow,
+        'Deadlift': Deadlift,
+        'Lat Pulldown': LatPulldown,
+        'Row (Cable)': RowCable,
+        '1 Arm Row (Dumbbell)': RowDumbbell,
+
+        'Bicep Curl (Barbell)': BicepCurlBarbell,
+        'Bicep Curl (Dumbbell)': BicepCurlDumbbell,
+        'Hammer Curl (Dumbbell)': HammerCurlDumbbell,
+
+        'Calf Raise (Barbell)': CalfRaiseBarbell,
+        'Calf Raise (Dumbbell)': CalfRaiseDumbbell,
+        'Calf Raise (Machine)': CalfRaiseMachine,
+        'Seated Calf Raise': SeatedCalfRaise,
+
+        'Bench Press (Dumbbell)': BenchPressDumbbell,
+        'Bench Press': BenchPress,
+        'Incline Bench Press (Dumbbell)': InclineBenchPressDumbbell,
+        'Incline Bench Press': InclineBenchPress,
+
+        'Crunch (Cable)': CrunchCable,
+        'Seated Crunch (Machine)': SeatedCrunchMachine,
+        'Side Bend (Dumbbell)': SideBendDumbbell,
+        'Woodchopper (Cable)': WoodChopperCable,
+
+        'Bulgarian Split Squat (Barbell)': BulgarianSplitSquatBarbell,
+        'Bulgarian Split Squat (Dumbbell)': BulgarianSplitSquatDumbbell,
+        'Glute Bridge (Barbell)': GluteBridgeBarbell,
+        'Hip Thrust': HipThrust,
+        'Leg Curl': LegCurl,
+        'Leg Extension': LegExtension,
+        'Romanian Deadlift': RomanianDeadlift,
+        'Sled Leg Press': SledLegPress,
+        'Squat': Squat,
+
+        'Lateral Raise (Dumbbell)': LateralRaiseDumbbell,
+        'Seated Shoulder Press (Dumbbell)': SeatedShoulderPressDumbbell,
+
+        'Skull Crusher': SkullCrusher,
+        'Tricep Pushdown (Cable)': TricepPushdownCable
+    }
+
     return (
         <>
             <Navbar />
@@ -185,12 +235,19 @@ export default function ProgressScreen() {
                             <div className='container-exercises'>
                                 {searchTerm.length > 0 ? (
                                     <div className={'container-rows-exercises container-rows-exercises--search'}>
-                                        {filteredExercises.map((exercise, index) => (
-                                            <div className='row-exercise animate-fadeIn' onClick={(e) => handleStrScScreenChange('HistoryExerciseScreen', undefined, undefined, exercise)}>
-                                                <div className='image'></div>
-                                                <h5>{highlightSearchTerm(exercise)}</h5>
-                                            </div>
-                                        ))}
+                                        {filteredExercises.map((exercise, index) => {
+                                            const imageSource = exerciseImages[exercise]
+                                            return <>
+                                                <div className='row-exercise animate-fadeIn' onClick={(e) => handleStrScScreenChange('HistoryExerciseScreen', undefined, undefined, exercise)}>
+                                                    <div className='image' >
+                                                        {imageSource ?
+                                                            <img src={imageSource} alt={exercise} />
+                                                            : <h3 className='exercise-initial'>{exercise.charAt(0).toUpperCase()}</h3>}
+                                                    </div>
+                                                    <h5>{highlightSearchTerm(exercise)}</h5>
+                                                </div>
+                                            </>
+                                        })}
                                     </div>
                                 ) :
                                     (Object.entries(data.strengthScores).map(([muscleGroup, exercises]) => (
@@ -201,12 +258,19 @@ export default function ProgressScreen() {
                                             </div>
 
                                             <div id={muscleGroup} key={muscleGroup} className={"container-rows-exercises container-rows-exercises--default"}>
-                                                {Object.entries(exercises).map(([exercise, strengthScore]) => (
-                                                    <div className='row-exercise' onClick={(e) => handleStrScScreenChange('HistoryExerciseScreen', undefined, undefined, exercise)}>
-                                                        <div className='image'></div>
-                                                        <h5>{exercise}</h5>
-                                                    </div>
-                                                ))}
+                                                {Object.entries(exercises).map(([exercise, strengthScore]) => {
+                                                    const imageSource = exerciseImages[exercise]
+                                                    return <>
+                                                        <div className='row-exercise' onClick={(e) => handleStrScScreenChange('HistoryExerciseScreen', undefined, undefined, exercise)}>
+                                                            <div className='image' >
+                                                                {imageSource ?
+                                                                    <img src={imageSource} alt={exercise} />
+                                                                    : <h3 className='exercise-initial'>{exercise.charAt(0).toUpperCase()}</h3>}
+                                                            </div>
+                                                            <h5>{exercise}</h5>
+                                                        </div>
+                                                    </>
+                                                })}
                                             </div>
                                         </div>
                                     ))

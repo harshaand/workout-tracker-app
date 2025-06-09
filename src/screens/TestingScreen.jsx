@@ -215,10 +215,6 @@ function TestingScreen() {
 
 
 
-
-
-
-
     return (<>
         <Navbar />
         <div className="container-app">

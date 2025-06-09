@@ -2,6 +2,13 @@ import React from 'react'
 import { useData, useDataUpdate } from '../../../../DataContext'
 import ButtonSmall from '../../../Buttons/ButtonSmall'
 import { Search, ArrowDown, Tick } from '../../../../assets/icons/icons'
+import {
+    BentOverRow, Deadlift, LatPulldown, RowCable, RowDumbbell, BicepCurlBarbell, BicepCurlDumbbell, HammerCurlDumbbell,
+    CalfRaiseBarbell, CalfRaiseDumbbell, CalfRaiseMachine, SeatedCalfRaise, BenchPressDumbbell, BenchPress,
+    InclineBenchPressDumbbell, InclineBenchPress, CrunchCable, SeatedCrunchMachine, SideBendDumbbell, WoodChopperCable,
+    BulgarianSplitSquatBarbell, BulgarianSplitSquatDumbbell, GluteBridgeBarbell, HipThrust, LegCurl, LegExtension,
+    RomanianDeadlift, SledLegPress, Squat, LateralRaiseDumbbell, SeatedShoulderPressDumbbell, SkullCrusher, TricepPushdownCable
+} from '../../../../assets/exercise-images/index.js';
 
 function AddExercises({ addExercises, setShowAddExercisesModal, setShowCreateExerciseModal }) {
     const data = useData()
@@ -90,6 +97,49 @@ function AddExercises({ addExercises, setShowAddExercisesModal, setShowCreateExe
                 part
         );
     };
+
+    const exerciseImages = {
+        'Bent Over Row (Barbell)': BentOverRow,
+        'Deadlift': Deadlift,
+        'Lat Pulldown': LatPulldown,
+        'Row (Cable)': RowCable,
+        '1 Arm Row (Dumbbell)': RowDumbbell,
+
+        'Bicep Curl (Barbell)': BicepCurlBarbell,
+        'Bicep Curl (Dumbbell)': BicepCurlDumbbell,
+        'Hammer Curl (Dumbbell)': HammerCurlDumbbell,
+
+        'Calf Raise (Barbell)': CalfRaiseBarbell,
+        'Calf Raise (Dumbbell)': CalfRaiseDumbbell,
+        'Calf Raise (Machine)': CalfRaiseMachine,
+        'Seated Calf Raise': SeatedCalfRaise,
+
+        'Bench Press (Dumbbell)': BenchPressDumbbell,
+        'Bench Press': BenchPress,
+        'Incline Bench Press (Dumbbell)': InclineBenchPressDumbbell,
+        'Incline Bench Press': InclineBenchPress,
+
+        'Crunch (Cable)': CrunchCable,
+        'Seated Crunch (Machine)': SeatedCrunchMachine,
+        'Side Bend (Dumbbell)': SideBendDumbbell,
+        'Woodchopper (Cable)': WoodChopperCable,
+
+        'Bulgarian Split Squat (Barbell)': BulgarianSplitSquatBarbell,
+        'Bulgarian Split Squat (Dumbbell)': BulgarianSplitSquatDumbbell,
+        'Glute Bridge (Barbell)': GluteBridgeBarbell,
+        'Hip Thrust': HipThrust,
+        'Leg Curl': LegCurl,
+        'Leg Extension': LegExtension,
+        'Romanian Deadlift': RomanianDeadlift,
+        'Sled Leg Press': SledLegPress,
+        'Squat': Squat,
+
+        'Lateral Raise (Dumbbell)': LateralRaiseDumbbell,
+        'Seated Shoulder Press (Dumbbell)': SeatedShoulderPressDumbbell,
+
+        'Skull Crusher': SkullCrusher,
+        'Tricep Pushdown (Cable)': TricepPushdownCable
+    }
     return (
 
         <>
@@ -121,18 +171,24 @@ function AddExercises({ addExercises, setShowAddExercisesModal, setShowCreateExe
                     <div className='container-exercises' ref={containerExercises} style={{ containerExercisesHeight: `${containerExercisesHeight}px` }}>
                         {searchTerm.length > 0 ? (
                             <div className={'container-rows-exercises container-rows-exercises--search'} style={{ height: `${containerExercisesHeight}px` }}>
-                                {filteredExercises.map((exercise, index) => (
-                                    <label className={`row-exercise animate-fadeIn ${checkedExercises[exercise] ? 'row-exercise--checked' : ''}`}>
-                                        <div className='image'></div>
-                                        <input type="checkbox" name="exercise" value={exercise} checked={!!checkedExercises[exercise]}
-                                            style={{ display: 'none' }} onChange={(e) => toggleHelpBtn(exercise, e)} />
-                                        <h5>{highlightSearchTerm(exercise)}</h5>
-                                        {checkedExercises[exercise] ?
-                                            (<div className='checked-icon btn__icon--small btn--blue-soft'><Tick /></div>)
-                                            : (<ButtonSmall type='help' />)
-                                        }
-                                    </label>
-                                ))}
+                                {filteredExercises.map((exercise, index) => {
+                                    const imageSource = exerciseImages[exercise]
+                                    return <>
+                                        <label className={`row-exercise animate-fadeIn ${checkedExercises[exercise] ? 'row-exercise--checked' : ''}`}>
+                                            <div className='image' >
+                                                {imageSource ?
+                                                    <img src={imageSource} alt={exercise} />
+                                                    : <h3 className='exercise-initial'>{exercise.charAt(0).toUpperCase()}</h3>}
+                                            </div>
+                                            <input type="checkbox" name="exercise" value={exercise} checked={!!checkedExercises[exercise]}
+                                                style={{ display: 'none' }} onChange={(e) => toggleHelpBtn(exercise, e)} />
+                                            <h5>{highlightSearchTerm(exercise)}</h5>
+                                            {checkedExercises[exercise] ?
+                                                <div className='checked-icon btn__icon--small btn--blue-soft'><Tick /></div>
+                                                : <div className='btn__icon--small'></div>}
+                                        </label>
+                                    </>
+                                })}
                             </div>
                         ) :
                             (Object.entries(data.strengthScores).map(([muscleGroup, exercises]) => (
@@ -144,18 +200,25 @@ function AddExercises({ addExercises, setShowAddExercisesModal, setShowCreateExe
 
                                     <div id={muscleGroup} key={muscleGroup} className="container-rows-exercises container-rows-exercises--default"
                                         onClick={(e) => { e.stopPropagation() }}>
-                                        {Object.entries(exercises).map(([exercise, strengthScore]) => (
-                                            <label className={`row-exercise animate-fadeIn ${checkedExercises[exercise] ? 'row-exercise--checked' : ''}`}>
-                                                <div className='image'></div>
-                                                <input type="checkbox" name="exercise" value={exercise} checked={!!checkedExercises[exercise]}
-                                                    style={{ display: 'none' }} onChange={(e) => toggleHelpBtn(exercise, e)} />
-                                                <h5>{exercise}</h5>
-                                                {checkedExercises[exercise] ?
-                                                    (<div className='checked-icon btn__icon--small btn--blue-soft'><Tick /></div>)
-                                                    : (<ButtonSmall type='help' />)
-                                                }
-                                            </label>
-                                        ))}
+                                        {Object.entries(exercises).map(([exercise, strengthScore]) => {
+                                            const imageSource = exerciseImages[exercise]
+                                            return <>
+                                                <label className={`row-exercise animate-fadeIn ${checkedExercises[exercise] ? 'row-exercise--checked' : ''}`}>
+                                                    <div className='image' >
+                                                        {imageSource ?
+                                                            <img src={imageSource} alt={exercise} />
+                                                            : <h3 className='exercise-initial'>{exercise.charAt(0).toUpperCase()}</h3>}
+                                                    </div>
+                                                    <input type="checkbox" name="exercise" value={exercise} checked={!!checkedExercises[exercise]}
+                                                        style={{ display: 'none' }} onChange={(e) => toggleHelpBtn(exercise, e)} />
+                                                    <h5>{exercise}</h5>
+                                                    {checkedExercises[exercise] ?
+                                                        <div className='checked-icon btn__icon--small btn--blue-soft'><Tick /></div>
+                                                        : <div className='btn__icon--small'></div>
+                                                    }
+                                                </label>
+                                            </>
+                                        })}
                                     </div>
                                 </div>
                             ))

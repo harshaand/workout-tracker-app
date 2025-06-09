@@ -17,7 +17,7 @@ function CardsStrScExercise({ children = defaultChild, strengthScore = 71, OneRe
             <div className='column'>
                 <div className='card-highest-e1rm'>
                     <h4 className='text-heading'>Highest E-1RM</h4>
-                    <h4 className='text-threshold'>{OneRepMax} kg</h4>
+                    <h4 className='text-threshold'>{Number(OneRepMax.toFixed(1))} kg</h4>
                 </div>
 
                 <div className='card-thresholds'>
@@ -25,23 +25,23 @@ function CardsStrScExercise({ children = defaultChild, strengthScore = 71, OneRe
 
                     <div className={`row-threshold ${bracket === 'beginner' ? 'row-threshold--active' : 'row-threshold--inactive'}`}>
                         <h5 className='text-content'>Beginner</h5>
-                        <h5 className='text-content'>{userWeight * thresholds.beginner} kg</h5>
+                        <h5 className='text-content'>{Number((userWeight * thresholds.beginner).toFixed(1))} kg</h5>
                     </div>
                     <div className={`row-threshold ${bracket === 'novice' ? 'row-threshold--active' : 'row-threshold--inactive'}`}>
                         <h5 className='text-content'>Novice</h5>
-                        <h5 className='text-content'>{userWeight * thresholds.novice} kg</h5>
+                        <h5 className='text-content'>{Number((userWeight * thresholds.novice).toFixed(1))} kg</h5>
                     </div>
                     <div className={`row-threshold ${bracket === 'intermediate' ? 'row-threshold--active' : 'row-threshold--inactive'}`}>
                         <h5 className='text-content'>Intermediate</h5>
-                        <h5 className='text-content'>{userWeight * thresholds.intermediate} kg</h5>
+                        <h5 className='text-content'>{Number((userWeight * thresholds.intermediate).toFixed(1))} kg</h5>
                     </div>
                     <div className={`row-threshold ${bracket === 'advanced' ? 'row-threshold--active' : 'row-threshold--inactive'}`}>
                         <h5 className='text-content'>Advanced</h5>
-                        <h5 className='text-content'>{userWeight * thresholds.advanced} kg</h5>
+                        <h5 className='text-content'>{Number((userWeight * thresholds.advanced).toFixed(1))} kg</h5>
                     </div>
                     <div className={`row-threshold ${bracket === 'elite' ? 'row-threshold--active' : 'row-threshold--inactive'}`}>
                         <h5 className='text-content'>Elite</h5>
-                        <h5 className='text-content'>{userWeight * thresholds.elite} kg</h5>
+                        <h5 className='text-content'>{Number((userWeight * thresholds.elite).toFixed(1))} kg</h5>
                     </div>
                 </div>
             </div>

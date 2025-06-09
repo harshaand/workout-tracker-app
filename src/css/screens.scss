@@ -768,9 +768,24 @@
                 transition: background-color 0.2s ease;
 
                 .image {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                     height: 44px;
                     width: 44px;
-                    background-color: red;
+                    border-radius: 4px;
+                    overflow: hidden;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center;
+                    }
+
+                    .exercise-initial {
+                        font-size: 32px;
+                    }
                 }
 
                 &:hover {
@@ -841,9 +856,24 @@
                 }
 
                 .image {
-                    height: 44px;
-                    width: 44px;
-                    background-color: red;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 80px;
+                    width: 80px;
+                    border-radius: 4px;
+                    overflow: hidden;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center;
+                    }
+
+                    .exercise-initial {
+                        font-size: 48px;
+                    }
                 }
             }
         }

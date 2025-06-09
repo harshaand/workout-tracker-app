@@ -329,8 +329,8 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
     function saveTemplateValues(exerciseName, setId, weight, reps) {
         setExercises(prevExercises => (
             prevExercises.map(exercise => {
-                weight = Number(weight)
-                reps = Number(reps)
+                weight = Number(Number(weight).toFixed(1))
+                reps = Number(Number(reps).toFixed(1))
                 return exercise.name === exerciseName ?
                     {
                         ...exercise,
@@ -368,21 +368,21 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
                     prKeys.forEach(prKey => {
 
-                        const getPRValue = set => {
-                            const reps = Number(set.reps)
-                            const weight = Number(set.weight)
+                        function getPRValue(set) {
+                            const reps = Number(Number(set.reps).toFixed(1))
+                            const weight = Number(Number(set.weight).toFixed(1))
                             const oneRepMax = reps < 37 ? weight * (36 / (37 - reps)) : 0
                             const eliteRatio = exerciseData.thresholds === undefined ? undefined : exerciseData.thresholds[data.user.sex].elite
                             const strengthScore = eliteRatio === undefined || oneRepMax === 0 ? 0 : Math.min(100, (oneRepMax / (userCurrentWeight.current * eliteRatio) * 100))
                             switch (prKey) {
-                                case 'volume': return reps * weight;
-                                case '1RM': return oneRepMax;
-                                case 'strengthScore': return strengthScore;
+                                case 'volume': return Number((reps * weight).toFixed(1));
+                                case '1RM': return Number(oneRepMax.toFixed(1));
+                                case 'strengthScore': return Number(strengthScore.toFixed(1));
                                 default: return Number(set[prKey]);
                             }
                         };
 
-                        let highestValue = Math.max(...exercise.sets.map(getPRValue));
+                        let highestValue = Math.max(...exercise.sets.map(set => getPRValue(set)));
                         let assigned = false;
 
                         exercise.sets.forEach(set => {
