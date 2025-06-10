@@ -39,35 +39,7 @@ function TemplatesScreen() {
         notes: undefined,
         lastDone: {},
 
-        exercises: [
-            {
-                name: 'Testing Exercise',
-                sets:
-                    [
-                        {
-                            id: '0plkjn',
-                            value: 1,
-                            num: 1,
-                            weight: 0,
-                            reps: 0,
-                            completed: false,
-                            PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
-                            bestSet: false
-                        },
-                        {
-                            id: '876tg',
-                            value: 2,
-                            num: 2,
-                            weight: 0,
-                            reps: 0,
-                            completed: false,
-                            PRs: { '1RM': false, weight: false, reps: false, volume: false, strengthScore: false },
-                            bestSet: false
-                        }
-                    ]
-
-            }
-        ]
+        exercises: []
     }
 
     return (<>
@@ -86,7 +58,10 @@ function TemplatesScreen() {
                     <div className='container-folders__header'>
                         <h2>Templates</h2>
                         <div className='container-folders__header__buttons'>
-                            <ButtonSmall type='addTemplate' >Template</ButtonSmall>
+                            <ButtonSmall type='addTemplate' onClick={() =>
+                                handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate')}>
+                                Template
+                            </ButtonSmall>
                             <ButtonSmall type='folder' />
                         </div>
 
@@ -95,7 +70,7 @@ function TemplatesScreen() {
                         <div className='container-folders__folders__group'>
                             <div className='container-templates'>
                                 <div className='container-templates__header'>
-                                    <h3>My Templates 1</h3>
+                                    <h3>My Templates</h3>
                                     <ButtonSmall type='options1' />
                                 </div>
                                 <div className='container-templates__templates'>
@@ -118,7 +93,7 @@ function TemplatesScreen() {
 
                             <div className='container-templates'>
                                 <div className='container-templates__header'>
-                                    <h3>My Templates 2</h3>
+                                    <h3>Example Templates (1 Day/Week)</h3>
                                     <ButtonSmall type='options1' />
                                 </div>
                                 <div className='container-templates__templates'>

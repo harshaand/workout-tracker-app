@@ -15,6 +15,7 @@ import ModalCreateExercise from '../components/Modals/session/content-modals/Cre
 import ModalFinishWorkout from '../components/Modals/session/confirmation-modals/session/FinishWorkout.jsx'
 import ModalSaveWorkout from '../components/Modals/session/confirmation-modals/edit-session/SaveEditedWorkout.jsx'
 import ModalSaveTemplate from '../components/Modals/session/confirmation-modals/template/SaveEditedTemplate.jsx'
+import ModalSaveAsNewTemplate from '../components/Modals/session/confirmation-modals/finished-session/SaveAsNewTemplate.jsx'
 import FinishedWorkoutScreen from './FinishedWorkoutScreen.jsx'
 
 import ModalCancelWorkout from '../components/Modals/session/confirmation-modals/session/CancelWorkout.jsx'
@@ -542,13 +543,14 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                 })
             }
         })
-        saveData(prevData => {
+        saveData((prevData) => {
             const templateExists = prevData.templates.find(templ => templ === template.id) ? true : false
             return {
                 ...prevData,
                 templates: templateExists ? prevData.templates.map((templ) => {
                     if (templ.id === template.id) return {
                         ...templ,
+                        name: templateName.current.value,
                         notes: notes.current.value,
                         exercises: finalExercises
                     }
@@ -558,6 +560,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                         ...prevData.templates,
                         {
                             ...template,
+                            name: templateName.current.value,
                             notes: notes.current.value,
                             exercises: finalExercises
                         }

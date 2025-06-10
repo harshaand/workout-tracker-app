@@ -15,7 +15,7 @@ function SaveEditedTemplate({ showModal, setShowModal, handleScreenChange, handl
                             <ButtonBig color='blue' onClick={() => {
                                 handleUpdateTemplate()
                                 setShowModal(false)
-                                handleScreenChange()
+
                             }}>Save</ButtonBig>
                         </div>
                     </div>
