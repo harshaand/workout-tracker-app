@@ -33,6 +33,7 @@ import RomanianDeadlift from './avif/legs/romanian-deadlift.avif'
 import SledLegPress from './avif/legs/sled-leg-press.avif'
 import Squat from './avif/legs/squat.avif'
 
+import ShoulderPress from './avif/shoulders/shoulder-press.avif'
 import LateralRaiseDumbbell from './avif/shoulders/lateral-raise-dumbbell.avif'
 import SeatedShoulderPressDumbbell from './avif/shoulders/seated-shoulder-press-dumbbell.avif'
 
@@ -77,6 +78,7 @@ export {
     SledLegPress,
     Squat,
 
+    ShoulderPress,
     LateralRaiseDumbbell,
     SeatedShoulderPressDumbbell,
 

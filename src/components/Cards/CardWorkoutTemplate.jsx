@@ -77,7 +77,7 @@ function CardWorkoutTemplate({ template, onClick }) {
 
                 <div className='content'>
                     <p>{description}</p>
-                    {timestamp ?
+                    {timestamp !== false ?
                         <div className='container-timestamp'>
                             <Clock />
                             <p>{timestamp}</p>

@@ -7,7 +7,7 @@ import {
     CalfRaiseBarbell, CalfRaiseDumbbell, CalfRaiseMachine, SeatedCalfRaise, BenchPressDumbbell, BenchPress,
     InclineBenchPressDumbbell, InclineBenchPress, CrunchCable, SeatedCrunchMachine, SideBendDumbbell, WoodChopperCable,
     BulgarianSplitSquatBarbell, BulgarianSplitSquatDumbbell, GluteBridgeBarbell, HipThrust, LegCurl, LegExtension,
-    RomanianDeadlift, SledLegPress, Squat, LateralRaiseDumbbell, SeatedShoulderPressDumbbell, SkullCrusher, TricepPushdownCable
+    RomanianDeadlift, SledLegPress, Squat, ShoulderPress, LateralRaiseDumbbell, SeatedShoulderPressDumbbell, SkullCrusher, TricepPushdownCable
 } from '../../../../assets/exercise-images/index.js';
 
 function AddExercises({ addExercises, setShowAddExercisesModal, setShowCreateExerciseModal }) {
@@ -134,6 +134,7 @@ function AddExercises({ addExercises, setShowAddExercisesModal, setShowCreateExe
         'Sled Leg Press': SledLegPress,
         'Squat': Squat,
 
+        'Shoulder Press': ShoulderPress,
         'Lateral Raise (Dumbbell)': LateralRaiseDumbbell,
         'Seated Shoulder Press (Dumbbell)': SeatedShoulderPressDumbbell,
 

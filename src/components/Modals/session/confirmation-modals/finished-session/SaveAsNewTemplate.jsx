@@ -12,12 +12,15 @@ function SaveAsNewTemplate({ showModal, setShowModal, handleUpdateTemplate, save
                     <div className='content-spacing--default'>
                         <p>Save this workout as a template so you can perform it again in the future?</p>
                         <div className='modal__buttons--vertical'>
-                            <ButtonBig color='blue' onClick={() => {
-                                handleUpdateTemplate()
-                                saveToHistory()
+                            <ButtonBig color='blue' onClick={async () => {
+                                await handleUpdateTemplate()
+                                await saveToHistory()
                                 setShowModal(false)
                             }}>Save as Template</ButtonBig>
-                            <ButtonBig color='gray' onClick={() => setShowModal(false)}>No thanks!</ButtonBig>
+                            <ButtonBig color='gray' onClick={async () => {
+                                await saveToHistory()
+                                setShowModal(false)
+                            }}>No thanks!</ButtonBig>
                         </div>
                     </div>
                 </div>

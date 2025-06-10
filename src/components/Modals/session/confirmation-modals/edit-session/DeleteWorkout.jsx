@@ -16,9 +16,9 @@ function DeleteWorkout({ showModal, setShowModal, handleScreenChange, deleteWork
                             workout? You cannot undo this action.</p>
                         <div className='modal__buttons--horizontal'>
                             <ButtonBig color='gray' onClick={() => { setShowModal(false) }}>Cancel</ButtonBig>
-                            <ButtonBig color='red' onClick={() => {
+                            <ButtonBig color='red' onClick={async () => {
+                                await deleteWorkoutHistory()
                                 setShowModal(false)
-                                deleteWorkoutHistory()
                                 handleScreenChange()
                             }}>Delete</ButtonBig>
                         </div>

@@ -13,8 +13,8 @@ function SaveEditedWorkout({ showModal, setShowModal, handleScreenChange, saveTo
                     <div className='content-spacing--no-body-text'>
                         <div className='modal__buttons--horizontal'>
                             <ButtonBig color='gray' onClick={() => setShowModal(false)}>Cancel</ButtonBig>
-                            <ButtonBig color='blue' onClick={() => {
-                                saveToHistory()
+                            <ButtonBig color='blue' onClick={async () => {
+                                await saveToHistory()
                                 setShowModal(false)
                                 handleScreenChange()
                             }}>Save</ButtonBig>

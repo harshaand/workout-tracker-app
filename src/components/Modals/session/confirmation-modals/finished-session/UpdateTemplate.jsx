@@ -129,9 +129,9 @@ function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, s
 
     if (updateTemplateMessage.length > 0) {
         if (removedValues) {
-            updateTemplateButton = <ButtonBig onClick={() => {
-                handleUpdateTemplate()
-                saveToHistory()
+            updateTemplateButton = <ButtonBig onClick={async () => {
+                await handleUpdateTemplate()
+                await saveToHistory()
                 setShowModal(false)
             }} color="redSoft">
                 <div>
@@ -140,9 +140,9 @@ function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, s
                 </div>
             </ButtonBig>;
         } else {
-            updateTemplateButton = <ButtonBig onClick={() => {
-                handleUpdateTemplate()
-                saveToHistory()
+            updateTemplateButton = <ButtonBig onClick={async () => {
+                await handleUpdateTemplate()
+                await saveToHistory()
                 setShowModal(false)
             }} color="blueSoft">
                 <div>
@@ -165,9 +165,9 @@ function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, s
                         <div className='modal__buttons--vertical'>
 
                             {updatedValues &&
-                                <ButtonBig onClick={() => {
-                                    handleUpdateValues()
-                                    saveToHistory()
+                                <ButtonBig onClick={async () => {
+                                    await handleUpdateValues()
+                                    await saveToHistory()
                                     setShowModal(false)
                                 }}>
                                     <div>
@@ -178,8 +178,8 @@ function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, s
 
                             {updateTemplateButton}
 
-                            <ButtonBig color="gray" onClick={() => {
-                                saveToHistory()
+                            <ButtonBig color="gray" onClick={async () => {
+                                await saveToHistory()
                                 setShowModal(false)
                             }}>Keep Orignal</ButtonBig>
 

@@ -37,7 +37,7 @@ function TemplatesScreen() {
         name: 'New Workout',
         duration: undefined,
         notes: undefined,
-        lastDone: {},
+        lastDone: undefined,
 
         exercises: []
     }
@@ -93,7 +93,7 @@ function TemplatesScreen() {
 
                             <div className='container-templates'>
                                 <div className='container-templates__header'>
-                                    <h3>Example Templates (1 Day/Week)</h3>
+                                    <h3>Example Templates</h3>
                                     <ButtonSmall type='options1' />
                                 </div>
                                 <div className='container-templates__templates'>

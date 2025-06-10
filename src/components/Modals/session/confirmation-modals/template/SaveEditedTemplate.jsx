@@ -12,10 +12,10 @@ function SaveEditedTemplate({ showModal, setShowModal, handleScreenChange, handl
                     <div className='content-spacing--no-body-text'>
                         <div className='modal__buttons--horizontal'>
                             <ButtonBig color='gray' onClick={() => setShowModal(false)}>Cancel</ButtonBig>
-                            <ButtonBig color='blue' onClick={() => {
-                                handleUpdateTemplate()
+                            <ButtonBig color='blue' onClick={async () => {
+                                await handleUpdateTemplate()
                                 setShowModal(false)
-
+                                handleScreenChange()
                             }}>Save</ButtonBig>
                         </div>
                     </div>

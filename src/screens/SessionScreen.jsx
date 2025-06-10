@@ -543,7 +543,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                 })
             }
         })
-        saveData((prevData) => {
+        saveData(prevData => {
             const templateExists = prevData.templates.find(templ => templ === template.id) ? true : false
             return {
                 ...prevData,
@@ -686,7 +686,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
 
 
                 <div>
-                    {/*Add exercise + creat exercise modals*/}
+                    {/*Add exercise + create exercise modals*/}
                     {showAddExercisesModal && <ModalAddExercises addExercises={addExercises} setShowAddExercisesModal={setShowAddExercisesModal} setShowCreateExerciseModal={setShowCreateExerciseModal} />}
                     {showCreateExerciseModal && <ModalCreateExercise createExercise={createExercise} setShowCreateExerciseModal={setShowCreateExerciseModal} setShowAddExercisesModal={setShowAddExercisesModal} />}
 
