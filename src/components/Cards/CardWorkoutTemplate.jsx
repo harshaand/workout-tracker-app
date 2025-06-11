@@ -2,6 +2,7 @@ import React from 'react'
 import '../../css/cards.scss';
 import ButtonSmall from '../Buttons/ButtonSmall.jsx'
 import { Clock } from '../../assets/icons/icons.js';
+import ModalOptionsTemplate from '../Modals/template/ModalOptionsTemplate.jsx'
 
 
 let title
@@ -11,7 +12,7 @@ let titleLength
 let type
 
 
-function CardWorkoutTemplate({ template, onClick }) {
+function CardWorkoutTemplate({ template, onClick, showOptionsModal, setShowOptionsModal }) {
     if (template) {
         description = template.exercises.map(exercise => exercise.name);
         description = description.join(', ')
@@ -71,10 +72,19 @@ function CardWorkoutTemplate({ template, onClick }) {
     else {
         return (
             <div className={`card-workout-template ${LENGTH_MAP[titleLength]}`} onClick={onClick}>
-                <div className='heading'><h3>{title}</h3></div>
-
-                <ButtonSmall type='options1' customClasses='options-button'></ButtonSmall>
-
+                <div className='header'>
+                    <div className='container-heading'>
+                        <h3>{title}</h3>
+                    </div>
+                    <div className='wrapper-options'>
+                        <ButtonSmall type='options1' onClick={(e) => {
+                            e.stopPropagation()
+                            setShowOptionsModal(template.id)
+                        }}></ButtonSmall>
+                        {showOptionsModal === template.id &&
+                            <ModalOptionsTemplate setShowModal={setShowOptionsModal} />}
+                    </div>
+                </div>
                 <div className='content'>
                     <p>{description}</p>
                     {timestamp !== false ?

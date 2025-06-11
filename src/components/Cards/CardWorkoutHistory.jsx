@@ -2,15 +2,11 @@ import React from 'react'
 import ButtonSmall from '../Buttons/ButtonSmall.jsx'
 import '../../css/cards.scss';
 import '../../css/screens.scss';
+import { Clock, Weight, TrophyMedium } from '../../assets/icons/icons.js';
+import ModalOptionsHistory from '../Modals/template/ModalOptionsHistory.jsx';
 
 
-import {
-    Clock, Weight, TrophyMedium
-} from '../../assets/icons/icons.js';
-
-
-
-function CardWorkoutHistory({ history, customClasses, onClick }) {
+function CardWorkoutHistory({ history, customClasses, onClick, showOptionsModal, setShowOptionsModal }) {
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -34,8 +30,19 @@ function CardWorkoutHistory({ history, customClasses, onClick }) {
     };
     return (
         <div className={`card-workout-history ${customClasses ? customClasses : 'card-workout-history--default'}`} onClick={onClick}>
-            <ButtonSmall type='options1' customClasses='options-button'></ButtonSmall>
-            <div className='heading'><h3>{history.name}</h3></div>
+            <div className='header'>
+                <div className='container-heading'>
+                    <h3>{history.name}</h3>
+                </div>
+                <div className='wrapper-options'>
+                    <ButtonSmall type='options1' onClick={(e) => {
+                        e.stopPropagation()
+                        setShowOptionsModal(history.workoutId)
+                    }}></ButtonSmall>
+                    {showOptionsModal === history.workoutId &&
+                        <ModalOptionsHistory setShowModal={setShowOptionsModal} />}
+                </div>
+            </div>
 
 
             <div className='container-stats'>

@@ -23,7 +23,7 @@ export const RoutingContext = React.createContext({
 })
 
 function App() {
-  const [currentScreen, setCurrentScreen] = React.useState('TestingScreen')
+  const [currentScreen, setCurrentScreen] = React.useState('TemplatesScreen')
   let ScreenComponent;
   //FWS = finished workout screen
   let FWS_data = React.useRef({

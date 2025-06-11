@@ -4,7 +4,10 @@ import React from 'react'
 import ButtonSmall from '../components/Buttons/ButtonSmall.jsx'
 import ButtonBig from '../components/Buttons/ButtonBig.jsx'
 import CardWorkoutTemplate from '../components/Cards/CardWorkoutTemplate.jsx'
-import ModalSessionOverview from '../components/Modals/session/content-modals/TemplateOverview.jsx';
+
+import ModalTemplateOverview from '../components/Modals/session/content-modals/TemplateOverview.jsx';
+import ModalOptionsFolder from '../components/Modals/template/ModalOptionsFolder.jsx'
+
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import FolderList from '../OTHER/FoldersFunctionality.jsx'
@@ -30,7 +33,9 @@ function TemplatesScreen() {
     5. newEmptySession -new key
     */
     const screenVariant = React.useRef(null);
-    const [selectedTemplateOverviewModal, setSelectedTemplateOverviewModal] = React.useState(null)
+    const [showTemplateOverviewModal, setShowTemplateOverviewModal] = React.useState(null)
+    const [showOptionsFolderModal, setShowOptionsFolderModal] = React.useState(null)
+    const [showOptionsTemplateModal, setShowOptionsTemplateModal] = React.useState(undefined)
 
     const newEmptySession = {
         id: uuidv4(),
@@ -70,8 +75,18 @@ function TemplatesScreen() {
                         <div className='container-folders__folders__group'>
                             <div className='container-templates'>
                                 <div className='container-templates__header'>
-                                    <h3>My Templates</h3>
-                                    <ButtonSmall type='options1' />
+                                    <div className='container-heading'>
+                                        <h3>My Templates</h3>
+                                    </div>
+                                    <div className='wrapper-options'>
+                                        <ButtonSmall type='options1' onClick={(e) => {
+                                            e.stopPropagation()
+                                            setShowOptionsFolderModal(1)
+                                        }}></ButtonSmall>
+                                        {showOptionsFolderModal === 1 &&
+                                            <ModalOptionsFolder setShowModal={setShowOptionsFolderModal} />
+                                        }
+                                    </div>
                                 </div>
                                 <div className='container-templates__templates'>
 
@@ -79,11 +94,14 @@ function TemplatesScreen() {
                                         <>
                                             <CardWorkoutTemplate template={template}
                                                 onClick={() => {
-                                                    setSelectedTemplateOverviewModal(template.id);
-                                                }}>
+                                                    setShowTemplateOverviewModal(template.id);
+                                                }}
+                                                showOptionsModal={showOptionsTemplateModal}
+                                                setShowOptionsModal={setShowOptionsTemplateModal}
+                                            >
                                             </CardWorkoutTemplate>
-                                            <ModalSessionOverview template={template} selectedModal={selectedTemplateOverviewModal}
-                                                setSelectedModal={setSelectedTemplateOverviewModal}
+                                            <ModalTemplateOverview template={template} selectedModal={showTemplateOverviewModal}
+                                                setSelectedModal={setShowTemplateOverviewModal}
                                                 handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
                                                 handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
                                         </>
@@ -91,7 +109,7 @@ function TemplatesScreen() {
                                 </div>
                             </div>
 
-                            <div className='container-templates'>
+                            {/* <div className='container-templates'>
                                 <div className='container-templates__header'>
                                     <h3>Example Templates</h3>
                                     <ButtonSmall type='options1' />
@@ -101,10 +119,10 @@ function TemplatesScreen() {
                                     <CardWorkoutTemplate />
                                     <CardWorkoutTemplate />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
 
-                        <div className='container-folders__folders__group'>
+                        {/* <div className='container-folders__folders__group'>
                             <div className='container-templates'>
                                 <div className='container-templates__header'>
                                     <h3>Example Templates</h3>
@@ -116,7 +134,7 @@ function TemplatesScreen() {
                                     <CardWorkoutTemplate />
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                     </div>
 

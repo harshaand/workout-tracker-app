@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar.jsx'
 import '../css/screens.scss'
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
 import ModalHistoryWorkout from '../components/Modals/session/content-modals/HistoryWorkout.jsx'
+import ModalOptionsHistory from '../components/Modals/template/ModalOptionsHistory.jsx'
 import { useData } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'
 
@@ -18,6 +19,7 @@ function HistoryScreen() {
         'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
     ];
     const [selectedHistoryWorkoutModal, setSelectedHistoryWorkoutModal] = React.useState(null)
+    const [showOptionsHistoryModal, setShowOptionsHistoryModal] = React.useState(undefined)
 
 
     function renderHistoryCards() {
@@ -58,17 +60,18 @@ function HistoryScreen() {
             return <>
                 <div className='history__main__container-month'>
                     <p className='heading'>{`${months[group.month]} ${group.year}`}</p>
-                    {sortedWorkouts.map(history => {
-                        return <>
+                    {sortedWorkouts.map(history => (
+                        <>
                             <CardWorkoutHistory history={history} onClick={() => {
                                 setSelectedHistoryWorkoutModal(history.workoutId)
-
-                            }} />
+                            }}
+                                showOptionsModal={showOptionsHistoryModal}
+                                setShowOptionsModal={setShowOptionsHistoryModal} />
                             <ModalHistoryWorkout history={history} selectedModal={selectedHistoryWorkoutModal}
                                 setSelectedModal={setSelectedHistoryWorkoutModal}
                                 handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', history, 'editSession')} />
                         </>
-                    })}
+                    ))}
                 </div>
             </>
 

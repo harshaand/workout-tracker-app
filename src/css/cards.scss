@@ -56,7 +56,6 @@
 }
 
 .card-workout-template {
-    position: relative;
     display: flex;
     flex-direction: column;
     background-color: var(--white);
@@ -71,15 +70,11 @@
 
     /* !!!!!!!!just some hover and pressed styles for now !!!!!!!!*/
     &:hover {
-        filter: brightness(1.1);
-        transform: translateY(-1px);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         transition: all 0.2s ease;
     }
 
     &:active {
-        filter: brightness(0.9);
-        transform: translateY(1px);
         box-shadow: none;
         transition: all 0.1s ease;
     }
@@ -92,9 +87,28 @@
         gap: 12px;
     }
 
+    .header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        box-sizing: border-box;
+
+        .container-heading {
+            display: flex;
+            align-items: center;
+        }
+
+        .wrapper-options {
+            position: relative;
+            height: fit-content;
+            width: fit-content;
+        }
+    }
+
     h3 {
         color: var(--text-color-heading-1);
         width: 100%;
+        height: fit-content;
         padding: 0;
         margin: 0;
 
@@ -108,12 +122,6 @@
         max-height: calc(2 * 1.2em);
         text-overflow: ellipsis;
         overflow: hidden;
-    }
-
-    .heading {
-        padding-right: 44px;
-        width: 100%;
-        box-sizing: border-box;
     }
 
     p {
@@ -130,12 +138,6 @@
         max-height: calc(2 * 1.2em);
         text-overflow: ellipsis;
         overflow: hidden;
-    }
-
-    .options-button {
-        position: absolute;
-        right: 16px;
-        top: 14px;
     }
 
     .content {
@@ -174,7 +176,6 @@
 
 
 .card-workout-history {
-    position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -183,8 +184,6 @@
     border: 1px var(--card-border-color) solid;
     border-radius: 16px;
     box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
 
     &--default {
         height: fit-content;
@@ -195,6 +194,7 @@
     h3 {
         color: var(--text-color-heading-2);
         width: 100%;
+        height: fit-content;
         padding: 0;
         margin: 0;
     }
@@ -207,10 +207,22 @@
         margin: 0;
     }
 
-    .heading {
-        padding-right: 44px;
+    .header {
+        display: flex;
+        justify-content: space-between;
         width: 100%;
         box-sizing: border-box;
+
+        .container-heading {
+            display: flex;
+            align-items: center;
+        }
+
+        .wrapper-options {
+            position: relative;
+            height: fit-content;
+            width: fit-content;
+        }
     }
 
     p {

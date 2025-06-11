@@ -212,14 +212,22 @@ function TestingScreen() {
             {/* Choose template name + inputfield */}
             <ModalSaveInputNoDescr />
         </div>
-
+    const optionsModals =
+        <div>
+            {/* Options modals on templates screen */}
+            <ModalOptionsTemplate />
+            <ModalOptionsHistory />
+            <ModalOptionsFolder />
+            <ModalOptionsEditTemplateScreen />
+        </div>
 
 
     return (<>
         <Navbar />
         <div className="container-app">
             <h2>hello</h2>
-            {temporary}
+            {/* {temporary} */}
+            {/* {optionsModals} */}
             {/* {allModals} */}
             {/* <ModalDelete /> */}
             {/* <ModalDiscard /> */}
