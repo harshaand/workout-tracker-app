@@ -1,7 +1,7 @@
 // components/Button.jsx
 import React from 'react';
 import {
-    AddMedium, Collapse, Cross, Duplicate, Pencil, Trash, Tick
+    AddMedium, Collapse, Cross, Duplicate, Expand, Pencil, Trash, Tick
 } from '../../assets/icons/icons.js';
 
 function ButtonModal({ children, type = 'edit', icon, onClick }) {
@@ -9,6 +9,7 @@ function ButtonModal({ children, type = 'edit', icon, onClick }) {
         add: AddMedium,
         archive: Trash,
         collapse: Collapse,
+        expand: Expand,
         duplicate: Duplicate,
         delete: Cross,
         edit: Pencil,

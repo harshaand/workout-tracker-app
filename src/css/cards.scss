@@ -34,11 +34,14 @@
     background-color: var(--white);
     color: var(--text-color-colored);
     height: 144px;
-    width: 173px;
+    // width: 173px;
+    width: 100%;
     padding: 16px;
+    border: 1px var(--card-border-color) solid;
     border-radius: 16px;
     box-sizing: border-box;
     text-align: center;
+    cursor: pointer;
 
     h3 {
         margin: 0;
@@ -67,6 +70,7 @@
     border-radius: 16px;
     box-sizing: border-box;
     text-align: left;
+    cursor: pointer;
 
     /* !!!!!!!!just some hover and pressed styles for now !!!!!!!!*/
     &:hover {
@@ -189,6 +193,7 @@
         height: fit-content;
         /*width: 361px;*/
         width: 100%;
+        cursor: pointer;
     }
 
     h3 {
@@ -216,6 +221,7 @@
         .container-heading {
             display: flex;
             align-items: center;
+            width: 100%;
         }
 
         .wrapper-options {

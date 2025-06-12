@@ -31,6 +31,7 @@ export { default as Search } from './Search.jsx';
 export { default as Bicep } from './Bicep.jsx';
 export { default as Streak } from './Streak.jsx';
 export { default as Ellipsis } from './Ellipsis.jsx';
+export { default as Expand } from './Expand.jsx';
 export { default as BlankNarrow } from './BlankNarrow.jsx';
 export { default as BlankWide } from './BlankWide.jsx';
 export { default as ThreeStarsRow } from './ThreeStarsRow.jsx';

@@ -382,7 +382,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 </div>
 
                 <div className='container-template-card'>
-                    <CardWorkoutHistory history={workoutHistory.current} customClasses='card-workout-history-finished-workout-screen' />
+                    <CardWorkoutHistory history={workoutHistory.current} type='finishedScreen' />
                 </div>
             </div>
 

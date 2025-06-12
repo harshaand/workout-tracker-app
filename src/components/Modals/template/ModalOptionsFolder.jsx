@@ -2,7 +2,7 @@ import '../../../css/modals.scss';
 import ButtonModal from '../../Buttons/ButtonModal.jsx'
 import React from 'react'
 
-function ModalOptionsFolder({ setShowModal }) {
+function ModalOptionsFolder({ setShowModal, toggleCollapseFolder, folderOpenState }) {
     const modalRef = React.useRef(null);
     const [modalStyle, setModalStyle] = React.useState({ visibility: 'hidden' });
 
@@ -49,7 +49,11 @@ function ModalOptionsFolder({ setShowModal }) {
             }}></button>
 
             <div ref={modalRef} className={`modal-options modal-options--default-width`} style={{ ...modalStyle }} >
-                <ButtonModal type='options' icon='collapse'>Collapse Folder</ButtonModal>
+                <ButtonModal type='options' icon={folderOpenState ? 'collapse' : 'expand'} onClick={() => {
+                    toggleCollapseFolder()
+                    setShowModal(undefined)
+                }
+                }>{folderOpenState ? 'Collapse Folder' : 'Expand Folder'}</ButtonModal>
                 <ButtonModal type='options' icon='add'>Add Template</ButtonModal>
                 <ButtonModal type='options' icon='edit'>Rename Template</ButtonModal>
                 <ButtonModal type='optionsDelete' icon='delete'>Delete</ButtonModal>

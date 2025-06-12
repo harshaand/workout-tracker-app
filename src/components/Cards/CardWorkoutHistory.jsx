@@ -6,7 +6,7 @@ import { Clock, Weight, TrophyMedium } from '../../assets/icons/icons.js';
 import ModalOptionsHistory from '../Modals/template/ModalOptionsHistory.jsx';
 
 
-function CardWorkoutHistory({ history, customClasses, onClick, showOptionsModal, setShowOptionsModal }) {
+function CardWorkoutHistory({ history, type = 'default', onClick, showOptionsModal, setShowOptionsModal }) {
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -29,19 +29,20 @@ function CardWorkoutHistory({ history, customClasses, onClick, showOptionsModal,
 
     };
     return (
-        <div className={`card-workout-history ${customClasses ? customClasses : 'card-workout-history--default'}`} onClick={onClick}>
+        <div className={`card-workout-history ${type === 'default' ? 'card-workout-history--default' : 'card-workout-history-finished-workout-screen'}`} onClick={onClick}>
             <div className='header'>
                 <div className='container-heading'>
                     <h3>{history.name}</h3>
                 </div>
-                <div className='wrapper-options'>
-                    <ButtonSmall type='options1' onClick={(e) => {
-                        e.stopPropagation()
-                        setShowOptionsModal(history.workoutId)
-                    }}></ButtonSmall>
-                    {showOptionsModal === history.workoutId &&
-                        <ModalOptionsHistory setShowModal={setShowOptionsModal} />}
-                </div>
+                {type === 'default' &&
+                    <div className='wrapper-options'>
+                        <ButtonSmall type='options1' onClick={(e) => {
+                            e.stopPropagation()
+                            setShowOptionsModal(history.workoutId)
+                        }}></ButtonSmall>
+                        {showOptionsModal === history.workoutId &&
+                            <ModalOptionsHistory setShowModal={setShowOptionsModal} />}
+                    </div>}
             </div>
 
 

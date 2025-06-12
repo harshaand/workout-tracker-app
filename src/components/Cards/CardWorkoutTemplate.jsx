@@ -48,11 +48,7 @@ function CardWorkoutTemplate({ template, onClick, showOptionsModal, setShowOptio
         type = 'default'
 
     } else {
-        title = 'My Back'
-        description = 'Bench Press (Barbell), Incline Bench Press...'
-        timestamp = '9 days ago'
-        titleLength = 'short'
-        type = 'default'
+        type = 'add'
     }
 
     const LENGTH_MAP = {
@@ -62,7 +58,7 @@ function CardWorkoutTemplate({ template, onClick, showOptionsModal, setShowOptio
 
     if (type === 'add') {
         return (
-            <div className='card-workout-add-template'>
+            <div className='card-workout-add-template' onClick={onClick}>
                 <h3 >Tap to Add</h3>
                 <p>or drag template</p>
                 <p>here to move</p>
