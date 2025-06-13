@@ -14,12 +14,12 @@ function DiscardTemplate({ showModal, setShowModal, handleScreenChange }) {
                     <div className='content-spacing--default'>
                         <p>Are you sure you want to discard this
                             template? All progress will be lost</p>
-                        <div className='modal__buttons--horizontal'>
-                            <ButtonBig color='gray' onClick={() => { setShowModal(false) }}>Do Nothing</ButtonBig>
+                        <div className='modal__buttons--vertical'>
                             <ButtonBig color='red' onClick={() => {
                                 setShowModal(false)
                                 handleScreenChange()
                             }}>Discard</ButtonBig>
+                            <ButtonBig color='gray' onClick={() => { setShowModal(false) }}>Do Nothing</ButtonBig>
                         </div>
                     </div>
                 </div>

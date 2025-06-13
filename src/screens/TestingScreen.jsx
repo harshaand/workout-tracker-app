@@ -23,11 +23,12 @@ import ModalAdd from '../components/Modals/boilerplate/ModalAdd.jsx'
 import ModalSelect from '../components/Modals/template/ModalSelectFolder.jsx'
 import ModalInputFolderName from '../components/Modals/template/ModalInputFolderName.jsx';
 import ModalRenameTemplate from '../components/Modals/template/ModalRenameTemplate.jsx';
+import ModalDeleteTemplate from '../components/Modals/template/ModalDeleteTemplate.jsx'
 
 import ModalCancelWorkout from '../components/Modals/session/confirmation-modals/session/CancelWorkout.jsx'
 import ModalDeleteWorkout from '../components/Modals/session/confirmation-modals/edit-session/DeleteWorkout.jsx'
 import ModalDiscardTemplate from '../components/Modals/session/confirmation-modals/template/DiscardTemplate.jsx'
-import ModalDeleteTemplate from '../components/Modals/session/confirmation-modals/template/DeleteTemplate.jsx'
+import ModalDeleteTemplate2 from '../components/Modals/session/confirmation-modals/template/DeleteTemplate.jsx'
 import ModalRevertChanges from '../components/Modals/session/confirmation-modals/RevertChanges.jsx'
 
 
@@ -229,7 +230,8 @@ function TestingScreen() {
         <div className="container-app">
             <h2>hello</h2>
             {/* <ModalInputFolderName /> */}
-            <ModalRenameTemplate />
+            {/* <ModalDeleteTemplate /> */}
+            {/* <ModalRenameTemplate /> */}
             {/* {temporary} */}
             {/* {optionsModals} */}
             {/* {allModals} */}
@@ -239,7 +241,7 @@ function TestingScreen() {
             {/* <ModalCancelWorkout /> */}
             {/* <ModalDeleteWorkout /> */}
             {/* <ModalDiscardTemplate /> */}
-            {/* <ModalDeleteTemplate /> */}
+            {/* <ModalDeleteTemplate2 /> */}
             {/* <ModalRevertChanges /> */}
         </div>
     </>

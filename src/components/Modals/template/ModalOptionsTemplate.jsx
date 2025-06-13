@@ -3,7 +3,7 @@ import ButtonModal from '../../Buttons/ButtonModal.jsx'
 import React from 'react'
 
 
-function ModalOptionsTemplate({ templateId, setShowModal, type = 'userCreatedTemplate', setModalRenameTemplate }) {
+function ModalOptionsTemplate({ templateId, setShowModal, type = 'userCreatedTemplate', setModalRenameTemplate, setModalDeleteTemplate }) {
     const modalRef = React.useRef(null);
     const [modalStyle, setModalStyle] = React.useState({ visibility: 'hidden' });
 
@@ -60,7 +60,11 @@ function ModalOptionsTemplate({ templateId, setShowModal, type = 'userCreatedTem
                     }}>Rename</ButtonModal>
                     <ButtonModal type='options' icon='duplicate'>Duplicate</ButtonModal>
                     <ButtonModal type='options' icon='archive'>{type === 'archivedTemplate' ? 'Unarchive' : 'Archive'}</ButtonModal>
-                    <ButtonModal type='optionsDelete' icon='delete'>Delete</ButtonModal>
+                    <ButtonModal type='optionsDelete' icon='delete' onClick={(e) => {
+                        e.stopPropagation()
+                        setModalDeleteTemplate()
+                        setShowModal(undefined)
+                    }}>Delete</ButtonModal>
                 </div>
             </>
         )

@@ -9,6 +9,8 @@ import ModalTemplateOverview from '../components/Modals/session/content-modals/T
 import ModalOptionsFolder from '../components/Modals/template/ModalOptionsFolder.jsx'
 import ModalSelectFolder from '../components/Modals/template/ModalSelectFolder.jsx';
 import ModalRenameTemplate from '../components/Modals/template/ModalRenameTemplate.jsx';
+import ModalDeleteTemplate from '../components/Modals/template/ModalDeleteTemplate.jsx'
+import ModalDeleteFolder from '../components/Modals/template/ModalDeleteFolder.jsx';
 
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
@@ -37,6 +39,8 @@ function TemplatesScreen() {
     const screenVariant = React.useRef(null);
     const [showModalSelectFolder, setShowModalSelectFolder] = React.useState(false)
     const [modalRenameTemplate, setModalRenameTemplate] = React.useState(undefined)
+    const [modalDeleteTemplate, setModalDeleteTemplate] = React.useState(undefined)
+    const [modalDeleteFolder, setModalDeleteFolder] = React.useState(undefined)
     const [showModalTemplateOverview, setShowModalTemplateOverview] = React.useState(null)
     const [showModalOptionsFolder, setShowModalOptionsFolder] = React.useState(null)
     const [showModalOptionsTemplate, setShowModalOptionsTemplate] = React.useState(undefined)
@@ -82,6 +86,9 @@ function TemplatesScreen() {
     return (<>
         {showModalSelectFolder === true && <ModalSelectFolder setShowModal={setShowModalSelectFolder} handleScreenChange={handleScreenChange} newEmptySession={newEmptySession} />}
         {modalRenameTemplate !== undefined && <ModalRenameTemplate setModalRenameTemplate={setModalRenameTemplate} />}
+        {modalDeleteTemplate !== undefined && <ModalDeleteTemplate name={modalDeleteTemplate.name} id={modalDeleteTemplate.id} setModalDeleteTemplate={setModalDeleteTemplate} />}
+        {modalDeleteFolder !== undefined && <ModalDeleteFolder name={modalDeleteFolder.name} id={modalDeleteFolder.id} setModalDeleteFolder={setModalDeleteFolder} />}
+
         <div className='templates__container'>
             <Navbar />
             <div className='templates__main'>
@@ -124,6 +131,7 @@ function TemplatesScreen() {
                                                     toggleCollapseFolder={() => toggleCollapseFolder(folder.id)}
                                                     folderOpenState={openFolders.current[folder.id]}
                                                     type='userCreatedFolder'
+                                                    setModalDeleteFolder={() => setModalDeleteFolder({ name: folder.name, id: folder.id })}
                                                 />
                                             }
                                         </div>
@@ -143,6 +151,7 @@ function TemplatesScreen() {
                                                             setShowOptionsModal={setShowModalOptionsTemplate}
                                                             setModalRenameTemplate={setModalRenameTemplate}
                                                             modalType='userCreatedTemplate'
+                                                            setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, id: template.id })}
                                                         />
                                                         <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
                                                             setSelectedModal={setShowModalTemplateOverview}
@@ -195,6 +204,7 @@ function TemplatesScreen() {
                                                         setShowOptionsModal={setShowModalOptionsTemplate}
                                                         setModalRenameTemplate={setModalRenameTemplate}
                                                         modalType='userCreatedTemplate'
+                                                        setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, id: template.id })}
                                                     />
                                                     <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
                                                         setSelectedModal={setShowModalTemplateOverview}
@@ -293,6 +303,7 @@ function TemplatesScreen() {
                                                         setShowOptionsModal={setShowModalOptionsTemplate}
                                                         setModalRenameTemplate={setModalRenameTemplate}
                                                         modalType='archivedTemplate'
+                                                        setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, id: template.id })}
                                                     />
                                                     <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
                                                         setSelectedModal={setShowModalTemplateOverview}
