@@ -3,7 +3,7 @@ import ButtonModal from '../../Buttons/ButtonModal.jsx'
 import React from 'react'
 
 
-function ModalOptionsTemplate({ setShowModal }) {
+function ModalOptionsTemplate({ templateId, setShowModal, type = 'userCreatedTemplate', setModalRenameTemplate }) {
     const modalRef = React.useRef(null);
     const [modalStyle, setModalStyle] = React.useState({ visibility: 'hidden' });
 
@@ -43,22 +43,42 @@ function ModalOptionsTemplate({ setShowModal }) {
         };
     }, []);
 
-    return (
-        <>
-            <button className='modal-overlay' onClick={(e) => {
-                e.stopPropagation()
-                setShowModal(undefined)
-            }}></button>
+    if (type === 'userCreatedTemplate' || type === 'archivedTemplate') {
+        return (
+            <>
+                <button className='modal-overlay' onClick={(e) => {
+                    e.stopPropagation()
+                    setShowModal(undefined)
+                }}></button>
 
-            <div ref={modalRef} className={`modal-options modal-options--default-width`} style={{ ...modalStyle }} >
-                <ButtonModal type='options' icon='edit'>Edit Template</ButtonModal>
-                <ButtonModal type='options' icon='edit'>Rename</ButtonModal>
-                <ButtonModal type='options' icon='duplicate'>Duplicate</ButtonModal>
-                <ButtonModal type='options' icon='archive'>Archive</ButtonModal>
-                <ButtonModal type='optionsDelete' icon='delete'>Delete</ButtonModal>
-            </div>
-        </>
-    )
+                <div ref={modalRef} className={`modal-options modal-options--default-width`} style={{ ...modalStyle }} >
+                    <ButtonModal type='options' icon='edit'>Edit Template</ButtonModal>
+                    <ButtonModal type='options' icon='edit' onClick={(e) => {
+                        e.stopPropagation()
+                        setModalRenameTemplate(templateId)
+                        setShowModal(undefined)
+                    }}>Rename</ButtonModal>
+                    <ButtonModal type='options' icon='duplicate'>Duplicate</ButtonModal>
+                    <ButtonModal type='options' icon='archive'>{type === 'archivedTemplate' ? 'Unarchive' : 'Archive'}</ButtonModal>
+                    <ButtonModal type='optionsDelete' icon='delete'>Delete</ButtonModal>
+                </div>
+            </>
+        )
+    }
+    if (type === 'exampleTemplate') {
+        return (
+            <>
+                <button className='modal-overlay' onClick={(e) => {
+                    e.stopPropagation()
+                    setShowModal(undefined)
+                }}></button>
+
+                <div ref={modalRef} className={`modal-options modal-options--default-width`} style={{ ...modalStyle }} >
+                    <ButtonModal type='options' icon='duplicate'>Duplicate</ButtonModal>
+                </div>
+            </>
+        )
+    }
 }
 
 export default ModalOptionsTemplate

@@ -7,6 +7,8 @@ import CardWorkoutTemplate from '../components/Cards/CardWorkoutTemplate.jsx'
 
 import ModalTemplateOverview from '../components/Modals/session/content-modals/TemplateOverview.jsx';
 import ModalOptionsFolder from '../components/Modals/template/ModalOptionsFolder.jsx'
+import ModalSelectFolder from '../components/Modals/template/ModalSelectFolder.jsx';
+import ModalRenameTemplate from '../components/Modals/template/ModalRenameTemplate.jsx';
 
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
@@ -33,9 +35,12 @@ function TemplatesScreen() {
     5. newEmptySession -new key
     */
     const screenVariant = React.useRef(null);
-    const [showTemplateOverviewModal, setShowTemplateOverviewModal] = React.useState(null)
-    const [showOptionsFolderModal, setShowOptionsFolderModal] = React.useState(null)
-    const [showOptionsTemplateModal, setShowOptionsTemplateModal] = React.useState(undefined)
+    const [showModalSelectFolder, setShowModalSelectFolder] = React.useState(false)
+    const [modalRenameTemplate, setModalRenameTemplate] = React.useState(undefined)
+    const [showModalTemplateOverview, setShowModalTemplateOverview] = React.useState(null)
+    const [showModalOptionsFolder, setShowModalOptionsFolder] = React.useState(null)
+    const [showModalOptionsTemplate, setShowModalOptionsTemplate] = React.useState(undefined)
+
     const openFolders = React.useRef(Object.fromEntries(
         [...data.templateFolders.userCreatedFolders.map(folder => [folder.id, true]),
         ['myTemplates', true],
@@ -75,6 +80,8 @@ function TemplatesScreen() {
     }
 
     return (<>
+        {showModalSelectFolder === true && <ModalSelectFolder setShowModal={setShowModalSelectFolder} handleScreenChange={handleScreenChange} newEmptySession={newEmptySession} />}
+        {modalRenameTemplate !== undefined && <ModalRenameTemplate setModalRenameTemplate={setModalRenameTemplate} />}
         <div className='templates__container'>
             <Navbar />
             <div className='templates__main'>
@@ -91,7 +98,7 @@ function TemplatesScreen() {
                         <h2>Templates</h2>
                         <div className='container-folders__header__buttons'>
                             <ButtonSmall type='addTemplate' onClick={() =>
-                                handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate')}>
+                                setShowModalSelectFolder(true)}>
                                 Template
                             </ButtonSmall>
                             <ButtonSmall type='folder' />
@@ -110,12 +117,13 @@ function TemplatesScreen() {
                                         <div className='wrapper-options'>
                                             <ButtonSmall type='options1' onClick={(e) => {
                                                 e.stopPropagation()
-                                                setShowOptionsFolderModal(folder.id)
+                                                setShowModalOptionsFolder(folder.id)
                                             }}></ButtonSmall>
-                                            {showOptionsFolderModal === folder.id &&
-                                                <ModalOptionsFolder setShowModal={setShowOptionsFolderModal}
+                                            {showModalOptionsFolder === folder.id &&
+                                                <ModalOptionsFolder setShowModal={setShowModalOptionsFolder}
                                                     toggleCollapseFolder={() => toggleCollapseFolder(folder.id)}
                                                     folderOpenState={openFolders.current[folder.id]}
+                                                    type='userCreatedFolder'
                                                 />
                                             }
                                         </div>
@@ -129,13 +137,15 @@ function TemplatesScreen() {
                                                     return <React.Fragment key={templateId}>
                                                         <CardWorkoutTemplate template={template}
                                                             onClick={() => {
-                                                                setShowTemplateOverviewModal(template.id);
+                                                                setShowModalTemplateOverview(template.id);
                                                             }}
-                                                            showOptionsModal={showOptionsTemplateModal}
-                                                            setShowOptionsModal={setShowOptionsTemplateModal}
+                                                            showOptionsModal={showModalOptionsTemplate}
+                                                            setShowOptionsModal={setShowModalOptionsTemplate}
+                                                            setModalRenameTemplate={setModalRenameTemplate}
+                                                            modalType='userCreatedTemplate'
                                                         />
-                                                        <ModalTemplateOverview template={template} selectedModal={showTemplateOverviewModal}
-                                                            setSelectedModal={setShowTemplateOverviewModal}
+                                                        <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
+                                                            setSelectedModal={setShowModalTemplateOverview}
                                                             handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
                                                             handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
                                                     </React.Fragment>
@@ -159,12 +169,13 @@ function TemplatesScreen() {
                                     <div className='wrapper-options'>
                                         <ButtonSmall type='options1' onClick={(e) => {
                                             e.stopPropagation()
-                                            setShowOptionsFolderModal('myTemplates')
+                                            setShowModalOptionsFolder('myTemplates')
                                         }}></ButtonSmall>
-                                        {showOptionsFolderModal === 'myTemplates' &&
-                                            <ModalOptionsFolder setShowModal={setShowOptionsFolderModal}
+                                        {showModalOptionsFolder === 'myTemplates' &&
+                                            <ModalOptionsFolder setShowModal={setShowModalOptionsFolder}
                                                 toggleCollapseFolder={() => toggleCollapseFolder('myTemplates')}
                                                 folderOpenState={openFolders.current['myTemplates']}
+                                                type='myTemplates'
                                             />
                                         }
                                     </div>
@@ -178,13 +189,15 @@ function TemplatesScreen() {
                                                 return <>
                                                     <CardWorkoutTemplate template={template}
                                                         onClick={() => {
-                                                            setShowTemplateOverviewModal(template.id);
+                                                            setShowModalTemplateOverview(template.id);
                                                         }}
-                                                        showOptionsModal={showOptionsTemplateModal}
-                                                        setShowOptionsModal={setShowOptionsTemplateModal}
+                                                        showOptionsModal={showModalOptionsTemplate}
+                                                        setShowOptionsModal={setShowModalOptionsTemplate}
+                                                        setModalRenameTemplate={setModalRenameTemplate}
+                                                        modalType='userCreatedTemplate'
                                                     />
-                                                    <ModalTemplateOverview template={template} selectedModal={showTemplateOverviewModal}
-                                                        setSelectedModal={setShowTemplateOverviewModal}
+                                                    <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
+                                                        setSelectedModal={setShowModalTemplateOverview}
                                                         handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
                                                         handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
                                                 </>
@@ -209,12 +222,14 @@ function TemplatesScreen() {
                                     <div className='wrapper-options'>
                                         <ButtonSmall type='options1' onClick={(e) => {
                                             e.stopPropagation()
-                                            setShowOptionsFolderModal('exampleTemplates')
+                                            setShowModalOptionsFolder('exampleTemplates')
                                         }}></ButtonSmall>
-                                        {showOptionsFolderModal === 'exampleTemplates' &&
-                                            <ModalOptionsFolder setShowModal={setShowOptionsFolderModal}
+                                        {showModalOptionsFolder === 'exampleTemplates' &&
+                                            <ModalOptionsFolder setShowModal={setShowModalOptionsFolder}
                                                 toggleCollapseFolder={() => toggleCollapseFolder('exampleTemplates')}
                                                 folderOpenState={openFolders.current['exampleTemplates']}
+                                                type='exampleTemplates'
+
                                             />
                                         }
                                     </div>
@@ -227,13 +242,14 @@ function TemplatesScreen() {
                                             return <>
                                                 <CardWorkoutTemplate template={template}
                                                     onClick={() => {
-                                                        setShowTemplateOverviewModal(template.id);
+                                                        setShowModalTemplateOverview(template.id);
                                                     }}
-                                                    showOptionsModal={showOptionsTemplateModal}
-                                                    setShowOptionsModal={setShowOptionsTemplateModal}
+                                                    showOptionsModal={showModalOptionsTemplate}
+                                                    setShowOptionsModal={setShowModalOptionsTemplate}
+                                                    modalType='exampleTemplate'
                                                 />
-                                                <ModalTemplateOverview template={template} selectedModal={showTemplateOverviewModal}
-                                                    setSelectedModal={setShowTemplateOverviewModal}
+                                                <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
+                                                    setSelectedModal={setShowModalTemplateOverview}
                                                     handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
                                                     handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
                                             </>
@@ -255,12 +271,14 @@ function TemplatesScreen() {
                                                 <div className='wrapper-options'>
                                                     <ButtonSmall type='options1' onClick={(e) => {
                                                         e.stopPropagation()
-                                                        setShowOptionsFolderModal('archivedTemplates')
+                                                        setShowModalOptionsFolder('archivedTemplates')
                                                     }}></ButtonSmall>
-                                                    {showOptionsFolderModal === 'archivedTemplates' &&
-                                                        <ModalOptionsFolder setShowModal={setShowOptionsFolderModal}
+                                                    {showModalOptionsFolder === 'archivedTemplates' &&
+                                                        <ModalOptionsFolder setShowModal={setShowModalOptionsFolder}
                                                             toggleCollapseFolder={() => toggleCollapseFolder('archivedTemplates')}
                                                             folderOpenState={openFolders.current['archivedTemplates']}
+                                                            setModalRenameTemplate={setModalRenameTemplate}
+                                                            type='archivedTemplates'
                                                         />
                                                     }
                                                 </div>
@@ -269,13 +287,15 @@ function TemplatesScreen() {
                                                 <div id='templates-archivedTemplates' className='templates'>
                                                     <CardWorkoutTemplate template={template}
                                                         onClick={() => {
-                                                            setShowTemplateOverviewModal(template.id);
+                                                            setShowModalTemplateOverview(template.id);
                                                         }}
-                                                        showOptionsModal={showOptionsTemplateModal}
-                                                        setShowOptionsModal={setShowOptionsTemplateModal}
+                                                        showOptionsModal={showModalOptionsTemplate}
+                                                        setShowOptionsModal={setShowModalOptionsTemplate}
+                                                        setModalRenameTemplate={setModalRenameTemplate}
+                                                        modalType='archivedTemplate'
                                                     />
-                                                    <ModalTemplateOverview template={template} selectedModal={showTemplateOverviewModal}
-                                                        setSelectedModal={setShowTemplateOverviewModal}
+                                                    <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
+                                                        setSelectedModal={setShowModalTemplateOverview}
                                                         handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
                                                         handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
                                                 </div>

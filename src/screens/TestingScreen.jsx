@@ -20,7 +20,9 @@ import ModalSaveInputDescr from '../components/Modals/boilerplate/ModalSaveInput
 import ModalSaveInputNoDescr from '../components/Modals/boilerplate/ModalSaveInputNoDescr.jsx'
 import ModalSave from '../components/Modals/boilerplate/ModalSave.jsx'
 import ModalAdd from '../components/Modals/boilerplate/ModalAdd.jsx'
-import ModalSelect from '../components/Modals/boilerplate/ModalSelect.jsx'
+import ModalSelect from '../components/Modals/template/ModalSelectFolder.jsx'
+import ModalInputFolderName from '../components/Modals/template/ModalInputFolderName.jsx';
+import ModalRenameTemplate from '../components/Modals/template/ModalRenameTemplate.jsx';
 
 import ModalCancelWorkout from '../components/Modals/session/confirmation-modals/session/CancelWorkout.jsx'
 import ModalDeleteWorkout from '../components/Modals/session/confirmation-modals/edit-session/DeleteWorkout.jsx'
@@ -226,6 +228,8 @@ function TestingScreen() {
         <Navbar />
         <div className="container-app">
             <h2>hello</h2>
+            {/* <ModalInputFolderName /> */}
+            <ModalRenameTemplate />
             {/* {temporary} */}
             {/* {optionsModals} */}
             {/* {allModals} */}

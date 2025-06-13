@@ -2,7 +2,7 @@ import '../../../css/modals.scss';
 import ButtonModal from '../../Buttons/ButtonModal.jsx'
 import React from 'react'
 
-function ModalOptionsFolder({ setShowModal, toggleCollapseFolder, folderOpenState }) {
+function ModalOptionsFolder({ setShowModal, toggleCollapseFolder, folderOpenState, type = 'userCreatedFolder' }) {
     const modalRef = React.useRef(null);
     const [modalStyle, setModalStyle] = React.useState({ visibility: 'hidden' });
 
@@ -41,25 +41,64 @@ function ModalOptionsFolder({ setShowModal, toggleCollapseFolder, folderOpenStat
             window.removeEventListener('resize', debouncedCheck);
         };
     }, []);
-    return (
-        <>
-            <button className='modal-overlay' onClick={(e) => {
-                e.stopPropagation()
-                setShowModal(undefined)
-            }}></button>
-
-            <div ref={modalRef} className={`modal-options modal-options--default-width`} style={{ ...modalStyle }} >
-                <ButtonModal type='options' icon={folderOpenState ? 'collapse' : 'expand'} onClick={() => {
-                    toggleCollapseFolder()
+    if (type === 'userCreatedFolder') {
+        return (
+            <>
+                <button className='modal-overlay' onClick={(e) => {
+                    e.stopPropagation()
                     setShowModal(undefined)
-                }
-                }>{folderOpenState ? 'Collapse Folder' : 'Expand Folder'}</ButtonModal>
-                <ButtonModal type='options' icon='add'>Add Template</ButtonModal>
-                <ButtonModal type='options' icon='edit'>Rename Template</ButtonModal>
-                <ButtonModal type='optionsDelete' icon='delete'>Delete</ButtonModal>
-            </div>
-        </>
-    )
+                }}></button>
+
+                <div ref={modalRef} className={`modal-options modal-options--default-width`} style={{ ...modalStyle }} >
+                    <ButtonModal type='options' icon={folderOpenState ? 'collapse' : 'expand'} onClick={() => {
+                        toggleCollapseFolder()
+                        setShowModal(undefined)
+                    }
+                    }>{folderOpenState ? 'Collapse Folder' : 'Expand Folder'}</ButtonModal>
+                    <ButtonModal type='options' icon='add'>Add Template</ButtonModal>
+                    <ButtonModal type='options' icon='edit'>Rename Folder</ButtonModal>
+                    <ButtonModal type='optionsDelete' icon='delete'>Delete</ButtonModal>
+                </div>
+            </>
+        )
+    }
+    else if (type === 'myTemplates') {
+        return (
+            <>
+                <button className='modal-overlay' onClick={(e) => {
+                    e.stopPropagation()
+                    setShowModal(undefined)
+                }}></button>
+
+                <div ref={modalRef} className={`modal-options modal-options--default-width`} style={{ ...modalStyle }} >
+                    <ButtonModal type='options' icon={folderOpenState ? 'collapse' : 'expand'} onClick={() => {
+                        toggleCollapseFolder()
+                        setShowModal(undefined)
+                    }
+                    }>{folderOpenState ? 'Collapse Folder' : 'Expand Folder'}</ButtonModal>
+                    <ButtonModal type='options' icon='add'>Add Template</ButtonModal>
+                </div>
+            </>
+        )
+    }
+    else if (type === 'exampleTemplates' || type === 'archivedTemplates') {
+        return (
+            <>
+                <button className='modal-overlay' onClick={(e) => {
+                    e.stopPropagation()
+                    setShowModal(undefined)
+                }}></button>
+
+                <div ref={modalRef} className={`modal-options modal-options--default-width`} style={{ ...modalStyle }} >
+                    <ButtonModal type='options' icon={folderOpenState ? 'collapse' : 'expand'} onClick={() => {
+                        toggleCollapseFolder()
+                        setShowModal(undefined)
+                    }
+                    }>{folderOpenState ? 'Collapse Folder' : 'Expand Folder'}</ButtonModal>
+                </div>
+            </>
+        )
+    }
 }
 
 export default ModalOptionsFolder

@@ -2,7 +2,7 @@
 import React from 'react';
 import { AddMedium } from '../../assets/icons/icons.js';
 
-function ButtonBig({ children, size = 'default', color = 'blue', icon, onClick }) {
+function ButtonBig({ children, size = 'default', color = 'blue', icon, onClick, buttonType = 'button' }) {
     const ICONS_MAP = {
         add: AddMedium
     }
@@ -27,7 +27,7 @@ function ButtonBig({ children, size = 'default', color = 'blue', icon, onClick }
     const IconComponent = ICONS_MAP[icon];
 
     return (
-        <button className={`${SIZE_MAP[size]} ${COLOR_MAP[color]}`} onClick={onClick}>
+        <button className={`${SIZE_MAP[size]} ${COLOR_MAP[color]}`} onClick={onClick} type={buttonType}>
             {IconComponent && <IconComponent />}{children}
         </button>
     );

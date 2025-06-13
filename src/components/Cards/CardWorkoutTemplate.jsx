@@ -12,7 +12,7 @@ let titleLength
 let type
 
 
-function CardWorkoutTemplate({ template, onClick, showOptionsModal, setShowOptionsModal }) {
+function CardWorkoutTemplate({ template, onClick, showOptionsModal, setShowOptionsModal, modalType, setModalRenameTemplate }) {
     if (template) {
         description = template.exercises.map(exercise => exercise.name);
         description = description.join(', ')
@@ -78,7 +78,9 @@ function CardWorkoutTemplate({ template, onClick, showOptionsModal, setShowOptio
                             setShowOptionsModal(template.id)
                         }}></ButtonSmall>
                         {showOptionsModal === template.id &&
-                            <ModalOptionsTemplate setShowModal={setShowOptionsModal} />}
+                            <ModalOptionsTemplate setShowModal={setShowOptionsModal}
+                                type={modalType} templateId={template.id}
+                                setModalRenameTemplate={setModalRenameTemplate} />}
                     </div>
                 </div>
                 <div className='content'>

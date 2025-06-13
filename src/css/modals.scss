@@ -57,16 +57,19 @@
     input {
         background-color: var(--input-field-bg);
         color: var(--input-field-text);
-        border: none;
         font-size: var(--body-text);
         height: 35px;
         width: 100%;
         padding: 0px 8px;
         box-sizing: border-box;
         border-radius: 8px;
+        border: 2px rgba(0, 0, 0, 0) solid;
+        transition: border 0.3s ease;
+
 
         &:focus {
             outline: none;
+            border: 2px var(--input-field-text) solid;
         }
     }
 
@@ -171,9 +174,88 @@
 
 }
 
+/************************************MODAL INPUT FOLDER NAME************************************/
+
+.modal-input-folder-name {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 27px;
+    padding: 10px 16px 29px 16px;
+    background-color: var(--white);
+    height: fit-content;
+    width: 361px;
+    border-radius: 16px;
+
+    .header {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0;
+        height: fit-content;
+        width: 100%;
+        box-sizing: border-box;
+        line-height: 0;
+
+        h3 {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+        }
+    }
+
+    label {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 4px;
+        height: fit-content;
+        width: 100%;
+        font-size: var(--body-text);
+        color: var(--text-color-heading-2);
+        font-weight: 600;
+    }
+
+    input {
+        background-color: var(--input-field-bg);
+        color: var(--input-field-text);
+        font-size: var(--body-text);
+        height: fit-content;
+        width: 100%;
+        padding: 6px 4px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        border: 2px rgba(0, 0, 0, 0) solid;
+        transition: border 0.3s ease;
+
+        &:focus {
+            outline: none;
+            border: 2px var(--input-field-text) solid;
+        }
+    }
+
+}
+
+
 /************************************MODAL SELECT************************************/
 
 .modal-select {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -193,16 +275,28 @@
         width: 100%;
     }
 
-    &__btn {
-        background-color: #ffffff00;
-        color: var(--black-blue-light);
-        fill: var(--blue-dark);
-        fill: #ffffff00;
+    label {
+        display: flex;
         justify-content: space-between;
-        flex-direction: row-reverse;
-        padding: 12px 16px;
-        width: 100%;
         gap: 8px;
+        width: 100%;
+        padding: 12px 16px;
+        background-color: #ffffff00;
+        fill: #ffffff00;
+        box-sizing: border-box;
+        font-size: var(--body-text);
+        font-weight: 600;
+        transition: all 0.25s ease;
+        cursor: pointer;
+    }
+
+    input[type="radio"] {
+        display: none;
+    }
+
+    label:has(input[type="radio"]:checked) {
+        background-color: var(--blue-light);
+        fill: var(--blue-dark);
     }
 
 }

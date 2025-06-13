@@ -4,7 +4,7 @@ import {
     AddMedium, Collapse, Cross, Duplicate, Expand, Pencil, Trash, Tick
 } from '../../assets/icons/icons.js';
 
-function ButtonModal({ children, type = 'edit', icon, onClick }) {
+function ButtonModal({ children, type = 'options', icon, onClick }) {
     const ICONS_MAP = {
         add: AddMedium,
         archive: Trash,
@@ -19,7 +19,6 @@ function ButtonModal({ children, type = 'edit', icon, onClick }) {
     const CLASSES_MAP = {
         options: 'modal-options__btn',
         optionsDelete: 'modal-options__btn--delete',
-        select: 'modal-select__btn active',
     }
 
 
