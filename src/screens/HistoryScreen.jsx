@@ -8,6 +8,7 @@ import ModalDeleteHistory from '../components/Modals/template/ModalDeleteHistory
 import ModalSaveAsTemplate from '../components/Modals/template/ModalSaveAsTemplate.jsx'
 import { useData } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -23,6 +24,7 @@ function HistoryScreen() {
     const [selectedHistoryWorkoutModal, setSelectedHistoryWorkoutModal] = React.useState(null)
     const [showOptionsHistoryModal, setShowOptionsHistoryModal] = React.useState(undefined)
     const [modalDeleteHistory, setModalDeleteHistory] = React.useState(undefined)
+    const [modalSaveAsTemplate, setModalSaveAsTemplate] = React.useState(undefined)
 
 
     function deleteWorkoutHistory(workoutId) {
@@ -47,8 +49,29 @@ function HistoryScreen() {
         })
     }
 
-    function saveAsTemplate() {
+    function saveAsTemplate(history, newTemplateName) {
+        saveData(prev => {
+            const idHistory = uuidv4()
+            const updatedExercises = history.exercises.map(exercise => {
+                return {
+                    ...exercise,
+                    sets: exercise.sets.map(set => {
+                        return {
+                            ...set,
+                            completed: false,
+                            bestSet: false,
+                            PRs: Object.fromEntries(Object.keys(set.PRs).map(metric => [metric, false]))
+                        }
+                    })
+                }
+            })
 
+            return {
+                ...prev,
+                templates: [...prev.templates, { ...history, id: idHistory, name: newTemplateName, exercises: updatedExercises }],
+                templateFolders: { ...prev.templateFolders, myTemplates: [...prev.templateFolders.myTemplates, idHistory] }
+            }
+        })
     }
 
     function renderHistoryCards() {
@@ -95,7 +118,8 @@ function HistoryScreen() {
                                 showOptionsModal={showOptionsHistoryModal}
                                 setShowOptionsModal={setShowOptionsHistoryModal}
                                 handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', history, 'editSession')}
-                                setModalDeleteHistory={() => setModalDeleteHistory({ name: history.name, workoutId: history.workoutId })} />
+                                setModalDeleteHistory={() => setModalDeleteHistory({ name: history.name, workoutId: history.workoutId })}
+                                setModalSaveAsTemplate={() => setModalSaveAsTemplate(history)} />
                             <ModalHistoryWorkout history={history} selectedModal={selectedHistoryWorkoutModal}
                                 setSelectedModal={setSelectedHistoryWorkoutModal}
                                 handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', history, 'editSession')} />
@@ -107,10 +131,10 @@ function HistoryScreen() {
         });
 
     };
-
     return (
         <>
-            <ModalSaveAsTemplate />
+            {modalSaveAsTemplate !== undefined && <ModalSaveAsTemplate history={modalSaveAsTemplate}
+                setModalSaveAsTemplate={setModalSaveAsTemplate} saveAsTemplate={saveAsTemplate} />}
             {modalDeleteHistory !== undefined && <ModalDeleteHistory
                 name={modalDeleteHistory.name} workoutId={modalDeleteHistory.workoutId}
                 setModalDeleteHistory={setModalDeleteHistory} deleteWorkoutHistory={deleteWorkoutHistory} />}

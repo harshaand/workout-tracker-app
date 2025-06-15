@@ -1,9 +1,9 @@
 import React from 'react'
 import ButtonBig from '../../Buttons/ButtonBig'
-function ModalRenameTemplate({ setModalRenameTemplate, id, renameTemplate }) {
+function ModalRenameTemplate({ setModalRenameTemplate, templateId, templateName, renameTemplate }) {
     function handleSubmit(formData) {
         console.log(formData.get('exerciseRename'))
-        renameTemplate(id, formData.get('exerciseRename'))
+        renameTemplate(templateId, formData.get('exerciseRename'))
         setModalRenameTemplate(undefined)
     }
 
@@ -15,7 +15,7 @@ function ModalRenameTemplate({ setModalRenameTemplate, id, renameTemplate }) {
                 <div className='modal modal-spacing--no-body-text'>
                     <h3>Choose a Template Name</h3>
                     <div className='content-spacing--no-body-text'>
-                        <input type="text" name="exerciseRename" id="" />
+                        <input type="text" name="exerciseRename" id="" defaultValue={templateName} />
                         <div className='modal__buttons--horizontal'>
                             <ButtonBig color='gray' onClick={() => setModalRenameTemplate(undefined)}>Cancel</ButtonBig>
                             <ButtonBig color='blue' buttonType='submit'>Save</ButtonBig>

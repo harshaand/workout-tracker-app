@@ -82,7 +82,7 @@ function CardWorkoutTemplate({ template, onClick, showOptionsModal, setShowOptio
                         }}></ButtonSmall>
                         {showOptionsModal === template.id &&
                             <ModalOptionsTemplate setShowModal={setShowOptionsModal}
-                                type={modalType} templateId={template.id}
+                                type={modalType} templateName={template.name} templateId={template.id}
                                 setModalRenameTemplate={setModalRenameTemplate}
                                 setModalDeleteTemplate={setModalDeleteTemplate}
                                 handleScreenChangeEditTemplate={handleScreenChangeEditTemplate}

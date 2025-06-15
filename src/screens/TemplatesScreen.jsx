@@ -30,7 +30,7 @@ function TemplatesScreen() {
     const { currentScreen, handleScreenChange } = React.useContext(RoutingContext)
     const useLocalStorage = useData()
     const [data, saveData] = useLocalStorage('userData')
-    console.log('DATA IN DB:', data)
+    // console.log('DATA IN DB:', data)
     /* SCREEN VARIANTS
     1. newSession ------new key
     2. editSession -----old key
@@ -323,7 +323,8 @@ function TemplatesScreen() {
 
     return (<>
         {showModalSelectFolder === true && <ModalSelectFolder setShowModal={setShowModalSelectFolder} handleScreenChange={handleScreenChange} newEmptySession={newEmptySession} />}
-        {modalRenameTemplate !== undefined && <ModalRenameTemplate setModalRenameTemplate={setModalRenameTemplate} id={modalRenameTemplate} renameTemplate={renameTemplate} />}
+        {modalRenameTemplate !== undefined && <ModalRenameTemplate setModalRenameTemplate={setModalRenameTemplate} templateId={modalRenameTemplate.templateId} templateName={modalRenameTemplate.templateName}
+            renameTemplate={renameTemplate} />}
         {modalInputFolderName !== undefined && <ModalInputFolderName setModalInputFolderName={setModalInputFolderName}
             type={modalInputFolderName.type} id={modalInputFolderName.id} addFolder={addFolder} renameFolder={renameFolder} />}
         {modalDeleteTemplate !== undefined && <ModalDeleteTemplate name={modalDeleteTemplate.name} templateId={modalDeleteTemplate.templateId} folderId={modalDeleteTemplate.folderId}

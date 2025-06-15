@@ -7,7 +7,7 @@ import ModalOptionsHistory from '../Modals/template/ModalOptionsHistory.jsx';
 
 
 function CardWorkoutHistory({ history, type = 'default', onClick, showOptionsModal, setShowOptionsModal,
-    handleScreenChangeEditTemplate, setModalDeleteHistory }) {
+    handleScreenChangeEditTemplate, setModalDeleteHistory, setModalSaveAsTemplate }) {
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -44,7 +44,8 @@ function CardWorkoutHistory({ history, type = 'default', onClick, showOptionsMod
                         {showOptionsModal === history.workoutId &&
                             <ModalOptionsHistory setShowModal={setShowOptionsModal}
                                 handleScreenChangeEditTemplate={handleScreenChangeEditTemplate}
-                                setModalDeleteHistory={setModalDeleteHistory} />}
+                                setModalDeleteHistory={setModalDeleteHistory}
+                                setModalSaveAsTemplate={setModalSaveAsTemplate} />}
                     </div>}
             </div>
 

@@ -3,8 +3,8 @@ import ButtonModal from '../../Buttons/ButtonModal.jsx'
 import React from 'react'
 
 
-function ModalOptionsTemplate({ templateId, setShowModal, type = 'userCreatedTemplate', setModalRenameTemplate, setModalDeleteTemplate,
-    handleScreenChangeEditTemplate, duplicateTemplate, folderId, archiveTemplate, deleteTemplate }) {
+function ModalOptionsTemplate({ templateName, templateId, setShowModal, type = 'userCreatedTemplate', setModalRenameTemplate, setModalDeleteTemplate,
+    handleScreenChangeEditTemplate, duplicateTemplate, folderId, archiveTemplate }) {
 
     const modalRef = React.useRef(null);
     const [modalStyle, setModalStyle] = React.useState({ visibility: 'hidden' });
@@ -62,7 +62,7 @@ function ModalOptionsTemplate({ templateId, setShowModal, type = 'userCreatedTem
                     }}>Edit Template</ButtonModal>
                     <ButtonModal type='options' icon='edit' onClick={(e) => {
                         e.stopPropagation()
-                        setModalRenameTemplate(templateId)
+                        setModalRenameTemplate({ templateId: templateId, templateName: templateName })
                         setShowModal(undefined)
                     }}>Rename</ButtonModal>
                     <ButtonModal type='options' icon='duplicate' onClick={(e) => {

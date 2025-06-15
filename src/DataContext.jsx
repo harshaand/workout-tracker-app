@@ -3640,6 +3640,7 @@ function DataProvider({ children }) {
                 return dataObjectTesting;
             }
         });
+        // console.log('DATA IN DB:', data)
 
         //combiing setData with localStorage.setItem
         function saveData(value) {
@@ -3654,7 +3655,26 @@ function DataProvider({ children }) {
             }
         };
 
+        // sync data state across tabs when localStorage changes
+        React.useEffect(() => {
+            function handleStorageChange(e) {
+                // if same key
+                if (e.key === key && e.newValue !== null) {
+                    try {
+                        const newValue = JSON.parse(e.newValue);
+                        setData(newValue);
+                    } catch (error) {
+                        console.error(`Error parsing localStorage value for key "${key}":`, error);
+                    }
+                }
+            };
 
+            window.addEventListener('storage', handleStorageChange);
+
+            return () => {
+                window.removeEventListener('storage', handleStorageChange);
+            };
+        }, [key]);
 
         return [data, saveData];
     }
