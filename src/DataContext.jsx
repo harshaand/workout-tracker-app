@@ -10,17 +10,17 @@ const dataObjectTesting = {
     templateFolders: {
         userCreatedFolders: [
             {
-                id: 1,
+                id: '1',
                 name: 'user created folder 1',
                 templates: ["333"]
             },
             {
-                id: 2,
+                id: '2',
                 name: 'user created folder 2',
                 templates: ["222"]
             },
             {
-                id: 3,
+                id: '3',
                 name: 'user created folder 3',
                 templates: ["111"]
             }
@@ -31,7 +31,7 @@ const dataObjectTesting = {
             "3f8a0e47-d623-463b-acf0-fbac8a1a74d6",
             "aef85cf2-52cb-46b5-aecc-99ce45997c22"
         ],
-        archivedTemplates: ["666"],
+        archivedTemplates: [{ folderId: "randomfolderidtesting", templateId: "666" }],
     },
     templates: [
         {
@@ -3640,7 +3640,6 @@ function DataProvider({ children }) {
                 return dataObjectTesting;
             }
         });
-        // console.log('DATA IN DB:', data)
 
         //combiing setData with localStorage.setItem
         function saveData(value) {
@@ -3655,26 +3654,7 @@ function DataProvider({ children }) {
             }
         };
 
-        // sync data state across tabs when localStorage changes
-        React.useEffect(() => {
-            function handleStorageChange(e) {
-                // if same key
-                if (e.key === key && e.newValue !== null) {
-                    try {
-                        const newValue = JSON.parse(e.newValue);
-                        setData(newValue);
-                    } catch (error) {
-                        console.error(`Error parsing localStorage value for key "${key}":`, error);
-                    }
-                }
-            };
 
-            window.addEventListener('storage', handleStorageChange);
-
-            return () => {
-                window.removeEventListener('storage', handleStorageChange);
-            };
-        }, [key]);
 
         return [data, saveData];
     }

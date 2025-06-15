@@ -28,7 +28,7 @@ import { useData } from '../DataContext.jsx'
 
 import { RoutingContext } from '../App.jsx'
 
-function SessionScreen({ template, screenVariant = 'newSession' }) {
+function SessionScreen({ template, screenVariant = 'newSession', folderId = undefined }) {
     /* SCREEN VARIANTS
         1. newSession ------new key
         2. editSession -----old key
@@ -543,28 +543,65 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                 })
             }
         })
+        console.log('folderId', folderId)
         saveData(prevData => {
             const templateExists = prevData.templates.find(templ => templ === template.id) ? true : false
-            return {
-                ...prevData,
-                templates: templateExists ? prevData.templates.map((templ) => {
-                    if (templ.id === template.id) return {
-                        ...templ,
+            const updatedTemplates = templateExists ? prevData.templates.map((templ) => {
+                if (templ.id === template.id) return {
+                    ...templ,
+                    name: templateName.current.value,
+                    notes: notes.current.value,
+                    exercises: finalExercises
+                }
+                else return templ
+            })
+                : [
+                    ...prevData.templates,
+                    {
+                        ...template,
                         name: templateName.current.value,
                         notes: notes.current.value,
                         exercises: finalExercises
                     }
-                    else return templ
-                })
-                    : [
-                        ...prevData.templates,
-                        {
-                            ...template,
-                            name: templateName.current.value,
-                            notes: notes.current.value,
-                            exercises: finalExercises
+                ]
+
+            let updatedFolders = prevData.templateFolders
+            if (folderId === undefined) updatedFolders = prevData.templateFolders
+            else {
+                if (folderId === 'myTemplates') {
+                    updatedFolders = {
+                        ...prevData.templateFolders,
+                        myTemplates: [...prevData.templateFolders.myTemplates, template.id]
+                    }
+                }
+                else {
+                    const existingFolder = prevData.templateFolders.userCreatedFolders.find(folder => folder.id === folderId);
+
+                    if (existingFolder) {
+                        const updatedUserCreatedFolders = prevData.templateFolders.userCreatedFolders.map(folder => {
+                            return folder.id === folderId ?
+                                { ...folder, templates: [...folder.templates, template.id] }
+                                : folder
+                        })
+                        updatedFolders = { ...prevData.templateFolders, userCreatedFolders: updatedUserCreatedFolders }
+                    }
+                    //DONT THINK THIS IS NEEDED
+                    /* else {
+                        updatedFolders = {
+                            ...prevData.templateFolders,
+                            userCreatedFolders: [
+                                ...prevData.templateFolders.userCreatedFolders,
+                                { id: folderId, name: folderId, templates: [template.id] }
+                            ]
                         }
-                    ]
+                    }*/
+                }
+            }
+
+            return {
+                ...prevData,
+                templates: updatedTemplates,
+                templateFolders: updatedFolders
             }
         })
     }
@@ -583,7 +620,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
         saveData(prevData =>
         ({
             ...prevData,
-            history: data.history.filter(history => history.workoutId !== template.workoutId)
+            history: prevData.history.filter(history => history.workoutId !== template.workoutId)
         }))
     }
 
@@ -591,7 +628,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
         saveData(prevData =>
         ({
             ...prevData,
-            templates: data.templates.filter(databaseTemplate => databaseTemplate.id !== template.id)
+            templates: prevData.templates.filter(databaseTemplate => databaseTemplate.id !== template.id)
         }))
     }
 
@@ -694,7 +731,7 @@ function SessionScreen({ template, screenVariant = 'newSession' }) {
                     {(screenVariant === 'newSession' || screenVariant === 'newEmptySession') &&
                         <>
                             <ModalFinishWorkout screenVariant={screenVariant} showModal={showFinishModal} setShowModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
-                                handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, template.exercises, exercises, template.id, workoutId, currentDate,
+                                handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, undefined, template.exercises, exercises, template.id, workoutId, currentDate,
                                     sessionDuration, templateName.current.value, notes.current.value)} />
                             <ModalCancelWorkout showModal={showCloseModal} setShowModal={setShowCloseModal}
                                 handleScreenChange={() => handleScreenChange('TemplatesScreen')} />

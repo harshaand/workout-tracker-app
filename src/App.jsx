@@ -48,6 +48,7 @@ function App() {
   let SessionScreenData = React.useRef({
     template: undefined,
     screenVariant: undefined,
+    folderId: undefined,
   });
 
 
@@ -71,6 +72,7 @@ function App() {
       ScreenComponent = <SessionScreen
         template={SessionScreenData.current.template}
         screenVariant={SessionScreenData.current.screenVariant}
+        folderId={SessionScreenData.current.folderId}
       />;
       break;
     case 'StrScFullBodyScreen':
@@ -114,7 +116,7 @@ function App() {
       throw new Error('Unknown screen ' + currentScreen)
   }
 
-  function handleScreenChange(newScreen, template, screenVariant, oldExercises, newExercises, templateId, workoutId, currentDate, duration, templateName, notes) {
+  function handleScreenChange(newScreen, template, screenVariant, folderId, oldExercises, newExercises, templateId, workoutId, currentDate, duration, templateName, notes) {
     if (newScreen === 'FinishedWorkoutScreen') {
       FWS_data.current.oldExercises = oldExercises;
       FWS_data.current.newExercises = newExercises;
@@ -130,6 +132,7 @@ function App() {
     if (newScreen === 'SessionScreen') {
       SessionScreenData.current.template = template;
       SessionScreenData.current.screenVariant = screenVariant;
+      SessionScreenData.current.folderId = folderId;
     }
     setCurrentScreen(newScreen)
 

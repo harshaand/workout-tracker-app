@@ -1,8 +1,9 @@
 import React from 'react'
 import ButtonBig from '../../Buttons/ButtonBig'
-function ModalRenameTemplate({ setModalRenameTemplate }) {
+function ModalRenameTemplate({ setModalRenameTemplate, id, renameTemplate }) {
     function handleSubmit(formData) {
         console.log(formData.get('exerciseRename'))
+        renameTemplate(id, formData.get('exerciseRename'))
         setModalRenameTemplate(undefined)
     }
 

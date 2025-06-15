@@ -6,7 +6,8 @@ import { Clock, Weight, TrophyMedium } from '../../assets/icons/icons.js';
 import ModalOptionsHistory from '../Modals/template/ModalOptionsHistory.jsx';
 
 
-function CardWorkoutHistory({ history, type = 'default', onClick, showOptionsModal, setShowOptionsModal }) {
+function CardWorkoutHistory({ history, type = 'default', onClick, showOptionsModal, setShowOptionsModal,
+    handleScreenChangeEditTemplate, setModalDeleteHistory }) {
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -41,7 +42,9 @@ function CardWorkoutHistory({ history, type = 'default', onClick, showOptionsMod
                             setShowOptionsModal(history.workoutId)
                         }}></ButtonSmall>
                         {showOptionsModal === history.workoutId &&
-                            <ModalOptionsHistory setShowModal={setShowOptionsModal} />}
+                            <ModalOptionsHistory setShowModal={setShowOptionsModal}
+                                handleScreenChangeEditTemplate={handleScreenChangeEditTemplate}
+                                setModalDeleteHistory={setModalDeleteHistory} />}
                     </div>}
             </div>
 

@@ -1,10 +1,10 @@
 import React from 'react'
 import ButtonBig from '../../Buttons/ButtonBig'
 
-function ModalDeleteTemplate({ name, templateId, folderId, setModalDeleteTemplate, deleteTemplate }) {
+function ModalDeleteHistory({ name, workoutId, setModalDeleteHistory, deleteWorkoutHistory }) {
     return (
         <>
-            <button className='modal-overlay' onClick={() => setModalDeleteTemplate(undefined)}></button>
+            <button className='modal-overlay' onClick={() => setModalDeleteHistory(undefined)}></button>
 
             <div className='modal modal-spacing--default'>
                 <h3>{`Delete "${name}"?`}</h3>
@@ -13,10 +13,10 @@ function ModalDeleteTemplate({ name, templateId, folderId, setModalDeleteTemplat
                         template? This cannot be undone.</p>
                     <div className='modal__buttons--vertical'>
                         <ButtonBig color='red' onClick={() => {
-                            deleteTemplate(folderId, templateId)
-                            setModalDeleteTemplate(undefined)
+                            deleteWorkoutHistory(workoutId)
+                            setModalDeleteHistory(undefined)
                         }}>Delete</ButtonBig>
-                        <ButtonBig color='gray' onClick={() => { setModalDeleteTemplate(undefined) }}>Cancel</ButtonBig>
+                        <ButtonBig color='gray' onClick={() => { setModalDeleteHistory(undefined) }}>Cancel</ButtonBig>
                     </div>
                 </div>
             </div>
@@ -24,4 +24,4 @@ function ModalDeleteTemplate({ name, templateId, folderId, setModalDeleteTemplat
     )
 }
 
-export default ModalDeleteTemplate
+export default ModalDeleteHistory

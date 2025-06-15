@@ -2,7 +2,7 @@ import '../../../css/modals.scss';
 import ButtonModal from '../../Buttons/ButtonModal.jsx'
 import React from 'react'
 
-function ModalOptionsHistory({ showModal, setShowModal, historyId }) {
+function ModalOptionsHistory({ setShowModal, handleScreenChangeEditTemplate, setModalDeleteHistory }) {
     const modalRef = React.useRef(null);
     const [modalStyle, setModalStyle] = React.useState({ visibility: 'hidden' });
 
@@ -49,9 +49,17 @@ function ModalOptionsHistory({ showModal, setShowModal, historyId }) {
             }}></button>
 
             <div ref={modalRef} className='modal-options modal-options--default-width' style={{ ...modalStyle }} >
-                <ButtonModal type='options' icon='edit'>Edit Workout</ButtonModal>
+                <ButtonModal type='options' icon='edit' onClick={(e) => {
+                    e.stopPropagation()
+                    handleScreenChangeEditTemplate()
+                    setShowModal(undefined)
+                }}>Edit Workout</ButtonModal>
                 <ButtonModal type='options' icon='add'>Save as Template</ButtonModal>
-                <ButtonModal type='optionsDelete' icon='delete'>Delete</ButtonModal>
+                <ButtonModal type='optionsDelete' icon='delete' onClick={(e) => {
+                    e.stopPropagation()
+                    setModalDeleteHistory()
+                    setShowModal(undefined)
+                }}>Delete</ButtonModal>
             </div>
         </>
     )

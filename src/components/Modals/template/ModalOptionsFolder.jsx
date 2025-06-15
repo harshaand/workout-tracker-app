@@ -2,7 +2,10 @@ import '../../../css/modals.scss';
 import ButtonModal from '../../Buttons/ButtonModal.jsx'
 import React from 'react'
 
-function ModalOptionsFolder({ setShowModal, toggleCollapseFolder, folderOpenState, type = 'userCreatedFolder', setModalDeleteFolder }) {
+function ModalOptionsFolder({ setShowModal, toggleCollapseFolder, folderOpenState,
+    type = 'userCreatedFolder', setModalDeleteFolder, setModalInputFolderName, name, id,
+    handleScreenChange, renameFolder
+}) {
     const modalRef = React.useRef(null);
     const [modalStyle, setModalStyle] = React.useState({ visibility: 'hidden' });
 
@@ -55,8 +58,15 @@ function ModalOptionsFolder({ setShowModal, toggleCollapseFolder, folderOpenStat
                         setShowModal(undefined)
                     }
                     }>{folderOpenState ? 'Collapse Folder' : 'Expand Folder'}</ButtonModal>
-                    <ButtonModal type='options' icon='add'>Add Template</ButtonModal>
-                    <ButtonModal type='options' icon='edit'>Rename Folder</ButtonModal>
+                    <ButtonModal type='options' icon='add' onClick={() => {
+                        handleScreenChange()
+                        setShowModal(undefined)
+                    }
+                    }>Add Template</ButtonModal>
+                    <ButtonModal type='options' icon='edit' onClick={() => {
+                        setModalInputFolderName({ id: id, type: 'rename' })
+                        setShowModal(undefined)
+                    }}>Rename Folder</ButtonModal>
                     <ButtonModal type='optionsDelete' icon='delete' onClick={() => {
                         setModalDeleteFolder()
                         setShowModal(undefined)
@@ -79,7 +89,10 @@ function ModalOptionsFolder({ setShowModal, toggleCollapseFolder, folderOpenStat
                         setShowModal(undefined)
                     }
                     }>{folderOpenState ? 'Collapse Folder' : 'Expand Folder'}</ButtonModal>
-                    <ButtonModal type='options' icon='add'>Add Template</ButtonModal>
+                    <ButtonModal type='options' icon='add' onClick={() => {
+                        handleScreenChange()
+                        setShowModal(undefined)
+                    }}>Add Template</ButtonModal>
                 </div>
             </>
         )

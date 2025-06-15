@@ -4,6 +4,8 @@ import '../css/screens.scss'
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
 import ModalHistoryWorkout from '../components/Modals/session/content-modals/HistoryWorkout.jsx'
 import ModalOptionsHistory from '../components/Modals/template/ModalOptionsHistory.jsx'
+import ModalDeleteHistory from '../components/Modals/template/ModalDeleteHistory.jsx'
+import ModalSaveAsTemplate from '../components/Modals/template/ModalSaveAsTemplate.jsx'
 import { useData } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'
 
@@ -20,7 +22,34 @@ function HistoryScreen() {
     ];
     const [selectedHistoryWorkoutModal, setSelectedHistoryWorkoutModal] = React.useState(null)
     const [showOptionsHistoryModal, setShowOptionsHistoryModal] = React.useState(undefined)
+    const [modalDeleteHistory, setModalDeleteHistory] = React.useState(undefined)
 
+
+    function deleteWorkoutHistory(workoutId) {
+        saveData(prev => {
+            const workoutHistory = prev.history.find(history => history.workoutId === workoutId)
+            console.log('workoutHistory', workoutHistory)
+            const exerciseNames = workoutHistory.exercises.map(exercise => exercise.name);
+            const uniqueExerciseNames = [...new Set(exerciseNames)];
+            const updatedExercises = prev.exercises.map(exercise => {
+                return uniqueExerciseNames.includes(exercise.name) ? {
+                    ...exercise,
+                    history: exercise.history.filter(history => history.workoutId !== workoutId)
+                } :
+                    exercise
+            })
+
+            return {
+                ...prev,
+                history: prev.history.filter(history => history.workoutId !== workoutId),
+                exercises: updatedExercises
+            }
+        })
+    }
+
+    function saveAsTemplate() {
+
+    }
 
     function renderHistoryCards() {
         const groupedWorkouts = {};
@@ -62,11 +91,11 @@ function HistoryScreen() {
                     <p className='heading'>{`${months[group.month]} ${group.year}`}</p>
                     {sortedWorkouts.map(history => (
                         <>
-                            <CardWorkoutHistory history={history} onClick={() => {
-                                setSelectedHistoryWorkoutModal(history.workoutId)
-                            }}
+                            <CardWorkoutHistory history={history} onClick={() => { setSelectedHistoryWorkoutModal(history.workoutId) }}
                                 showOptionsModal={showOptionsHistoryModal}
-                                setShowOptionsModal={setShowOptionsHistoryModal} />
+                                setShowOptionsModal={setShowOptionsHistoryModal}
+                                handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', history, 'editSession')}
+                                setModalDeleteHistory={() => setModalDeleteHistory({ name: history.name, workoutId: history.workoutId })} />
                             <ModalHistoryWorkout history={history} selectedModal={selectedHistoryWorkoutModal}
                                 setSelectedModal={setSelectedHistoryWorkoutModal}
                                 handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', history, 'editSession')} />
@@ -80,13 +109,20 @@ function HistoryScreen() {
     };
 
     return (
-        <div className='history__container'>
-            <Navbar />
-            <div className='history__main'>
-                <h1>History Screen</h1>
-                {renderHistoryCards()}
+        <>
+            <ModalSaveAsTemplate />
+            {modalDeleteHistory !== undefined && <ModalDeleteHistory
+                name={modalDeleteHistory.name} workoutId={modalDeleteHistory.workoutId}
+                setModalDeleteHistory={setModalDeleteHistory} deleteWorkoutHistory={deleteWorkoutHistory} />}
+
+            <div className='history__container'>
+                <Navbar />
+                <div className='history__main'>
+                    <h1>History Screen</h1>
+                    {renderHistoryCards()}
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 

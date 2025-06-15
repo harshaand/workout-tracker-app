@@ -2,11 +2,15 @@ import React from 'react'
 import '../../../css/modals.scss';
 import ButtonSmall from '../../Buttons/ButtonSmall.jsx'
 import { Tick } from '../../../assets/icons/icons.js';
+import { useData } from '../../../DataContext.jsx'
 
 function ModalSelectFolder({ setShowModal, handleScreenChange, newEmptySession }) {
+    const useLocalStorage = useData()
+    const [data, saveData] = useLocalStorage('userData')
+
     function handleSubmit(formData) {
         console.log(formData.get('selectedFolder'))
-        handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate')
+        handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate', formData.get('selectedFolder'))
     }
     return (
         <>
@@ -15,16 +19,15 @@ function ModalSelectFolder({ setShowModal, handleScreenChange, newEmptySession }
             <form action={handleSubmit}>
                 <div className='modal-select'>
                     <div className='modal__header'>
-                        <ButtonSmall type='closeModal' />
+                        <ButtonSmall type='closeModal' onClick={() => setShowModal(false)} />
                         <h3>Select Folder</h3>
                         <button type='submit' className='btn--transparent'>Next</button>
                     </div>
                     <div className='modal-select__container-buttons'>
-                        <label key='1' className='modal-select__btn active'>None<Tick /><input type="radio" name='selectedFolder' value='None' /></label>
-                        <label key='2' className='modal-select__btn active'>Folder 4<Tick /><input type="radio" name='selectedFolder' value='Folder 4' /></label>
-                        <label key='3' className='modal-select__btn active'>Folder 3<Tick /><input type="radio" name='selectedFolder' value='Folder 3' /></label>
-                        <label key='4' className='modal-select__btn active'>Folder 2<Tick /><input type="radio" name='selectedFolder' value='Folder 2' /></label>
-                        <label key='5' className='modal-select__btn active'>Folder 1<Tick /><input type="radio" name='selectedFolder' value='Folder 1' /></label>
+                        <label key='modal-select-myTemplates' className='modal-select__btn active'>None (No Folder)<Tick /><input type="radio" name='selectedFolder' value='myTemplates' /></label>
+                        {data.templateFolders.userCreatedFolders.map(folder => {
+                            return <label key={`modal-select-${folder.id}`} className='modal-select__btn active'>{folder.name}<Tick /><input type="radio" name='selectedFolder' value={folder.id} /></label>
+                        })}
                     </div>
                 </div>
             </form>

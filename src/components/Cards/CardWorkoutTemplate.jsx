@@ -13,7 +13,9 @@ let type
 
 
 function CardWorkoutTemplate({ template, onClick, showOptionsModal, setShowOptionsModal,
-    modalType, setModalRenameTemplate, setModalDeleteTemplate }) {
+    modalType, setModalRenameTemplate, setModalDeleteTemplate, handleScreenChangeEditTemplate,
+    renameTemplate, duplicateTemplate, folderId, archiveTemplate }) {
+
     if (template) {
         description = template.exercises.map(exercise => exercise.name);
         description = description.join(', ')
@@ -82,7 +84,11 @@ function CardWorkoutTemplate({ template, onClick, showOptionsModal, setShowOptio
                             <ModalOptionsTemplate setShowModal={setShowOptionsModal}
                                 type={modalType} templateId={template.id}
                                 setModalRenameTemplate={setModalRenameTemplate}
-                                setModalDeleteTemplate={setModalDeleteTemplate} />}
+                                setModalDeleteTemplate={setModalDeleteTemplate}
+                                handleScreenChangeEditTemplate={handleScreenChangeEditTemplate}
+                                renameTemplate={renameTemplate} duplicateTemplate={duplicateTemplate}
+                                folderId={folderId} archiveTemplate={archiveTemplate} />
+                        }
                     </div>
                 </div>
                 <div className='content'>

@@ -9,6 +9,7 @@ import ModalTemplateOverview from '../components/Modals/session/content-modals/T
 import ModalOptionsFolder from '../components/Modals/template/ModalOptionsFolder.jsx'
 import ModalSelectFolder from '../components/Modals/template/ModalSelectFolder.jsx';
 import ModalRenameTemplate from '../components/Modals/template/ModalRenameTemplate.jsx';
+import ModalInputFolderName from '../components/Modals/template/ModalInputFolderName.jsx';
 import ModalDeleteTemplate from '../components/Modals/template/ModalDeleteTemplate.jsx'
 import ModalDeleteFolder from '../components/Modals/template/ModalDeleteFolder.jsx';
 
@@ -29,6 +30,7 @@ function TemplatesScreen() {
     const { currentScreen, handleScreenChange } = React.useContext(RoutingContext)
     const useLocalStorage = useData()
     const [data, saveData] = useLocalStorage('userData')
+    console.log('DATA IN DB:', data)
     /* SCREEN VARIANTS
     1. newSession ------new key
     2. editSession -----old key
@@ -39,6 +41,7 @@ function TemplatesScreen() {
     const screenVariant = React.useRef(null);
     const [showModalSelectFolder, setShowModalSelectFolder] = React.useState(false)
     const [modalRenameTemplate, setModalRenameTemplate] = React.useState(undefined)
+    const [modalInputFolderName, setModalInputFolderName] = React.useState(undefined)
     const [modalDeleteTemplate, setModalDeleteTemplate] = React.useState(undefined)
     const [modalDeleteFolder, setModalDeleteFolder] = React.useState(undefined)
     const [showModalTemplateOverview, setShowModalTemplateOverview] = React.useState(null)
@@ -51,6 +54,16 @@ function TemplatesScreen() {
         ['exampleTemplates', true],
         ['archivedTemplates', true]]
     ))
+
+    const newEmptySession = {
+        id: uuidv4(),
+        name: 'New Workout',
+        duration: undefined,
+        notes: undefined,
+        lastDone: undefined,
+
+        exercises: []
+    }
 
     function toggleCollapseFolder(folderId) {
         openFolders.current = {
@@ -73,21 +86,249 @@ function TemplatesScreen() {
         }
     }
 
-    const newEmptySession = {
-        id: uuidv4(),
-        name: 'New Workout',
-        duration: undefined,
-        notes: undefined,
-        lastDone: undefined,
+    function addFolder(id, name) {
+        saveData(prev => (
+            {
+                ...prev,
+                templateFolders: {
+                    ...prev.templateFolders,
+                    userCreatedFolders: [
+                        { id: id, name: name, templates: [] },
+                        ...prev.templateFolders.userCreatedFolders
+                    ]
+                }
+            }
+        ))
+    }
 
-        exercises: []
+    function renameFolder(id, newName) {
+        saveData(prev => {
+            let updatedFolders = prev.templateFolders
+            const existingFolder = prev.templateFolders.userCreatedFolders.find(folder => folder.id === id);
+            if (existingFolder) {
+                const updatedUserCreatedFolders = prev.templateFolders.userCreatedFolders.map(folder => {
+                    return folder.id === id ?
+                        { ...folder, name: newName }
+                        : folder
+                })
+                updatedFolders = { ...prev.templateFolders, userCreatedFolders: updatedUserCreatedFolders }
+            }
+            // else {
+            //     updatedFolders = {
+            //         ...prev.templateFolders,
+            //         userCreatedFolders: [
+            //             ...prev.templateFolders.userCreatedFolders,
+            //             { id: id, name: id, templates: [template.id] }
+            //         ]
+            //     }
+            // }
+            return {
+                ...prev,
+                templateFolders: updatedFolders
+            }
+        })
+    }
+
+    function deleteFolder(id) {
+        saveData(prev => {
+            let updatedFolders = prev.templateFolders
+            const existingFolder = prev.templateFolders.userCreatedFolders.find(folder => folder.id === id);
+            if (existingFolder) {
+                //delete folder
+                updatedFolders.userCreatedFolders = updatedFolders.userCreatedFolders.filter(folder => folder.id !== id)
+                //copy templates in folder to myTemplates
+                updatedFolders.myTemplates = [...updatedFolders.myTemplates, ...existingFolder.templates]
+            }
+            return {
+                ...prev,
+                templateFolders: updatedFolders
+            }
+        })
+    }
+
+    function renameTemplate(id, newName) {
+        saveData(prev => {
+            let updatedTemplates = prev.templates
+            updatedTemplates = updatedTemplates.map(template =>
+                template.id === id ? { ...template, name: newName } : template
+            );
+
+            return {
+                ...prev,
+                templates: updatedTemplates
+            }
+        })
+    }
+
+    function duplicateTemplate(folderId, templateId) {
+        saveData(prev => {
+            const idDuplicateTemplate = uuidv4()
+            const orignalTemplate = prev.templates.find(template => template.id === templateId)
+            const duplicateTemplate = { ...orignalTemplate, name: orignalTemplate.name + ' Copy', id: idDuplicateTemplate }
+
+            if (folderId === 'exampleTemplates' || folderId === 'myTemplates') {
+                const updatedMyTemplates = [...prev.templateFolders.myTemplates, idDuplicateTemplate]
+                return {
+                    ...prev,
+                    templates: [...prev.templates, duplicateTemplate],
+                    templateFolders: {
+                        ...prev.templateFolders,
+                        myTemplates: updatedMyTemplates
+                    }
+                }
+            }
+            else if (folderId === 'archivedTemplates') {
+                const updatedArchivedTemplates = [...prev.templateFolders.archivedTemplates, { folderId: folderId, templateId: idDuplicateTemplate }]
+                return {
+                    ...prev,
+                    templates: [...prev.templates, duplicateTemplate],
+                    templateFolders: {
+                        ...prev.templateFolders,
+                        archivedTemplates: updatedArchivedTemplates
+                    }
+                }
+            }
+            else {
+                const updatedUserCreatedFolders = prev.templateFolders.userCreatedFolders.map(folder => {
+                    return folder.id === folderId ? { ...folder, templates: [...folder.templates, idDuplicateTemplate] }
+                        : folder
+                })
+                return {
+                    ...prev,
+                    templates: [...prev.templates, duplicateTemplate],
+                    templateFolders: {
+                        ...prev.templateFolders,
+                        userCreatedFolders: updatedUserCreatedFolders
+                    }
+                }
+            }
+        })
+    }
+
+    function archiveTemplate(folderId, templateId) {
+        saveData(prev => {
+            //archiving myTemplates templates
+            if (folderId === 'myTemplates') {
+                const updatedMyTemplates = prev.templateFolders.myTemplates.filter(templId => templId !== templateId)
+                const updatedArchivedTemplates = [...prev.templateFolders.archivedTemplates, { folderId: 'myTemplates', templateId: templateId }]
+                return {
+                    ...prev,
+                    templateFolders: {
+                        ...prev.templateFolders,
+                        myTemplates: updatedMyTemplates,
+                        archivedTemplates: updatedArchivedTemplates
+                    }
+                }
+            }
+            //unarchiving templates
+            else if (folderId === 'archivedTemplates') {
+                const archivedTemplate = prev.templateFolders.archivedTemplates.find(archivedTemplate => archivedTemplate.templateId === templateId)
+                const updatedArchivedTemplates = prev.templateFolders.archivedTemplates.filter(archivedTemplate =>
+                    archivedTemplate.templateId !== templateId)
+                //if template was orignally archived from myTemplates
+                if (archivedTemplate.folderId === 'myTemplates') {
+                    const updatedMyTemplates = [...prev.templateFolders.myTemplates, templateId]
+                    return {
+                        ...prev,
+                        templateFolders: {
+                            ...prev.templateFolders,
+                            myTemplates: updatedMyTemplates,
+                            archivedTemplates: updatedArchivedTemplates
+                        }
+                    }
+                }
+                //if template was orignally archived from userCreatedFolders or unknown folder
+                else {
+                    let folderExists = prev.templateFolders.userCreatedFolders.find(
+                        folder => folder?.id === archivedTemplate?.folderId
+                    ) || null;
+
+                    if (folderExists) {
+                        const updatedUserCreatedFolders = prev.templateFolders.userCreatedFolders.map(folder => {
+                            return folder.id === archivedTemplate.folderId ? { ...folder, templates: [...folder.templates, templateId] }
+                                : folder
+                        })
+                        return {
+                            ...prev,
+                            templateFolders: {
+                                ...prev.templateFolders,
+                                userCreatedFolders: updatedUserCreatedFolders,
+                                archivedTemplates: updatedArchivedTemplates
+                            }
+                        }
+                    }
+                    else {
+                        const updatedMyTemplates = [...prev.templateFolders.myTemplates, templateId]
+                        return {
+                            ...prev,
+                            templateFolders: {
+                                ...prev.templateFolders,
+                                myTemplates: updatedMyTemplates,
+                                archivedTemplates: updatedArchivedTemplates
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            //archiving userCreatedFolders templates to orignal folders. If folder not found, will go to myTemplates
+            else {
+                const updatedUserCreatedFolders = prev.templateFolders.userCreatedFolders.map(folder => {
+                    return folder.id === folderId ? { ...folder, templates: folder.templates.filter(templId => templId !== templateId) }
+                        : folder
+                })
+                const updatedArchivedTemplates = [...prev.templateFolders.archivedTemplates, { folderId: folderId, templateId: templateId }]
+                return {
+                    ...prev,
+                    templateFolders: {
+                        ...prev.templateFolders,
+                        userCreatedFolders: updatedUserCreatedFolders,
+                        archivedTemplates: updatedArchivedTemplates
+                    }
+                }
+            }
+        })
+    }
+
+    function deleteTemplate(folderId, templateId) {
+        saveData(prev => {
+            let updatedTemplateFolders = prev.templateFolders
+            if (folderId === 'myTemplates') {
+                updatedTemplateFolders = { ...prev.templateFolders, myTemplates: prev.templateFolders.myTemplates.filter(templId => templId !== templateId) }
+            }
+            else if (folderId === 'archivedTemplates') {
+                updatedTemplateFolders = { ...prev.templateFolders, archivedTemplates: prev.templateFolders.archivedTemplates.filter(templ => templ.templateId !== templateId) }
+            }
+            else {
+                updatedTemplateFolders = {
+                    ...prev.templateFolders,
+                    userCreatedFolders: prev.templateFolders.userCreatedFolders.map(folder => {
+                        return folder.templates.includes(templateId) ?
+                            {
+                                ...folder,
+                                templates: folder.templates.filter(templId => templId !== templateId)
+                            }
+                            : folder
+                    })
+                }
+            }
+            return {
+                ...prev,
+                templates: prev.templates.filter(template => template.id !== templateId),
+                templateFolders: updatedTemplateFolders
+            }
+        })
     }
 
     return (<>
         {showModalSelectFolder === true && <ModalSelectFolder setShowModal={setShowModalSelectFolder} handleScreenChange={handleScreenChange} newEmptySession={newEmptySession} />}
-        {modalRenameTemplate !== undefined && <ModalRenameTemplate setModalRenameTemplate={setModalRenameTemplate} />}
-        {modalDeleteTemplate !== undefined && <ModalDeleteTemplate name={modalDeleteTemplate.name} id={modalDeleteTemplate.id} setModalDeleteTemplate={setModalDeleteTemplate} />}
-        {modalDeleteFolder !== undefined && <ModalDeleteFolder name={modalDeleteFolder.name} id={modalDeleteFolder.id} setModalDeleteFolder={setModalDeleteFolder} />}
+        {modalRenameTemplate !== undefined && <ModalRenameTemplate setModalRenameTemplate={setModalRenameTemplate} id={modalRenameTemplate} renameTemplate={renameTemplate} />}
+        {modalInputFolderName !== undefined && <ModalInputFolderName setModalInputFolderName={setModalInputFolderName}
+            type={modalInputFolderName.type} id={modalInputFolderName.id} addFolder={addFolder} renameFolder={renameFolder} />}
+        {modalDeleteTemplate !== undefined && <ModalDeleteTemplate name={modalDeleteTemplate.name} templateId={modalDeleteTemplate.templateId} folderId={modalDeleteTemplate.folderId}
+            setModalDeleteTemplate={setModalDeleteTemplate} deleteTemplate={deleteTemplate} />}
+        {modalDeleteFolder !== undefined && <ModalDeleteFolder name={modalDeleteFolder.name} id={modalDeleteFolder.id} setModalDeleteFolder={setModalDeleteFolder} deleteFolder={deleteFolder} />}
 
         <div className='templates__container'>
             <Navbar />
@@ -108,7 +349,7 @@ function TemplatesScreen() {
                                 setShowModalSelectFolder(true)}>
                                 Template
                             </ButtonSmall>
-                            <ButtonSmall type='folder' />
+                            <ButtonSmall type='folder' onClick={() => setModalInputFolderName({ id: uuidv4(), type: 'add' })} />
                         </div>
 
                     </div>
@@ -132,6 +373,10 @@ function TemplatesScreen() {
                                                     folderOpenState={openFolders.current[folder.id]}
                                                     type='userCreatedFolder'
                                                     setModalDeleteFolder={() => setModalDeleteFolder({ name: folder.name, id: folder.id })}
+                                                    setModalInputFolderName={setModalInputFolderName}
+                                                    name={folder.name}
+                                                    id={folder.id}
+                                                    handleScreenChange={() => handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate', folder.id)}
                                                 />
                                             }
                                         </div>
@@ -151,7 +396,11 @@ function TemplatesScreen() {
                                                             setShowOptionsModal={setShowModalOptionsTemplate}
                                                             setModalRenameTemplate={setModalRenameTemplate}
                                                             modalType='userCreatedTemplate'
-                                                            setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, id: template.id })}
+                                                            setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, templateId: template.id, folderId: folder.id })}
+                                                            handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')}
+                                                            duplicateTemplate={duplicateTemplate}
+                                                            folderId={folder.id}
+                                                            archiveTemplate={archiveTemplate}
                                                         />
                                                         <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
                                                             setSelectedModal={setShowModalTemplateOverview}
@@ -159,7 +408,7 @@ function TemplatesScreen() {
                                                             handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
                                                     </React.Fragment>
                                                 }))
-                                                : (<CardWorkoutTemplate onClick={() => handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate')} />)
+                                                : (<CardWorkoutTemplate onClick={() => handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate', folder.id)} />)
 
                                             }
                                         </div>
@@ -185,6 +434,7 @@ function TemplatesScreen() {
                                                 toggleCollapseFolder={() => toggleCollapseFolder('myTemplates')}
                                                 folderOpenState={openFolders.current['myTemplates']}
                                                 type='myTemplates'
+                                                handleScreenChange={() => handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate', 'myTemplates')}
                                             />
                                         }
                                     </div>
@@ -203,8 +453,12 @@ function TemplatesScreen() {
                                                         showOptionsModal={showModalOptionsTemplate}
                                                         setShowOptionsModal={setShowModalOptionsTemplate}
                                                         setModalRenameTemplate={setModalRenameTemplate}
-                                                        modalType='userCreatedTemplate'
-                                                        setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, id: template.id })}
+                                                        modalType='myTemplate'
+                                                        setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, templateId: template.id, folderId: 'myTemplates' })}
+                                                        handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')}
+                                                        duplicateTemplate={duplicateTemplate}
+                                                        folderId={'myTemplates'}
+                                                        archiveTemplate={archiveTemplate}
                                                     />
                                                     <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
                                                         setSelectedModal={setShowModalTemplateOverview}
@@ -213,7 +467,7 @@ function TemplatesScreen() {
                                                 </>
                                             })
                                             :
-                                            (<CardWorkoutTemplate onClick={() => handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate')} />)
+                                            (<CardWorkoutTemplate onClick={() => handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate', 'myTemplates')} />)
                                         }
                                     </div>
                                 </div>
@@ -257,6 +511,8 @@ function TemplatesScreen() {
                                                     showOptionsModal={showModalOptionsTemplate}
                                                     setShowOptionsModal={setShowModalOptionsTemplate}
                                                     modalType='exampleTemplate'
+                                                    duplicateTemplate={duplicateTemplate}
+                                                    folderId={'exampleTemplates'}
                                                 />
                                                 <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
                                                     setSelectedModal={setShowModalTemplateOverview}
@@ -270,31 +526,30 @@ function TemplatesScreen() {
 
                             {/*------------------------------------------------------ARCHIVED TEMPLATES------------------------------------------------------*/}
                             {data.templateFolders.archivedTemplates.length > 0 &&
-                                data.templateFolders.archivedTemplates.map((templateId) => {
-                                    const template = data.templates.find(templ => templ.id === templateId)
-                                    return <>
-                                        <div className='container-templates'>
-                                            <div className='container-templates__header'>
-                                                <div className='container-heading'>
-                                                    <h3>Archived Templates</h3>
-                                                </div>
-                                                <div className='wrapper-options'>
-                                                    <ButtonSmall type='options1' onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        setShowModalOptionsFolder('archivedTemplates')
-                                                    }}></ButtonSmall>
-                                                    {showModalOptionsFolder === 'archivedTemplates' &&
-                                                        <ModalOptionsFolder setShowModal={setShowModalOptionsFolder}
-                                                            toggleCollapseFolder={() => toggleCollapseFolder('archivedTemplates')}
-                                                            folderOpenState={openFolders.current['archivedTemplates']}
-                                                            setModalRenameTemplate={setModalRenameTemplate}
-                                                            type='archivedTemplates'
-                                                        />
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div id='wrapper-templates-archivedTemplates' className='wrapper-templates'>
-                                                <div id='templates-archivedTemplates' className='templates'>
+                                <div className='container-templates'>
+                                    <div className='container-templates__header'>
+                                        <div className='container-heading'>
+                                            <h3>Archived Templates</h3>
+                                        </div>
+                                        <div className='wrapper-options'>
+                                            <ButtonSmall type='options1' onClick={(e) => {
+                                                e.stopPropagation()
+                                                setShowModalOptionsFolder('archivedTemplates')
+                                            }}></ButtonSmall>
+                                            {showModalOptionsFolder === 'archivedTemplates' &&
+                                                <ModalOptionsFolder setShowModal={setShowModalOptionsFolder}
+                                                    toggleCollapseFolder={() => toggleCollapseFolder('archivedTemplates')}
+                                                    folderOpenState={openFolders.current['archivedTemplates']}
+                                                    type='archivedTemplates'
+                                                />
+                                            }
+                                        </div>
+                                    </div>
+                                    <div id='wrapper-templates-archivedTemplates' className='wrapper-templates'>
+                                        <div id='templates-archivedTemplates' className='templates'>
+                                            {data.templateFolders.archivedTemplates.map(archivedTemplate => {
+                                                const template = data.templates.find(templ => templ.id === archivedTemplate.templateId)
+                                                return <>
                                                     <CardWorkoutTemplate template={template}
                                                         onClick={() => {
                                                             setShowModalTemplateOverview(template.id);
@@ -303,17 +558,23 @@ function TemplatesScreen() {
                                                         setShowOptionsModal={setShowModalOptionsTemplate}
                                                         setModalRenameTemplate={setModalRenameTemplate}
                                                         modalType='archivedTemplate'
-                                                        setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, id: template.id })}
+                                                        setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, templateId: template.id, folderId: 'archivedTemplates' })}
+                                                        handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')}
+                                                        duplicateTemplate={duplicateTemplate}
+                                                        folderId={'archivedTemplates'}
+                                                        archiveTemplate={archiveTemplate}
                                                     />
                                                     <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
                                                         setSelectedModal={setShowModalTemplateOverview}
                                                         handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
                                                         handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
-                                                </div>
-                                            </div>
+                                                </>
+                                            })}
+
                                         </div>
-                                    </>
-                                })}
+                                    </div>
+                                </div>
+                            }
                         </div>
 
                     </div>
