@@ -9,6 +9,7 @@ import ModalSaveAsTemplate from '../components/Modals/template/ModalSaveAsTempla
 import { useData } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'
 import { v4 as uuidv4 } from 'uuid';
+import ButtonBig from '../components/Buttons/ButtonBig.jsx'
 
 
 
@@ -104,31 +105,46 @@ function HistoryScreen() {
             return b.month - a.month;
         });
 
+        if (data.history.length > 0) {
+            return sortedGroups.map(group => {
+                //?????
+                const sortedWorkouts = group.workouts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        return sortedGroups.map(group => {
-            //?????
-            const sortedWorkouts = group.workouts.sort((a, b) => new Date(b.date) - new Date(a.date));
+                return <>
+                    <div className='history__main__container-month'>
+                        <p className='heading'>{`${months[group.month]} ${group.year}`}</p>
+                        {sortedWorkouts.map(history => (
+                            <>
+                                <CardWorkoutHistory history={history} onClick={() => { setSelectedHistoryWorkoutModal(history.workoutId) }}
+                                    showOptionsModal={showOptionsHistoryModal}
+                                    setShowOptionsModal={setShowOptionsHistoryModal}
+                                    handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', history, 'editSession')}
+                                    setModalDeleteHistory={() => setModalDeleteHistory({ name: history.name, workoutId: history.workoutId })}
+                                    setModalSaveAsTemplate={() => setModalSaveAsTemplate(history)} />
+                                <ModalHistoryWorkout history={history} selectedModal={selectedHistoryWorkoutModal}
+                                    setSelectedModal={setSelectedHistoryWorkoutModal}
+                                    handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', history, 'editSession')} />
+                            </>
+                        ))}
+                    </div>
+                </>
 
-            return <>
-                <div className='history__main__container-month'>
-                    <p className='heading'>{`${months[group.month]} ${group.year}`}</p>
-                    {sortedWorkouts.map(history => (
-                        <>
-                            <CardWorkoutHistory history={history} onClick={() => { setSelectedHistoryWorkoutModal(history.workoutId) }}
-                                showOptionsModal={showOptionsHistoryModal}
-                                setShowOptionsModal={setShowOptionsHistoryModal}
-                                handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', history, 'editSession')}
-                                setModalDeleteHistory={() => setModalDeleteHistory({ name: history.name, workoutId: history.workoutId })}
-                                setModalSaveAsTemplate={() => setModalSaveAsTemplate(history)} />
-                            <ModalHistoryWorkout history={history} selectedModal={selectedHistoryWorkoutModal}
-                                setSelectedModal={setSelectedHistoryWorkoutModal}
-                                handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', history, 'editSession')} />
-                        </>
-                    ))}
+            });
+        }
+        else {
+            return <div className='container-no-records-found'>
+                <div className='no-records-found'>
+                    <div className='container-text'>
+                        <div className='emoji'>🐥</div>
+                        <div className='text'>
+                            <h3>No Workouts Performed</h3>
+                            <p>Completed workouts will appear here.</p>
+                        </div>
+                    </div>
+                    <ButtonBig color='blueSoft' onClick={() => handleScreenChange('TemplatesScreen')}>Start Workout</ButtonBig>
                 </div>
-            </>
-
-        });
+            </div>
+        }
 
     };
     return (

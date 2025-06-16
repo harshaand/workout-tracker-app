@@ -8,7 +8,7 @@ import { ThreeStarsRow } from '../assets/icons/icons.js';
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx';
 import ModalUpdateTemplate from '../components/Modals/session/confirmation-modals/finished-session/UpdateTemplate.jsx'
 import ModalSaveAsNewTemplate from '../components/Modals/session/confirmation-modals/finished-session/SaveAsNewTemplate.jsx'
-function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, duration, templateName, notes }) {
+function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, folderId, duration, templateName, notes }) {
     console.log('TEMPLATE NAME', templateName)
     const useLocalStorage = useData()
     const [data, saveData] = useLocalStorage('userData')
@@ -339,29 +339,37 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
         })
         saveData(prevData => {
             const templateExists = prevData.templates.find(template => template.id === templateId) ? true : false
+            const updatedTemplates = templateExists ?
+                prevData.templates.map((template) => {
+                    if (template.id === templateId) return {
+                        ...template,
+                        name: templateName,
+                        notes: notes,
+                        lastDone: currentDate,
+                        exercises: finalExercises
+                    }
+                    else return template
+                })
+                : [
+                    ...prevData.templates,
+                    {
+                        ...template,
+                        name: templateName,
+                        notes: notes,
+                        lastDone: currentDate,
+                        exercises: finalExercises
+                    }
+                ]
+            const updatedFolders = templateExists ? prevData.templateFolders :
+                {
+                    ...prevData.templateFolders,
+                    myTemplates: [...prevData.templateFolders.myTemplates, template.id]
+                }
+
             return {
                 ...prevData,
-                templates: templateExists ?
-                    prevData.templates.map((template) => {
-                        if (template.id === templateId) return {
-                            ...template,
-                            name: templateName,
-                            notes: notes,
-                            lastDone: currentDate,
-                            exercises: finalExercises
-                        }
-                        else return template
-                    })
-                    : [
-                        ...prevData.templates,
-                        {
-                            ...template,
-                            name: templateName,
-                            notes: notes,
-                            lastDone: currentDate,
-                            exercises: finalExercises
-                        }
-                    ]
+                templates: updatedTemplates,
+                templateFolders: updatedFolders
             }
         })
     }
@@ -392,7 +400,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
             {screenVariant === 'newSession' && !exercisesSame &&
                 <ModalUpdateTemplate showModal={showModal} setShowModal={setShowModal} oldExercises={oldExercises} newExercises={newExercises}
-                    saveToHistory={saveToHistory} handleUpdateValues={handleUpdateValues} handleUpdateTemplate={handleUpdateTemplate} />}
+                    saveToHistory={saveToHistory} handleUpdateValues={handleUpdateValues} handleUpdateTemplate={handleUpdateTemplate} folderId={folderId} />}
         </div>
     )
 }

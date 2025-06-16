@@ -2,10 +2,11 @@ import React from 'react'
 import '../../../../../css/modals.scss';
 import ButtonBig from '../../../../Buttons/ButtonBig.jsx'
 
-function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, saveToHistory, handleUpdateValues, handleUpdateTemplate }) {
+function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, saveToHistory, handleUpdateValues, handleUpdateTemplate, folderId }) {
 
     let updatedValues = false;
     let updatedValuesMessage = '';
+    let updatedValuesButton = null;
     let removedValues = false;
     let updateTemplateMessage = '';
     let updateTemplateButton = null;
@@ -153,10 +154,23 @@ function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, s
         }
     }
 
+    if (updatedValues) {
+        updatedValuesButton = <ButtonBig onClick={async () => {
+            await handleUpdateValues()
+            await saveToHistory()
+            setShowModal(false)
+        }}>
+            <div>
+                <div className='main-text'>Update Values Only</div>
+                <div className='supporting-text'>{updatedValuesMessage}</div>
+            </div>
+        </ButtonBig>
+    }
+
     if (!showModal) return null
     else {
-        return (
-            <>
+        if (folderId !== 'exampleTemplates' && (updatedValues || updateTemplateMessage.length > 0)) {
+            return <>
                 <button className='modal-overlay' onClick={() => setShowModal(false)}></button>
                 <div className='modal modal-spacing--default'>
                     <h3>Update Template?</h3>
@@ -164,18 +178,7 @@ function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, s
                         <p>You've made changes from your original template. Would you like to update it?</p>
                         <div className='modal__buttons--vertical'>
 
-                            {updatedValues &&
-                                <ButtonBig onClick={async () => {
-                                    await handleUpdateValues()
-                                    await saveToHistory()
-                                    setShowModal(false)
-                                }}>
-                                    <div>
-                                        <div className='main-text'>Update Values Only</div>
-                                        <div className='supporting-text'>{updatedValuesMessage}</div>
-                                    </div>
-                                </ButtonBig>}
-
+                            {updatedValuesButton}
                             {updateTemplateButton}
 
                             <ButtonBig color="gray" onClick={async () => {
@@ -187,7 +190,12 @@ function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, s
                     </div>
                 </div>
             </>
-        )
+        }
+        else {
+            saveToHistory()
+            setShowModal(false)
+        }
+
     }
 }
 export default UpdateTemplate

@@ -34,6 +34,7 @@ function App() {
     workoutId: undefined,
     currentDate: undefined,
     screenVariant: undefined,
+    folderId: undefined,
     duration: undefined,
     templateName: undefined,
     notes: undefined
@@ -107,6 +108,7 @@ function App() {
         workoutId={FWS_data.current.workoutId}
         currentDate={FWS_data.current.currentDate}
         screenVariant={FWS_data.current.screenVariant}
+        folderId={FWS_data.current.folderId}
         duration={FWS_data.current.duration}
         templateName={FWS_data.current.templateName}
         notes={FWS_data.current.notes}
@@ -125,6 +127,7 @@ function App() {
       FWS_data.current.workoutId = workoutId;
       FWS_data.current.currentDate = currentDate;
       FWS_data.current.screenVariant = screenVariant;
+      FWS_data.current.folderId = folderId;
       FWS_data.current.duration = duration;
       FWS_data.current.templateName = templateName;
       FWS_data.current.notes = notes;

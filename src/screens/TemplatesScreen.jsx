@@ -293,12 +293,23 @@ function TemplatesScreen() {
 
     function deleteTemplate(folderId, templateId) {
         saveData(prev => {
+            const updatedTemplates = (folderId === 'exampleTemplates') ? prev.templates :
+                prev.templates.filter(templ => templ.id !== templateId)
+
             let updatedTemplateFolders = prev.templateFolders
             if (folderId === 'myTemplates') {
                 updatedTemplateFolders = { ...prev.templateFolders, myTemplates: prev.templateFolders.myTemplates.filter(templId => templId !== templateId) }
             }
             else if (folderId === 'archivedTemplates') {
                 updatedTemplateFolders = { ...prev.templateFolders, archivedTemplates: prev.templateFolders.archivedTemplates.filter(templ => templ.templateId !== templateId) }
+            }
+            else if (folderId === 'exampleTemplates') {
+                updatedTemplateFolders = prev.templateFolders
+                throw new Error("Cannot delete example templates");
+            }
+            else if (folderId === undefined || null) {
+                updatedTemplateFolders = prev.templateFolders
+                throw new Error("Folder not provided");
             }
             else {
                 updatedTemplateFolders = {
@@ -315,7 +326,7 @@ function TemplatesScreen() {
             }
             return {
                 ...prev,
-                templates: prev.templates.filter(template => template.id !== templateId),
+                templates: updatedTemplates,
                 templateFolders: updatedTemplateFolders
             }
         })
@@ -338,7 +349,7 @@ function TemplatesScreen() {
 
                 <div className='container-quick-start'>
                     <h3>Quick Start</h3>
-                    <ButtonBig color='blue' size='chunky' onClick={() => handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Workout', workoutId: uuidv4() }, 'newEmptySession')}>
+                    <ButtonBig color='blue' size='chunky' onClick={() => handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Workout', workoutId: uuidv4() }, 'newEmptySession', 'myTemplates')}>
                         Start an Empty Workout</ButtonBig>
                 </div>
 
@@ -398,15 +409,15 @@ function TemplatesScreen() {
                                                             setModalRenameTemplate={setModalRenameTemplate}
                                                             modalType='userCreatedTemplate'
                                                             setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, templateId: template.id, folderId: folder.id })}
-                                                            handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')}
+                                                            handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate', folder.id)}
                                                             duplicateTemplate={duplicateTemplate}
                                                             folderId={folder.id}
                                                             archiveTemplate={archiveTemplate}
                                                         />
                                                         <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
                                                             setSelectedModal={setShowModalTemplateOverview}
-                                                            handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
-                                                            handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
+                                                            handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession', folder.id)}
+                                                            handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate', folder.id)} />
                                                     </React.Fragment>
                                                 }))
                                                 : (<CardWorkoutTemplate onClick={() => handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate', folder.id)} />)
@@ -456,15 +467,15 @@ function TemplatesScreen() {
                                                         setModalRenameTemplate={setModalRenameTemplate}
                                                         modalType='myTemplate'
                                                         setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, templateId: template.id, folderId: 'myTemplates' })}
-                                                        handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')}
+                                                        handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate', 'myTemplates')}
                                                         duplicateTemplate={duplicateTemplate}
                                                         folderId={'myTemplates'}
                                                         archiveTemplate={archiveTemplate}
                                                     />
                                                     <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
                                                         setSelectedModal={setShowModalTemplateOverview}
-                                                        handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
-                                                        handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
+                                                        handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession', 'myTemplates')}
+                                                        handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate', 'myTemplates')} />
                                                 </>
                                             })
                                             :
@@ -516,9 +527,9 @@ function TemplatesScreen() {
                                                     folderId={'exampleTemplates'}
                                                 />
                                                 <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
-                                                    setSelectedModal={setShowModalTemplateOverview}
-                                                    handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
-                                                    handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
+                                                    setSelectedModal={setShowModalTemplateOverview} folderId='exampleTemplates'
+                                                    handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession', 'exampleTemplates')}
+                                                    handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate', 'exampleTemplates')} />
                                             </>
                                         })}
                                     </div>
@@ -560,15 +571,15 @@ function TemplatesScreen() {
                                                         setModalRenameTemplate={setModalRenameTemplate}
                                                         modalType='archivedTemplate'
                                                         setModalDeleteTemplate={() => setModalDeleteTemplate({ name: template.name, templateId: template.id, folderId: 'archivedTemplates' })}
-                                                        handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')}
+                                                        handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate', 'archivedTemplates')}
                                                         duplicateTemplate={duplicateTemplate}
                                                         folderId={'archivedTemplates'}
                                                         archiveTemplate={archiveTemplate}
                                                     />
                                                     <ModalTemplateOverview template={template} selectedModal={showModalTemplateOverview}
                                                         setSelectedModal={setShowModalTemplateOverview}
-                                                        handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession')}
-                                                        handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate')} />
+                                                        handleScreenChangeNewSession={() => handleScreenChange('SessionScreen', { ...template, workoutId: uuidv4() }, 'newSession', 'archivedTemplates')}
+                                                        handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', template, 'editTemplate', 'archivedTemplates')} />
                                                 </>
                                             })}
 

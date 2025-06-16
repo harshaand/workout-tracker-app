@@ -10,7 +10,7 @@ import {
     RomanianDeadlift, SledLegPress, Squat, ShoulderPress, LateralRaiseDumbbell, SeatedShoulderPressDumbbell, SkullCrusher, TricepPushdownCable
 } from '../../../../assets/exercise-images/index.js';
 
-function TemplateOverview({ template, selectedModal, setSelectedModal, handleScreenChangeNewSession,
+function TemplateOverview({ template, folderId, selectedModal, setSelectedModal, handleScreenChangeNewSession,
     handleScreenChangeEditTemplate }) {
     const exerciseImages = {
         'Bent Over Row (Barbell)': BentOverRow,
@@ -88,11 +88,9 @@ function TemplateOverview({ template, selectedModal, setSelectedModal, handleScr
                         <div className='header'>
                             <ButtonSmall type='closeModal' onClick={() => setSelectedModal(null)} />
                             <p>{template.name}</p>
-                            <a onClick={handleScreenChangeEditTemplate}>Edit</a>
+                            {folderId === 'exampleTemplates' ? '' : <a onClick={handleScreenChangeEditTemplate}>Edit</a>}
                         </div>
-                        <div className='last-performed'>
-                            Last Performed: {lastDoneMessage}
-                        </div>
+                        {lastDoneMessage === false ? '' : <div className='last-performed'>Last Performed: {lastDoneMessage}</div>}
                     </div>
 
 

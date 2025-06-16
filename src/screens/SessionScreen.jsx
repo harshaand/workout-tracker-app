@@ -617,19 +617,65 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
     }
 
     function deleteWorkoutHistory() {
-        saveData(prevData =>
-        ({
-            ...prevData,
-            history: prevData.history.filter(history => history.workoutId !== template.workoutId)
-        }))
+        saveData(prev => {
+            const workoutHistory = prev.history.find(history => history.workoutId === template.workoutId)
+            const exerciseNames = workoutHistory.exercises.map(exercise => exercise.name);
+            const uniqueExerciseNames = [...new Set(exerciseNames)];
+            const updatedExercises = prev.exercises.map(exercise => {
+                return uniqueExerciseNames.includes(exercise.name) ? {
+                    ...exercise,
+                    history: exercise.history.filter(history => history.workoutId !== template.workoutId)
+                } :
+                    exercise
+            })
+
+            return {
+                ...prev,
+                history: prev.history.filter(history => history.workoutId !== template.workoutId),
+                exercises: updatedExercises
+            }
+        })
     }
 
     function deleteTemplate() {
-        saveData(prevData =>
-        ({
-            ...prevData,
-            templates: prevData.templates.filter(databaseTemplate => databaseTemplate.id !== template.id)
-        }))
+        saveData(prev => {
+            const updatedTemplates = (folderId === 'exampleTemplates') ? prev.templates :
+                prev.templates.filter(templ => templ.id !== template.id)
+
+            let updatedTemplateFolders = prev.templateFolders
+            if (folderId === 'myTemplates') {
+                updatedTemplateFolders = { ...prev.templateFolders, myTemplates: prev.templateFolders.myTemplates.filter(templId => templId !== template.id) }
+            }
+            else if (folderId === 'archivedTemplates') {
+                updatedTemplateFolders = { ...prev.templateFolders, archivedTemplates: prev.templateFolders.archivedTemplates.filter(templ => templ.templateId !== template.id) }
+            }
+            else if (folderId === 'exampleTemplates') {
+                updatedTemplateFolders = prev.templateFolders
+                throw new Error("Cannot delete example templates");
+            }
+            else if (folderId === undefined || null) {
+                updatedTemplateFolders = prev.templateFolders
+                throw new Error("Folder not provided");
+            }
+            else {
+                updatedTemplateFolders = {
+                    ...prev.templateFolders,
+                    userCreatedFolders: prev.templateFolders.userCreatedFolders.map(folder => {
+                        return folder.templates.includes(template.id) ?
+                            {
+                                ...folder,
+                                templates: folder.templates.filter(templId => templId !== template.id)
+                            }
+                            : folder
+                    })
+                }
+            }
+            return {
+                ...prev,
+                templates: updatedTemplates,
+                templateFolders: updatedTemplateFolders
+            }
+        })
     }
 
     function renderFinishButton() {
@@ -731,7 +777,7 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                     {(screenVariant === 'newSession' || screenVariant === 'newEmptySession') &&
                         <>
                             <ModalFinishWorkout screenVariant={screenVariant} showModal={showFinishModal} setShowModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
-                                handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, undefined, template.exercises, exercises, template.id, workoutId, currentDate,
+                                handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, folderId, template.exercises, exercises, template.id, workoutId, currentDate,
                                     sessionDuration, templateName.current.value, notes.current.value)} />
                             <ModalCancelWorkout showModal={showCloseModal} setShowModal={setShowCloseModal}
                                 handleScreenChange={() => handleScreenChange('TemplatesScreen')} />

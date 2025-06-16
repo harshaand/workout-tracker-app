@@ -2632,8 +2632,16 @@ const dataObject = {
         sex: 'male',
         weight: 88,
     },
-    templateFolders: [
-    ],
+    templateFolders: {
+        userCreatedFolders: [],
+        myTemplates: [],
+        exampleTemplates: [
+            "3cfbb1e2-eb1b-4f2e-af55-5c8e454f5ee9",
+            "3f8a0e47-d623-463b-acf0-fbac8a1a74d6",
+            "aef85cf2-52cb-46b5-aecc-99ce45997c22"
+        ],
+        archivedTemplates: [],
+    },
     templates: [
         {
             id: "3cfbb1e2-eb1b-4f2e-af55-5c8e454f5ee9",
@@ -3192,9 +3200,7 @@ const dataObject = {
             ]
         }
     ],
-    history: [
-
-    ],
+    history: [],
     exercises: [
         {
             name: 'Bench Press',
@@ -3634,10 +3640,10 @@ function DataProvider({ children }) {
         const [data, setData] = React.useState(() => {
             try {
                 const item = window.localStorage.getItem(key);
-                return item ? JSON.parse(item) : dataObjectTesting;
+                return item ? JSON.parse(item) : dataObject;
             } catch (error) {
                 console.error(`Error reading localStorage key "${key}":`, error);
-                return dataObjectTesting;
+                return dataObject;
             }
         });
         // console.log('DATA IN DB:', data)

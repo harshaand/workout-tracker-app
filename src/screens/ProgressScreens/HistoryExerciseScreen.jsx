@@ -25,67 +25,83 @@ function HistoryExerciseScreen({ exercise = 'Back Squat' }) {
     ];
 
     function renderHistoryCards() {
-        const groupedWorkouts = {};
         const exerciseData = data.exercises.find(exerciseObject => exerciseObject.name === exercise);
 
-        exerciseData.history.forEach(history => {
-            // KEY = 'YYYY-MM' format
-            const year = new Date(history.date).getFullYear();
-            const month = new Date(history.date).getMonth();
-            const day = new Date(history.date).getDate(); // Extract day of month
-            const key = `${year}-${month.toString().padStart(2, '0')}`;
+        if (exerciseData.history.length > 0) {
+            const groupedWorkouts = {};
 
-            if (!groupedWorkouts[key]) {
-                groupedWorkouts[key] = {
-                    year,
-                    month,
-                    workouts: []
-                };
-            }
+            exerciseData.history.forEach(history => {
+                // KEY = 'YYYY-MM' format
+                const year = new Date(history.date).getFullYear();
+                const month = new Date(history.date).getMonth();
+                const day = new Date(history.date).getDate(); // Extract day of month
+                const key = `${year}-${month.toString().padStart(2, '0')}`;
 
-            // Add day to each workout entry for sorting
-            groupedWorkouts[key].workouts.push({
-                ...history,
-                dayOfMonth: day
+                if (!groupedWorkouts[key]) {
+                    groupedWorkouts[key] = {
+                        year,
+                        month,
+                        workouts: []
+                    };
+                }
+
+                // Add day to each workout entry for sorting
+                groupedWorkouts[key].workouts.push({
+                    ...history,
+                    dayOfMonth: day
+                });
             });
-        });
 
-        // Convert object to array for sorting
-        const sortedGroups = Object.values(groupedWorkouts).sort((a, b) => {
-            // Sort by year (descending)
-            if (b.year !== a.year) {
-                return b.year - a.year;
-            }
-            // If same year, sort by month (descending)
-            return b.month - a.month;
-        });
+            // Convert object to array for sorting
+            const sortedGroups = Object.values(groupedWorkouts).sort((a, b) => {
+                // Sort by year (descending)
+                if (b.year !== a.year) {
+                    return b.year - a.year;
+                }
+                // If same year, sort by month (descending)
+                return b.month - a.month;
+            });
 
-        // Sort workouts within each group by day of month (descending)
-        sortedGroups.forEach(group => {
-            group.workouts.sort((a, b) => b.dayOfMonth - a.dayOfMonth);
-        });
+            // Sort workouts within each group by day of month (descending)
+            sortedGroups.forEach(group => {
+                group.workouts.sort((a, b) => b.dayOfMonth - a.dayOfMonth);
+            });
 
 
-        return sortedGroups.map(group => {
-            //?????
-            const sortedWorkouts = group.workouts.sort((a, b) => b - a);
+            return sortedGroups.map(group => {
+                //?????
+                const sortedWorkouts = group.workouts.sort((a, b) => b - a);
 
-            return <div className='exercise-history__main__container-month'>
-                <p className='heading'>{`${months[group.month]} ${group.year}`}</p>
-                {sortedWorkouts.map(history => {
-                    return <>
-                        <CardExerciseHistory history={history} onClick={() => {
-                            setSelectedHistoryWorkoutModal(history.workoutId)
-                        }} />
-                        <ModalHistoryWorkout history={data.history.find(his => his.workoutId === history.workoutId)} selectedModal={selectedHistoryWorkoutModal}
-                            exercise={exercise}
-                            setSelectedModal={setSelectedHistoryWorkoutModal}
-                            handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', data.history.find(his => his.workoutId === history.workoutId), 'editSession')} />
-                    </>
-                })}
+                return <div className='exercise-history__main__container-month'>
+                    <p className='heading'>{`${months[group.month]} ${group.year}`}</p>
+                    {sortedWorkouts.map(history => {
+                        return <>
+                            <CardExerciseHistory history={history} onClick={() => {
+                                setSelectedHistoryWorkoutModal(history.workoutId)
+                            }} />
+                            <ModalHistoryWorkout history={data.history.find(his => his.workoutId === history.workoutId)} selectedModal={selectedHistoryWorkoutModal}
+                                exercise={exercise}
+                                setSelectedModal={setSelectedHistoryWorkoutModal}
+                                handleScreenChangeEditTemplate={() => handleScreenChange('SessionScreen', data.history.find(his => his.workoutId === history.workoutId), 'editSession')} />
+                        </>
+                    })}
+                </div>
+
+            });
+        }
+        else {
+            return <div className='container-no-records-found'>
+                <div className='no-records-found'>
+                    <div className='container-text'>
+                        <div className='emoji'>💪</div>
+                        <div className='text'>
+                            <h3>No exercises logged (yet)</h3>
+                            <p>Your exercise history will show up here.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-        });
+        }
 
     };
 
