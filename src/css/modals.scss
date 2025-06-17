@@ -192,6 +192,7 @@
     height: fit-content;
     width: 361px;
     border-radius: 16px;
+    box-sizing: border-box;
 
     .header {
         position: relative;
@@ -398,6 +399,7 @@
     max-height: 692px;
     width: 361px;
     border-radius: 16px;
+    box-sizing: border-box;
 
     .container-header {
         position: relative;

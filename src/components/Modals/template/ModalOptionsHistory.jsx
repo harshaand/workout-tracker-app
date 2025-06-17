@@ -26,19 +26,19 @@ function ModalOptionsHistory({ setShowModal, handleScreenChangeEditTemplate, set
         const resizeObserver = new ResizeObserver(checkPosition);
         if (modalRef.current) resizeObserver.observe(modalRef.current);
 
-        let timeoutId;
-        function debouncedCheck() {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(checkPosition, 150)
-        };
-        window.addEventListener('resize', debouncedCheck); // checkPosition() 0.15s after resize stops/pauses
+        // let timeoutId;
+        // function debouncedCheck() {
+        //     clearTimeout(timeoutId);
+        //     timeoutId = setTimeout(checkPosition, 150)
+        // };
+        // window.addEventListener('resize', debouncedCheck); // checkPosition() 0.15s after resize stops/pauses
 
         checkPosition();
 
         return () => {
-            clearTimeout(timeoutId);
+            // clearTimeout(timeoutId);
             resizeObserver.disconnect();
-            window.removeEventListener('resize', debouncedCheck);
+            // window.removeEventListener('resize', debouncedCheck);
         };
     }, []);
     return (

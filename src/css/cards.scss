@@ -1054,3 +1054,13 @@
     }
 
 }
+
+@media (max-width: 479px) {
+    .card-strength-score-full-body {
+        .container-levels {
+            .level {
+                font-size: var(--body-text-x-small);
+            }
+        }
+    }
+}
