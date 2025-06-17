@@ -532,6 +532,7 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
     }
 
     function handleUpdateTemplate() {
+        console.log('updating...')
         const finalExercises = exercises.map(exercise => {
             return {
                 ...exercise,
@@ -545,7 +546,8 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
         })
         console.log('folderId', folderId)
         saveData(prevData => {
-            const templateExists = prevData.templates.find(templ => templ === template.id) ? true : false
+            const templateExists = prevData.templates.find(templ => templ.id === template.id) ? true : false
+            console.log('templateExists', templateExists)
             const updatedTemplates = templateExists ? prevData.templates.map((templ) => {
                 if (templ.id === template.id) return {
                     ...templ,
@@ -566,35 +568,38 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                 ]
 
             let updatedFolders = prevData.templateFolders
-            if (folderId === undefined) updatedFolders = prevData.templateFolders
-            else {
-                if (folderId === 'myTemplates') {
-                    updatedFolders = {
-                        ...prevData.templateFolders,
-                        myTemplates: [...prevData.templateFolders.myTemplates, template.id]
-                    }
-                }
+            if (screenVariant === 'newEmptySession' || screenVariant === 'newEmptyTemplate') {
+                if (folderId === undefined) updatedFolders = prevData.templateFolders
                 else {
-                    const existingFolder = prevData.templateFolders.userCreatedFolders.find(folder => folder.id === folderId);
-
-                    if (existingFolder) {
-                        const updatedUserCreatedFolders = prevData.templateFolders.userCreatedFolders.map(folder => {
-                            return folder.id === folderId ?
-                                { ...folder, templates: [...folder.templates, template.id] }
-                                : folder
-                        })
-                        updatedFolders = { ...prevData.templateFolders, userCreatedFolders: updatedUserCreatedFolders }
-                    }
-                    //DONT THINK THIS IS NEEDED
-                    /* else {
+                    if (folderId === 'myTemplates') {
                         updatedFolders = {
                             ...prevData.templateFolders,
-                            userCreatedFolders: [
-                                ...prevData.templateFolders.userCreatedFolders,
-                                { id: folderId, name: folderId, templates: [template.id] }
-                            ]
+                            myTemplates: [...prevData.templateFolders.myTemplates, template.id]
                         }
-                    }*/
+                    }
+                    else {
+                        const existingFolder = prevData.templateFolders.userCreatedFolders.find(folder => folder.id === folderId);
+                        console.log('existing folder', existingFolder)
+
+                        if (existingFolder) {
+                            const updatedUserCreatedFolders = prevData.templateFolders.userCreatedFolders.map(folder => {
+                                return folder.id === folderId ?
+                                    { ...folder, templates: [...folder.templates, template.id] }
+                                    : folder
+                            })
+                            updatedFolders = { ...prevData.templateFolders, userCreatedFolders: updatedUserCreatedFolders }
+                        }
+                        //DONT THINK THIS IS NEEDED
+                        /* else {
+                            updatedFolders = {
+                                ...prevData.templateFolders,
+                                userCreatedFolders: [
+                                    ...prevData.templateFolders.userCreatedFolders,
+                                    { id: folderId, name: folderId, templates: [template.id] }
+                                ]
+                            }
+                        }*/
+                    }
                 }
             }
 
