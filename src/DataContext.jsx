@@ -2314,7 +2314,7 @@ const dataObjectTesting = {
             duration: 3780,
             notes: 'Wore lifting shoes',
 
-            workoutId: 17,
+            workoutId: 7,
             date: new Date(2025, 4, 27),
             volume: 100,
             reps: 10,
@@ -2774,7 +2774,7 @@ const dataObjectTesting = {
             duration: 3780,
             notes: 'Wore lifting shoes',
 
-            workoutId: 11,
+            workoutId: 12,
             date: new Date(2024, 11, 31),
             volume: 100,
             reps: 10,
