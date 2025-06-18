@@ -6,6 +6,7 @@ const dataObjectTesting = {
     user: {
         sex: 'male',
         weight: 88,
+        weeklyWorkoutsGoal: 2,
     },
     templateFolders: {
         userCreatedFolders: [
@@ -1504,7 +1505,7 @@ const dataObjectTesting = {
             notes: 'Wore lifting shoes',
 
             workoutId: 1,
-            date: new Date(2025, 2, 17, 14, 30, 30),
+            date: new Date(2025, 5, 18),
             volume: 100,
             reps: 10,
             PRs: 1,
@@ -1854,7 +1855,7 @@ const dataObjectTesting = {
             notes: 'Wore lifting shoes',
 
             workoutId: 2,
-            date: new Date('2023-01-15'),
+            date: new Date(2025, 5, 17),
             volume: 100,
             reps: 10,
             PRs: 1,
@@ -1946,7 +1947,7 @@ const dataObjectTesting = {
             notes: 'Wore lifting shoes',
 
             workoutId: 3,
-            date: new Date('2022-12-25'),
+            date: new Date(2025, 5, 11),
             volume: 100,
             reps: 10,
             PRs: 1,
@@ -2038,7 +2039,7 @@ const dataObjectTesting = {
             notes: 'Wore lifting shoes',
 
             workoutId: 4,
-            date: new Date('2024-01-03'),
+            date: new Date(2025, 5, 10),
             volume: 100,
             reps: 10,
             PRs: 1,
@@ -2122,7 +2123,651 @@ const dataObjectTesting = {
                         ]
                 }
             ]
-        }
+        },
+        {
+            id: '103',
+            name: 'Supreme Glutes workout history',
+            duration: 3780,
+            notes: 'Wore lifting shoes',
+
+            workoutId: 5,
+            date: new Date(2025, 5, 4),
+            volume: 100,
+            reps: 10,
+            PRs: 1,
+
+
+            exercises: [
+                {
+                    id: 1,
+                    name: 'Back Squat',
+                    sets:
+                        [
+                            {
+                                id: '0plkjn',
+                                value: 1,
+                                num: 1,
+                                weight: 96,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: '876tg',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            }
+                        ]
+
+                },
+                {
+                    id: 2,
+                    name: 'Hip Thrust',
+                    sets:
+                        [
+                            {
+                                id: 'gbcbbcfv',
+                                value: 1,
+                                num: 1,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            },
+                            {
+                                id: 'iuukjy',
+                                value: 2,
+                                num: 2,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: 'erwvvweevw',
+                                value: 3,
+                                num: 3,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                            ,
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                        ]
+                }
+            ]
+        },
+        {
+            id: '103',
+            name: 'Supreme Glutes workout history',
+            duration: 3780,
+            notes: 'Wore lifting shoes',
+
+            workoutId: 6,
+            date: new Date(2025, 5, 3),
+            volume: 100,
+            reps: 10,
+            PRs: 1,
+
+
+            exercises: [
+                {
+                    id: 1,
+                    name: 'Back Squat',
+                    sets:
+                        [
+                            {
+                                id: '0plkjn',
+                                value: 1,
+                                num: 1,
+                                weight: 96,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: '876tg',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            }
+                        ]
+
+                },
+                {
+                    id: 2,
+                    name: 'Hip Thrust',
+                    sets:
+                        [
+                            {
+                                id: 'gbcbbcfv',
+                                value: 1,
+                                num: 1,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            },
+                            {
+                                id: 'iuukjy',
+                                value: 2,
+                                num: 2,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: 'erwvvweevw',
+                                value: 3,
+                                num: 3,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                            ,
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                        ]
+                }
+            ]
+        },
+        {
+            id: '103',
+            name: 'Supreme Glutes workout history',
+            duration: 3780,
+            notes: 'Wore lifting shoes',
+
+            workoutId: 17,
+            date: new Date(2025, 4, 27),
+            volume: 100,
+            reps: 10,
+            PRs: 1,
+
+
+            exercises: [
+                {
+                    id: 1,
+                    name: 'Back Squat',
+                    sets:
+                        [
+                            {
+                                id: '0plkjn',
+                                value: 1,
+                                num: 1,
+                                weight: 96,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: '876tg',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            }
+                        ]
+
+                },
+                {
+                    id: 2,
+                    name: 'Hip Thrust',
+                    sets:
+                        [
+                            {
+                                id: 'gbcbbcfv',
+                                value: 1,
+                                num: 1,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            },
+                            {
+                                id: 'iuukjy',
+                                value: 2,
+                                num: 2,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: 'erwvvweevw',
+                                value: 3,
+                                num: 3,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                            ,
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                        ]
+                }
+            ]
+        },
+        {
+            id: '103',
+            name: 'Supreme Glutes workout history',
+            duration: 3780,
+            notes: 'Wore lifting shoes',
+
+            workoutId: 8,
+            date: new Date(2025, 4, 21),
+            volume: 100,
+            reps: 10,
+            PRs: 1,
+
+
+            exercises: [
+                {
+                    id: 1,
+                    name: 'Back Squat',
+                    sets:
+                        [
+                            {
+                                id: '0plkjn',
+                                value: 1,
+                                num: 1,
+                                weight: 96,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: '876tg',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            }
+                        ]
+
+                },
+                {
+                    id: 2,
+                    name: 'Hip Thrust',
+                    sets:
+                        [
+                            {
+                                id: 'gbcbbcfv',
+                                value: 1,
+                                num: 1,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            },
+                            {
+                                id: 'iuukjy',
+                                value: 2,
+                                num: 2,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: 'erwvvweevw',
+                                value: 3,
+                                num: 3,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                            ,
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                        ]
+                }
+            ]
+        },
+        {
+            id: '103',
+            name: 'Supreme Glutes workout history',
+            duration: 3780,
+            notes: 'Wore lifting shoes',
+
+            workoutId: 9,
+            date: new Date(2025, 4, 20),
+            volume: 100,
+            reps: 10,
+            PRs: 1,
+
+
+            exercises: [
+                {
+                    id: 1,
+                    name: 'Back Squat',
+                    sets:
+                        [
+                            {
+                                id: '0plkjn',
+                                value: 1,
+                                num: 1,
+                                weight: 96,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: '876tg',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            }
+                        ]
+
+                },
+                {
+                    id: 2,
+                    name: 'Hip Thrust',
+                    sets:
+                        [
+                            {
+                                id: 'gbcbbcfv',
+                                value: 1,
+                                num: 1,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            },
+                            {
+                                id: 'iuukjy',
+                                value: 2,
+                                num: 2,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: 'erwvvweevw',
+                                value: 3,
+                                num: 3,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                            ,
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                        ]
+                }
+            ]
+        },
+        {
+            id: '103',
+            name: 'Supreme Glutes workout history',
+            duration: 3780,
+            notes: 'Wore lifting shoes',
+
+            workoutId: 10,
+            date: new Date(2025, 4, 14),
+            volume: 100,
+            reps: 10,
+            PRs: 1,
+
+
+            exercises: [
+                {
+                    id: 1,
+                    name: 'Back Squat',
+                    sets:
+                        [
+                            {
+                                id: '0plkjn',
+                                value: 1,
+                                num: 1,
+                                weight: 96,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: '876tg',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            }
+                        ]
+
+                },
+                {
+                    id: 2,
+                    name: 'Hip Thrust',
+                    sets:
+                        [
+                            {
+                                id: 'gbcbbcfv',
+                                value: 1,
+                                num: 1,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            },
+                            {
+                                id: 'iuukjy',
+                                value: 2,
+                                num: 2,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: 'erwvvweevw',
+                                value: 3,
+                                num: 3,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                            ,
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                        ]
+                }
+            ]
+        },
+        {
+            id: '103',
+            name: 'Supreme Glutes workout history',
+            duration: 3780,
+            notes: 'Wore lifting shoes',
+
+            workoutId: 11,
+            date: new Date(2025, 4, 13),
+            volume: 100,
+            reps: 10,
+            PRs: 1,
+
+
+            exercises: [
+                {
+                    id: 1,
+                    name: 'Back Squat',
+                    sets:
+                        [
+                            {
+                                id: '0plkjn',
+                                value: 1,
+                                num: 1,
+                                weight: 96,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: '876tg',
+                                value: 2,
+                                num: 2,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            }
+                        ]
+
+                },
+                {
+                    id: 2,
+                    name: 'Hip Thrust',
+                    sets:
+                        [
+                            {
+                                id: 'gbcbbcfv',
+                                value: 1,
+                                num: 1,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: true
+                            },
+                            {
+                                id: 'iuukjy',
+                                value: 2,
+                                num: 2,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            },
+                            {
+                                id: 'erwvvweevw',
+                                value: 3,
+                                num: 3,
+                                weight: 10,
+                                reps: 20,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                            ,
+                            {
+                                id: '765654',
+                                value: 4,
+                                num: 4,
+                                weight: 666,
+                                reps: 666,
+                                completed: true,
+                                PRs: { '1RM': true, weight: true, reps: false, volume: true },
+                                bestSet: false
+                            }
+                        ]
+                }
+            ]
+        },
 
     ],
     exercises: [
@@ -2631,6 +3276,7 @@ const dataObject = {
     user: {
         sex: 'male',
         weight: 88,
+        weeklyWorkoutsGoal: 2,
     },
     templateFolders: {
         userCreatedFolders: [],

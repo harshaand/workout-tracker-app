@@ -1,4 +1,5 @@
 import React from 'react';
+import { startOfWeek, format, compareDesc, differenceInWeeks } from 'date-fns';
 import { AnatomyFront, AnatomyBack, Calendar, TrophyLarge, Bicep, Streak, WeightLarge, Search, ArrowDown, Tick } from '../../assets/icons/icons.js'
 import ButtonBig from '../../components/Buttons/ButtonBig.jsx'
 import ButtonSmall from '../../components/Buttons/ButtonSmall.jsx';
@@ -52,6 +53,85 @@ export default function ProgressScreen() {
     data.history.forEach(history => totalPRs = totalPRs + history.PRs)
     let totalReps = 0
     data.history.forEach(history => totalReps = totalReps + history.reps)
+    let streak = calculateStreaks()
+
+    function calculateStreaks() {
+        const dates = data.history.map(history => history.date)
+        //#region HOW FUNCTION WORKS
+        /*
+            1. sortedDates: gather all the dates of user's workouts in the past in 1 big array
+            2. weeksWithDates: 
+            For every week the user has worked out, will have an object where:
+                - key = the date of the start of the week (monday)
+                - value = an array of user's workouts that fall within that week
+                It will look something like this:
+                {{ "2025-01-06": [date1, date2, ...]}
+                   "2025-01-13": [date1]}
+                   "2025-01-20": [date1, date2, ...]}
+                   ...}
+            3. goodWeeks: 
+            filter out the weeks where the user didn't meet their goal (e.g. workout 2 times/week).
+                It will look something like this:
+                {{ "2025-01-06": [date1, date2, ...]}
+                   "2025-01-20": [date1, date2, ...]}
+                   ...}
+            4. streakCount: will store the number of consecutive "good weeks" from present date
+        */
+        //#endregion
+
+        if (!dates || dates.length === 0) return 0
+
+        const sortedDates = dates.map(date => new Date(date)).sort(compareDesc);
+
+        const weeksWithDates = {};
+
+        sortedDates.forEach(date => {
+            const mondayOfWeek = startOfWeek(date, { weekStartsOn: 1 });
+            const weekKey = format(mondayOfWeek, 'yyyy-MM-dd');
+
+            if (!weeksWithDates[weekKey]) {
+                weeksWithDates[weekKey] = [];
+            }
+            weeksWithDates[weekKey].push(date);
+        });
+
+        const goodWeeks = [];
+
+        for (const [weekKey, datesInWeek] of Object.entries(weeksWithDates)) {
+            if (datesInWeek.length >= data.user.weeklyWorkoutsGoal) {
+                goodWeeks.push({
+                    weekStart: new Date(weekKey),  // convert back to Date for comparison
+                    dateCount: datesInWeek.length
+                });
+            }
+        }
+        goodWeeks.sort((a, b) => compareDesc(a.weekStart, b.weekStart));
+
+        let streakCount;
+
+        if (goodWeeks.length === 0) return 0
+
+        const todayDate = new Date()
+        const diffCurrentAndLatestGoodWeek = differenceInWeeks(startOfWeek(todayDate, { weekStartsOn: 1 }), goodWeeks[0].weekStart)
+        // diffCurrentAndLatestGoodWeek === 0 means the user hit their target this (current) week
+        // diffCurrentAndLatestGoodWeek === 1 means the user hit their target last week & still has a chance this week
+
+        if (diffCurrentAndLatestGoodWeek < 2) {
+            streakCount = 1 // start at 1 then ++ every consecutive week
+
+            for (let i = 1; i < goodWeeks.length; i++) {
+                const currentWeek = goodWeeks[i - 1].weekStart;
+                const previousWeek = goodWeeks[i].weekStart;
+                const weeksBetween = differenceInWeeks(currentWeek, previousWeek)
+
+                if (weeksBetween === 1) streakCount++;
+                else break
+            }
+        }
+        else streakCount = 0
+
+        return streakCount;
+    }
 
     const bracketMap = {
         'beginner': 1,
@@ -219,7 +299,7 @@ export default function ProgressScreen() {
                                 <AnatomyFront height={170} width={59} musclesThresholdBrackets={musclesThresholdBrackets.current} />
                                 <AnatomyBack height={170} width={60} opacity={20} musclesThresholdBrackets={musclesThresholdBrackets.current} />
                             </CardStrScOverview>
-                            <CardsStrScStats streak='1 week' PBs={totalPRs} workouts={totalWorkouts} volume={totalVolume} reps={totalReps} />
+                            <CardsStrScStats streak={streak > 1 ? `${streak} weeks` : streak === 1 ? '1 week' : '0 Weeks'} PBs={totalPRs} workouts={totalWorkouts} volume={totalVolume} reps={totalReps} />
                         </div>
                     </div>
 
