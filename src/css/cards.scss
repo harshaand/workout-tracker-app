@@ -719,6 +719,31 @@
     }
 }
 
+.card-calendar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    padding: var(--general-padding);
+    padding-bottom: 32px;
+    height: fit-content;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: var(--card-border-radius);
+    border: 1px solid #d1d5db;
+
+    h4 {
+        color: var(--text-color-heading-2);
+        width: 100%;
+        text-align: center;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        margin: 0;
+        padding: 0;
+    }
+}
+
 .card-strength-score-full-body {
     display: flex;
     flex-direction: column;

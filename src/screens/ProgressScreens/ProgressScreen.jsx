@@ -6,6 +6,7 @@ import ButtonSmall from '../../components/Buttons/ButtonSmall.jsx';
 import Navbar from '../../components/Navbar.jsx'
 import CardStrScOverview from '../../components/Cards/ProgressScreen/CardStrScOverview.jsx'
 import CardsStrScStats from '../../components/Cards/ProgressScreen/CardsStrScStats.jsx'
+import CardCalendar from '../../components/Cards/ProgressScreen/CardCalendar.jsx';
 import { RoutingContext } from '../../App.jsx'
 import { useData } from '../../DataContext.jsx'
 import {
@@ -54,6 +55,40 @@ export default function ProgressScreen() {
     let totalReps = 0
     data.history.forEach(history => totalReps = totalReps + history.reps)
     let streak = calculateStreaks()
+
+    const bracketMap = {
+        'beginner': 1,
+        'novice': 2,
+        'intermediate': 3,
+        'advanced': 4,
+        'elite': 5
+    };
+
+    function findHighestBracket(brackets) {
+        if (brackets.length === 0) return null;
+
+        return brackets.reduce((highest, current) => {
+            return bracketMap[current] > bracketMap[highest] ? current : highest;
+        });
+    }
+
+    let musclesThresholdBrackets = React.useRef({})
+
+    //Find highest bracket for exercise -> will be the bracket for the muscle group.
+    Object.entries(data.strengthScores).forEach(([muscleGroup, exercises]) => {
+        let exercisesBrackets = []
+        Object.entries(exercises).forEach(([exercise, strengthScore]) => {
+            if (strengthScore !== "not eligible") {
+                const exerciseData = data.exercises.find(exerciseObject => exerciseObject.name === exercise)
+                const eliteRatio = exerciseData.thresholds[data.user.sex].elite
+                const exerciseThreshold = Object.entries(exerciseData.thresholds[data.user.sex])
+                    .findLast(([thresholdName, thresholdValue]) => (strengthScore / 100) * eliteRatio > thresholdValue)?.[0] || 'beginner';
+
+                exercisesBrackets = [...exercisesBrackets, exerciseThreshold]
+            }
+        })
+        musclesThresholdBrackets.current = { ...musclesThresholdBrackets.current, [muscleGroup]: findHighestBracket(exercisesBrackets) }
+    })
 
     function calculateStreaks() {
         const dates = data.history.map(history => history.date)
@@ -132,40 +167,6 @@ export default function ProgressScreen() {
 
         return streakCount;
     }
-
-    const bracketMap = {
-        'beginner': 1,
-        'novice': 2,
-        'intermediate': 3,
-        'advanced': 4,
-        'elite': 5
-    };
-
-    function findHighestBracket(brackets) {
-        if (brackets.length === 0) return null;
-
-        return brackets.reduce((highest, current) => {
-            return bracketMap[current] > bracketMap[highest] ? current : highest;
-        });
-    }
-
-    let musclesThresholdBrackets = React.useRef({})
-
-    //Find highest bracket for exercise -> will be the bracket for the muscle group.
-    Object.entries(data.strengthScores).forEach(([muscleGroup, exercises]) => {
-        let exercisesBrackets = []
-        Object.entries(exercises).forEach(([exercise, strengthScore]) => {
-            if (strengthScore !== "not eligible") {
-                const exerciseData = data.exercises.find(exerciseObject => exerciseObject.name === exercise)
-                const eliteRatio = exerciseData.thresholds[data.user.sex].elite
-                const exerciseThreshold = Object.entries(exerciseData.thresholds[data.user.sex])
-                    .findLast(([thresholdName, thresholdValue]) => (strengthScore / 100) * eliteRatio > thresholdValue)?.[0] || 'beginner';
-
-                exercisesBrackets = [...exercisesBrackets, exerciseThreshold]
-            }
-        })
-        musclesThresholdBrackets.current = { ...musclesThresholdBrackets.current, [muscleGroup]: findHighestBracket(exercisesBrackets) }
-    })
 
     const openSections = React.useRef(Object.fromEntries(
         Object.keys(data.strengthScores).map(key => [key, false])
@@ -291,8 +292,7 @@ export default function ProgressScreen() {
                     ref={containerRef}
                     onScroll={handleScroll}
                     className="progress__main"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                >
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                     <div className="wrapper-screen">
                         <div className='container-progress-screen'>
                             <CardStrScOverview onClick={() => handleStrScScreenChange('StrScFullBodyScreen', musclesThresholdBrackets.current, undefined, undefined)}>
@@ -300,6 +300,7 @@ export default function ProgressScreen() {
                                 <AnatomyBack height={170} width={60} opacity={20} musclesThresholdBrackets={musclesThresholdBrackets.current} />
                             </CardStrScOverview>
                             <CardsStrScStats streak={streak > 1 ? `${streak} weeks` : streak === 1 ? '1 week' : '0 Weeks'} PBs={totalPRs} workouts={totalWorkouts} volume={totalVolume} reps={totalReps} />
+                            <CardCalendar dates={data.history.map(history => history.date)} />
                         </div>
                     </div>
 
