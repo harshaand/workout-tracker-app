@@ -50,7 +50,7 @@ function CardCalendar({ dates }) {
     const calendarLabels = {
         months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',],
-        totalCount: 'You have completed {{count}} workouts',
+        totalCount: '{{count}} Workouts Completed',
         legend: {
             less: 'Less',
             more: 'More',
@@ -63,7 +63,6 @@ function CardCalendar({ dates }) {
                 fontSize={14} theme={calendarTheme} colorScheme="light" hideColorLegend
                 blockSize={16} blockRadius={2} blockMargin={4}
                 weekStart={1} labels={calendarLabels} showWeekdayLabels={['Mon', 'Wed', 'Fri', 'Sun']}
-                style={{ alignItems: 'flex-end' }}
             />
         </div>
     )
