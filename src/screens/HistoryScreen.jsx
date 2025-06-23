@@ -9,7 +9,7 @@ import ModalSaveAsTemplate from '../components/Modals/template/ModalSaveAsTempla
 import { useData } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'
 import { v4 as uuidv4 } from 'uuid';
-import { compareAsc } from 'date-fns';
+import { format, compareAsc, compareDesc } from 'date-fns';
 import ButtonBig from '../components/Buttons/ButtonBig.jsx'
 
 
@@ -271,13 +271,13 @@ function HistoryScreen() {
     }
 
     function renderHistoryCards() {
-        const groupedWorkouts = {};
+        const groupedWorkouts = {}
 
         data.history.forEach(history => {
-            // KEY = 'YYYY-MM' format
-            const year = new Date(history.date).getFullYear();
-            const month = new Date(history.date).getMonth();
-            const key = `${year}-${month.toString().padStart(2, '0')}`;
+            const date = new Date(history.date)
+            const key = format(date, 'yyyy-MM')
+            const year = date.getFullYear()
+            const month = date.getMonth()
 
             if (!groupedWorkouts[key]) {
                 groupedWorkouts[key] = {
@@ -286,24 +286,23 @@ function HistoryScreen() {
                     workouts: []
                 };
             }
-
             groupedWorkouts[key].workouts.push(history);
         });
 
-        // Convert object to array for sorting
         const sortedGroups = Object.values(groupedWorkouts).sort((a, b) => {
-            // Sort by year (descending)
-            if (b.year !== a.year) {
-                return b.year - a.year;
-            }
-            // If same year, sort by month (descending)
-            return b.month - a.month;
+            const dateA = new Date(a.year, a.month)
+            const dateB = new Date(b.year, b.month)
+            return compareDesc(dateA, dateB)
         });
 
         if (data.history.length > 0) {
             return sortedGroups.map(group => {
-                //?????
-                const sortedWorkouts = group.workouts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                const sortedWorkouts = group.workouts.sort((a, b) => {
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return compareDesc(dateA, dateB);
+                });
 
                 return <>
                     <div className='history__main__container-month'>

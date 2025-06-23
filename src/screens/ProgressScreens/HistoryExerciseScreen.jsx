@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar.jsx'
 import CardExerciseHistory from '../../components/Cards/CardExerciseHistory.jsx'
 import ButtonSmall from '../../components/Buttons/ButtonSmall.jsx'
 import { RoutingContext } from '../../App.jsx'
+import { format, compareDesc } from 'date-fns';
 import ModalHistoryWorkout from '../../components/Modals/session/content-modals/HistoryWorkout.jsx'
 import {
     BentOverRow, Deadlift, LatPulldown, RowCable, RowDumbbell, BicepCurlBarbell, BicepCurlDumbbell, HammerCurlDumbbell,
@@ -31,11 +32,10 @@ function HistoryExerciseScreen({ exercise = 'Back Squat' }) {
             const groupedWorkouts = {};
 
             exerciseData.history.forEach(history => {
-                // KEY = 'YYYY-MM' format
-                const year = new Date(history.date).getFullYear();
-                const month = new Date(history.date).getMonth();
-                const day = new Date(history.date).getDate(); // Extract day of month
-                const key = `${year}-${month.toString().padStart(2, '0')}`;
+                const date = new Date(history.date)
+                const key = format(date, 'yyyy-MM')
+                const year = date.getFullYear()
+                const month = date.getMonth()
 
                 if (!groupedWorkouts[key]) {
                     groupedWorkouts[key] = {
@@ -45,36 +45,24 @@ function HistoryExerciseScreen({ exercise = 'Back Squat' }) {
                     };
                 }
 
-                // Add day to each workout entry for sorting
-                groupedWorkouts[key].workouts.push({
-                    ...history,
-                    dayOfMonth: day
-                });
+                groupedWorkouts[key].workouts.push(history);
             });
 
-            // Convert object to array for sorting
             const sortedGroups = Object.values(groupedWorkouts).sort((a, b) => {
-                // Sort by year (descending)
-                if (b.year !== a.year) {
-                    return b.year - a.year;
-                }
-                // If same year, sort by month (descending)
-                return b.month - a.month;
+                const dateA = new Date(a.year, a.month)
+                const dateB = new Date(b.year, b.month)
+                return compareDesc(dateA, dateB)
             });
 
-            // Sort workouts within each group by day of month (descending)
             sortedGroups.forEach(group => {
-                group.workouts.sort((a, b) => b.dayOfMonth - a.dayOfMonth);
+                group.workouts.sort((a, b) => compareDesc(a.date, b.date));
             });
 
 
             return sortedGroups.map(group => {
-                //?????
-                const sortedWorkouts = group.workouts.sort((a, b) => b - a);
-
                 return <div className='exercise-history__main__container-month'>
                     <p className='heading'>{`${months[group.month]} ${group.year}`}</p>
-                    {sortedWorkouts.map(history => {
+                    {group.workouts.map(history => {
                         return <>
                             <CardExerciseHistory history={history} onClick={() => {
                                 setSelectedHistoryWorkoutModal(history.workoutId)
