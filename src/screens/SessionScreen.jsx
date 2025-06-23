@@ -952,6 +952,128 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
         }))
     }
 
+    function deleteWorkout() {
+        const filteredExercises = exercises.filter(exercise => exercise.sets.some(set => set.completed === true))
+            .map(exercise => ({ ...exercise, sets: exercise.sets.filter(set => set.completed === true) }));
+
+        const exerciseNames = [...new Set([...template.exercises.map(ex => ex.name), ...filteredExercises.map(ex => ex.name)])];
+
+        //Will output names of edited exercises :{ "Squat", "Hip Thrust" ...}
+        const editedExercises = exerciseNames.map(exerciseName => (
+            isEqual(template.exercises.find(ex => ex.name === exerciseName), filteredExercises.find(ex => ex.name === exerciseName))
+                === false ? exerciseName : undefined))
+            .filter(exName => exName !== undefined)
+
+        //Will output exercises with corresponding new global PRs and entire (updated) histories:
+        /* {
+             "Squat":      {PRs: undefined, history: undefined},
+             "Hip Thrust": {PRs: undefined, history: undefined}
+            } */
+        let updatedExercises = Object.assign({}, ...editedExercises.map(exerciseName => ({ [exerciseName]: { PRs: undefined, history: undefined } })))
+
+        let updatedWorkoutHistories = []
+
+        editedExercises.forEach(exerciseName => {
+            const exerciseData = data.exercises.find(ex => ex.name === exerciseName)
+            const exerciseThresholds = exerciseData.thresholds
+            const exercisePrMetric = exerciseData.prMetric
+            const orignalExHistories = exerciseData.history.sort((a, b) => compareAsc(new Date(a.date), new Date(b.date)));
+            const splitIndex = orignalExHistories.findIndex(history => history.workoutId === template.workoutId);
+            const unaffectedExHistories = orignalExHistories.slice(0, splitIndex);
+            const affectedExHistories = orignalExHistories.slice(splitIndex);
+            const updatedAffectedExHistories = []
+            const affectedHistoriesWorkoutIds = affectedExHistories.map(history => history.workoutId)
+            let currentPRs = affectedExHistories.find(history => history.workoutId === template.workoutId).currentPRs
+
+            affectedHistoriesWorkoutIds.forEach(workoutId => {
+                const newCurrentPRs = currentPRs
+                const affectedHistory = affectedExHistories.find(history => history.workoutId === template.workoutId)
+                const userCurrentWeight = affectedHistory.currentWeight
+                let isInUpdatedWorkoutHistories = false
+                let orignalWorkoutHistory = updatedWorkoutHistories.find(history => history.workoutId === workoutId)
+                let editedWorkoutHistory
+
+
+
+                if (orignalWorkoutHistory === undefined) {
+                    isInUpdatedWorkoutHistories = false
+                    orignalWorkoutHistory = data.history.find(history => history.workoutId === workoutId)
+                    editedWorkoutHistory = workoutId === template.workoutId ?
+                        { ...orignalWorkoutHistory, exercises: exercises } :
+                        orignalWorkoutHistory
+                }
+                else {
+                    isInUpdatedWorkoutHistories = true
+                    editedWorkoutHistory = orignalWorkoutHistory
+                }
+
+                /*updatedPropertiesHistory will look like this:
+                  {
+                    exercises: *updated exercises,
+                    PRs: 10,
+                    volume: 300,
+                    reps: 10
+                  }
+                  updatedPropertiesHistory will look like this:
+                {
+                    date: ...,
+                    currentWeight: ...,
+                    workoutId: ...,
+                    currentPRs: { "1RM": 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                    newPRs: { "1RM": 1, weight: 1, reps: 1, volume: 1, strengthScore: 0.4 },
+                    sets: [
+                        { weight: 1, reps: 1, PRs: { "1RM": true, reps: true...} },
+                        { weight: 1, reps: 1, PRs: { "1RM": false, reps: false...} },
+                        { weight: 1, reps: 1, PRs: { "1RM": false, reps: false...} },
+                    ]
+                },
+                  */
+                const [updatedPropertiesHistory, newExerciseHistory] = saveToHistory2(exerciseName, editedWorkoutHistory, newCurrentPRs, exerciseThresholds, userCurrentWeight, exercisePrMetric)
+                const updatedWorkoutHistory = { ...editedWorkoutHistory, ...updatedPropertiesHistory }
+                currentPRs = newExerciseHistory.newPRs
+                updatedAffectedExHistories.push(newExerciseHistory)
+
+                if (isInUpdatedWorkoutHistories === false) {
+                    updatedWorkoutHistories.push(updatedWorkoutHistory)
+                }
+                else {
+                    const historyIndex = updatedWorkoutHistories.findIndex(history => history.workoutId === workoutId);
+                    updatedWorkoutHistories[historyIndex] = updatedWorkoutHistory
+
+                }
+            })
+            updatedExercises = { ...updatedExercises, [exerciseName]: { PRs: currentPRs, history: [...unaffectedExHistories, ...updatedAffectedExHistories] } }
+
+        })
+
+
+        const updatedExerciseNames = Object.keys(updatedExercises);
+        const updatedExercisesObject = data.exercises.map(exercise => (
+            updatedExerciseNames.includes(exercise.name) ?
+                { ...exercise, ...updatedExercises[exercise.name] } :
+                exercise
+        ))
+        const updatedHistoryObject = data.history.map(history => {
+            const updatedWorkoutHistory = updatedWorkoutHistories.find(updatedWorkoutHistory => updatedWorkoutHistory.workoutId === history.workoutId)
+            return updatedWorkoutHistory === undefined ? history : updatedWorkoutHistory
+        })
+
+        const updatedStrengthScores = structuredClone(data.strengthScores);
+        Object.entries(updatedExercises).forEach(([exerciseName, updatedData]) => {
+            Object.values(updatedStrengthScores).forEach(muscleGroup => {
+                if (exerciseName in muscleGroup) {
+                    muscleGroup[exerciseName] = updatedData.PRs.strengthScore;
+                }
+            });
+        });
+
+        saveData(prev => ({
+            ...prev,
+            history: updatedHistoryObject,
+            exercises: updatedExercisesObject,
+            strengthScores: updatedStrengthScores
+        }))
+    }
 
 
 
