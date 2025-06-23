@@ -38,7 +38,7 @@ function CardCalendar({ dates }) {
                         level: 1
                     }
                 }
-                else return dateData
+                else return dateObj
             })
         }
     });
