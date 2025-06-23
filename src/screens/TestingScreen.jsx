@@ -43,6 +43,8 @@ import { RoutingContext } from '../App.jsx'
 function TestingScreen() {
     const useLocalStorage = useData()
     const [data, saveData] = useLocalStorage('userData')
+
+    //#region
     const { handleScreenChange } = React.useContext(RoutingContext)
 
     const [selectedTemplate, setSelectedTemplate] = React.useState(null);
@@ -223,7 +225,219 @@ function TestingScreen() {
             <ModalOptionsFolder />
             <ModalOptionsEditTemplateScreen />
         </div>
+    //#endregion
 
+
+    function saveToHistory() {
+        //--------------------------APPENDING WORKOUT TO HISTORY--------------------------
+        const filteredExercises = exercises.filter(exercise => exercise.sets.some(set => set.completed === true))
+            .map(exercise => {
+                return {
+                    ...exercise,
+                    sets: exercise.sets.filter(set => set.completed === true)
+                };
+            });
+        let exercisesNewPRs = {};
+        let totalPRs = 0;
+        let totalVolume = 0;
+        let totalReps = 0;
+        console.log('filteredExercises:', filteredExercises)
+        const workoutHistoryExercises = [
+            ...filteredExercises.map(exercise => {
+                const exerciseName = exercise.name;
+                const exerciseData = data.exercises.find(ex => ex.name === exerciseName);
+                if (exerciseData) {
+                    exercisesNewPRs = {
+                        ...exercisesNewPRs,
+                        [exerciseName]: { ...exerciseData.PRs }
+                    }
+                    const prKeys = Object.keys(exerciseData.PRs);
+
+                    prKeys.forEach(prKey => {
+
+                        function getPRValue(set) {
+                            const reps = Number(Number(set.reps).toFixed(1))
+                            const weight = Number(Number(set.weight).toFixed(1))
+                            const oneRepMax = reps < 37 ? weight * (36 / (37 - reps)) : 0
+                            const eliteRatio = exerciseData.thresholds === undefined ? undefined : exerciseData.thresholds[data.user.sex].elite
+                            const strengthScore = eliteRatio === undefined || oneRepMax === 0 ? 0 : Math.min(100, (oneRepMax / (userCurrentWeight.current * eliteRatio) * 100))
+                            switch (prKey) {
+                                case 'volume': return Number((reps * weight).toFixed(1));
+                                case '1RM': return Number(oneRepMax.toFixed(1));
+                                case 'strengthScore': return Number(strengthScore.toFixed(1));
+                                default: return Number(set[prKey]);
+                            }
+                        };
+
+                        let highestValue = Math.max(...exercise.sets.map(set => getPRValue(set)));
+                        let assigned = false;
+
+                        exercise.sets.forEach(set => {
+                            if (!set.PRs) {
+                                set.PRs = {};
+                                Object.keys(exerciseData.PRs).forEach(prKey => {
+                                    set.PRs[prKey] = false;
+                                });
+                            }
+
+                            const value = getPRValue(set);
+                            //total volume + reps for workout
+                            if (prKey === 'volume') {
+                                totalVolume += value;
+                            }
+                            if (prKey === 'reps') {
+                                totalReps += value;
+                            }
+                            //identifying best set in exercise
+                            if (value === highestValue && !assigned && prKey === exerciseData.prMetric) {
+                                set.bestSet = true;
+                            }
+                            //main logic: identifying which set broke the PR
+                            if (value === highestValue && !assigned && value > exerciseData.PRs[prKey]) {
+                                set.PRs[prKey] = true;
+                                assigned = true;
+                                exercisesNewPRs = {
+                                    ...exercisesNewPRs,
+                                    [exerciseName]: { ...exercisesNewPRs[exerciseName], [prKey]: value }
+                                }
+                                totalPRs++
+                            } else {
+                                set.PRs[prKey] = false;
+                            }
+
+                        });
+                    });
+
+                    return exercise;
+                }
+            })
+        ]
+        console.log('TEMPLATE NAME', templateName.current.value)
+        saveData(prevData => {
+            return {
+                ...prevData,
+                history: [
+                    ...prevData.history.map(history => {
+                        if (history.workoutId === workoutId) {
+                            return {
+                                ...history,
+                                name: templateName.current.value,
+                                notes: notes.current.value,
+
+                                exercises: workoutHistoryExercises,
+                                PRs: totalPRs,
+                                volume: totalVolume,
+                                reps: totalReps,
+                            }
+                        }
+                        else return history
+                    })
+                ],
+            }
+        })
+
+
+
+        //--------------------------UPDATING EXERCISE OBJECT--------------------------
+        let updatedExerciseObjects = {}
+        console.log('workoutHistoryExercises1', workoutHistoryExercises)
+        workoutHistoryExercises.forEach(exercise => {
+            const exerciseName = exercise.name;
+            const exerciseData = data.exercises.find(ex => ex.name === exerciseName);
+            const history = exerciseData.history.find(history => history.workoutId === workoutId);
+
+            exerciseData && history ?
+                updatedExerciseObjects = {
+                    ...updatedExerciseObjects,
+                    [exerciseName]: {
+                        ...history,
+                        newPRs: exercisesNewPRs[exerciseName],
+                        sets: [
+                            ...history.sets,
+                            ...exercise.sets.map(set => (
+                                {
+                                    weight: set.weight,
+                                    reps: set.reps,
+                                    PRs: set.PRs
+                                }
+                            ))
+                        ]
+                    }
+                }
+                :
+                updatedExerciseObjects = {
+                    ...updatedExerciseObjects,
+                    [exerciseName]: {
+                        currentWeight: userCurrentWeight.current,
+                        currentPRs: exerciseData.PRs,
+                        newPRs: exercisesNewPRs[exerciseName],
+                        date: currentDate,
+                        workoutId: workoutId,
+                        sets: [
+                            ...exercise.sets.map(set => (
+                                {
+                                    weight: set.weight,
+                                    reps: set.reps,
+                                    PRs: set.PRs
+                                }
+                            ))
+                        ]
+                    }
+                }
+
+            console.log('workoutHistoryExercises2', workoutHistoryExercises)
+
+            saveData(prevData => {
+                return {
+                    ...prevData,
+
+                    exercises: data.exercises.map((exercise) => {
+                        if (exercise.name in updatedExerciseObjects) {
+
+                            return {
+                                ...exercise,
+                                PRs: exercisesNewPRs[exercise.name],
+                                history: exercise.history.find(history => history.workoutId === template.workoutId) ?
+                                    [...exercise.history.map(history => {
+                                        if (history.workoutId === workoutId) {
+                                            return updatedExerciseObjects[exercise.name]
+                                        }
+                                        else return history
+                                    })]
+                                    :
+
+                                    [...exercise.history, updatedExerciseObjects[exercise.name]]
+                            }
+                        }
+                        else return exercise
+                    }
+                    )
+                }
+            })
+        })
+    }
+
+    function updatePRs(history) {
+        let updatedHistory = history
+
+
+
+
+        return updatedHistory
+    }
+    const editedHistory = data.history[1]
+    function saveEditedWorkout(editedHistory) {
+        const allHistories = [...data.history]
+        const workoutId = editedHistory.workoutId
+        const splitIndex = allHistories.findIndex(history => history.workoutId === workoutId);
+
+        // Split the array
+        const unaffectedHistories = allHistories.slice(0, splitIndex);
+        const editedHistories = allHistories.slice(splitIndex);
+        return unaffectedHistories
+    }
+
+    console.log(saveEditedWorkout(editedHistory))
 
     return (<>
         <Navbar />
@@ -246,6 +460,8 @@ function TestingScreen() {
         </div>
     </>
     )
+
+
 }
 
 export default TestingScreen

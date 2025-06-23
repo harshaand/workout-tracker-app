@@ -30,13 +30,12 @@ function CardCalendar({ dates }) {
         }
         else {
             const newCount = calendarDate.count + 1;
-            const newLevel = calendarDate.level + 1;
             calendarDates = calendarDates.map(dateObj => {
                 if (dateObj.date === dateKey) {
                     return {
                         date: dateKey,
                         count: newCount,
-                        level: newLevel
+                        level: 1
                     }
                 }
                 else return dateData

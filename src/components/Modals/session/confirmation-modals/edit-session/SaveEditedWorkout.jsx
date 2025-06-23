@@ -16,7 +16,7 @@ function SaveEditedWorkout({ showModal, setShowModal, handleScreenChange, saveTo
                             <ButtonBig color='blue' onClick={async () => {
                                 await saveToHistory()
                                 setShowModal(false)
-                                handleScreenChange()
+                                // handleScreenChange()
                             }}>Save</ButtonBig>
                         </div>
                     </div>

@@ -1,5 +1,7 @@
 import React from 'react'
 import { v4 as uuidv4 } from 'uuid';
+import isEqual from 'lodash/isEqual';
+import { startOfWeek, format, compareAsc, differenceInWeeks } from 'date-fns';
 import '../css/buttons.scss';
 import '../css/modals.scss';
 import '../css/screens.scss'
@@ -363,9 +365,9 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                 if (exerciseData) {
                     exercisesNewPRs = {
                         ...exercisesNewPRs,
-                        [exerciseName]: { ...exerciseData.PRs }
+                        [exerciseName]: { ...currentPRs }
                     }
-                    const prKeys = Object.keys(exerciseData.PRs);
+                    const prKeys = Object.keys(currentPRs);
 
                     prKeys.forEach(prKey => {
 
@@ -373,7 +375,7 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                             const reps = Number(Number(set.reps).toFixed(1))
                             const weight = Number(Number(set.weight).toFixed(1))
                             const oneRepMax = reps < 37 ? weight * (36 / (37 - reps)) : 0
-                            const eliteRatio = exerciseData.thresholds === undefined ? undefined : exerciseData.thresholds[data.user.sex].elite
+                            const eliteRatio = thresholds === undefined ? undefined : thresholds[data.user.sex].elite
                             const strengthScore = eliteRatio === undefined || oneRepMax === 0 ? 0 : Math.min(100, (oneRepMax / (userCurrentWeight.current * eliteRatio) * 100))
                             switch (prKey) {
                                 case 'volume': return Number((reps * weight).toFixed(1));
@@ -389,7 +391,7 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                         exercise.sets.forEach(set => {
                             if (!set.PRs) {
                                 set.PRs = {};
-                                Object.keys(exerciseData.PRs).forEach(prKey => {
+                                Object.keys(currentPRs).forEach(prKey => {
                                     set.PRs[prKey] = false;
                                 });
                             }
@@ -407,7 +409,7 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                                 set.bestSet = true;
                             }
                             //main logic: identifying which set broke the PR
-                            if (value === highestValue && !assigned && value > exerciseData.PRs[prKey]) {
+                            if (value === highestValue && !assigned && value > currentPRs[prKey]) {
                                 set.PRs[prKey] = true;
                                 assigned = true;
                                 exercisesNewPRs = {
@@ -483,7 +485,7 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                     ...updatedExerciseObjects,
                     [exerciseName]: {
                         currentWeight: userCurrentWeight.current,
-                        currentPRs: exerciseData.PRs,
+                        currentPRs: currentPRs,
                         newPRs: exercisesNewPRs[exerciseName],
                         date: currentDate,
                         workoutId: workoutId,
@@ -718,6 +720,244 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                 return <ButtonBig size='hug' color='green' onClick={() => setShowFinishModal(true)}>Finish</ButtonBig>;
         }
     }
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!RENAME FUNCTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    function saveToHistory2(exerciseName, workoutHistory, currentPRs, thresholds, userWeight, prMetric) {
+        //--------------------------APPENDING WORKOUT TO HISTORY--------------------------
+        const filteredExercises = workoutHistory.exercises.filter(exercise => exercise.sets.some(set => set.completed === true))
+            .map(exercise => ({ ...exercise, sets: exercise.sets.filter(set => set.completed === true) }))
+
+        filteredExercises.find(ex => ex.name === exerciseName).sets.forEach(set => set.bestSet = false);
+        let exercisesNewPRs = currentPRs;
+        let totalPRs = 0;
+        let totalVolume = 0;
+        let totalReps = 0;
+
+        const workoutHistoryExercises = filteredExercises.map(exercise => {
+            const prKeys = Object.keys(currentPRs);
+            let assignedPRs = Object.fromEntries(prKeys.map(key => [key, false]));;
+
+            const setsPRs = exercise.sets.map(set => {
+                /*setsPR will look like this:
+                [{bestSet: true, PRs: {weight: true, reps: false...}, 
+                 {bestSet: false, PRs: {weight: false, reps: false...},...
+                ]*/
+
+                let setBestValue = false
+
+                const setPRs = prKeys.map(prKey => {
+                    /* setPR will look like this (will remove nested objects after .map func):
+                    [{weight: true}, {reps: false}, {volume: true}...]*/
+                    function getPRValue(set) {
+                        const reps = Number(Number(set.reps).toFixed(1))
+                        const weight = Number(Number(set.weight).toFixed(1))
+                        const oneRepMax = reps < 37 ? weight * (36 / (37 - reps)) : 0
+                        const eliteRatio = thresholds === undefined ? undefined : thresholds[data.user.sex].elite
+                        const strengthScore = eliteRatio === undefined || oneRepMax === 0 ? 0 : Math.min(100, (oneRepMax / (userWeight * eliteRatio) * 100))
+                        switch (prKey) {
+                            case 'volume': return Number((reps * weight).toFixed(1));
+                            case '1RM': return Number(oneRepMax.toFixed(1));
+                            case 'strengthScore': return Number(strengthScore.toFixed(1));
+                            default: return Number(set[prKey]);
+                        }
+                    };
+
+                    let highestValue = Math.max(...exercise.sets.map(set => getPRValue(set)));
+
+                    const value = getPRValue(set);
+                    //total volume + reps for workout
+                    if (prKey === 'volume') {
+                        totalVolume += value;
+                    }
+                    if (prKey === 'reps') {
+                        totalReps += value;
+                    }
+
+                    //identifying best set in exercise
+                    if (value === highestValue && !assignedPRs[prKey] && prKey === prMetric) {
+                        setBestValue = true;
+                    }
+                    //main logic: identifying which set broke the PR
+                    if (value === highestValue && !assignedPRs[prKey] && value > currentPRs[prKey]) {
+                        assignedPRs[prKey] = true;
+                        exercisesNewPRs = {
+                            ...exercisesNewPRs,
+                            [prKey]: value
+                        }
+                        totalPRs++
+                        return { [prKey]: true }
+
+                    } else return { [prKey]: false }
+
+
+                });
+
+                return { PRs: Object.assign({}, ...setPRs), bestSet: setBestValue }
+            });
+
+            return exercise.name === exerciseName ?
+                { ...exercise, sets: exercise.sets.map((set, index) => ({ ...set, PRs: setsPRs[index].PRs, bestSet: setsPRs[index].bestSet })) }
+                : exercise
+
+        })
+
+        const updatedWorkoutHistory = {
+            exercises: workoutHistoryExercises,
+            PRs: totalPRs,
+            volume: totalVolume,
+            reps: totalReps
+        }
+
+        const exerciseData = data.exercises.find(ex => ex.name === exerciseName);
+        const orginalExerciseHistory = exerciseData.history.find(history => history.workoutId === workoutId);
+        const newExerciseHistory = {
+            ...orginalExerciseHistory,
+            currentPRs: currentPRs,
+            newPRs: exercisesNewPRs,
+            sets: [
+                ...updatedWorkoutHistory.exercises.find(ex => ex.name === exerciseName).sets.map(set => (
+                    {
+                        weight: set.weight,
+                        reps: set.reps,
+                        PRs: set.PRs
+                    }
+                ))
+            ]
+        }
+
+        return [updatedWorkoutHistory, newExerciseHistory]
+    }
+
+
+    function saveEditedWorkout() {
+        const filteredExercises = exercises.filter(exercise => exercise.sets.some(set => set.completed === true))
+            .map(exercise => ({ ...exercise, sets: exercise.sets.filter(set => set.completed === true) }));
+
+        const exerciseNames = [...new Set([...template.exercises.map(ex => ex.name), ...filteredExercises.map(ex => ex.name)])];
+
+        //Will output names of edited exercises :{ "Squat", "Hip Thrust" ...}
+        const editedExercises = exerciseNames.map(exerciseName => (
+            isEqual(template.exercises.find(ex => ex.name === exerciseName), filteredExercises.find(ex => ex.name === exerciseName))
+                === false ? exerciseName : undefined))
+            .filter(exName => exName !== undefined)
+
+        //Will output exercises with corresponding new global PRs and entire (updated) histories:
+        /* {
+             "Squat":      {PRs: undefined, history: undefined},
+             "Hip Thrust": {PRs: undefined, history: undefined}
+            } */
+        let updatedExercises = Object.assign({}, ...editedExercises.map(exerciseName => ({ [exerciseName]: { PRs: undefined, history: undefined } })))
+
+        let updatedWorkoutHistories = []
+
+        editedExercises.forEach(exerciseName => {
+            const exerciseData = data.exercises.find(ex => ex.name === exerciseName)
+            const exerciseThresholds = exerciseData.thresholds
+            const exercisePrMetric = exerciseData.prMetric
+            const orignalExHistories = exerciseData.history.sort((a, b) => compareAsc(new Date(a.date), new Date(b.date)));
+            const splitIndex = orignalExHistories.findIndex(history => history.workoutId === template.workoutId);
+            const unaffectedExHistories = orignalExHistories.slice(0, splitIndex);
+            const affectedExHistories = orignalExHistories.slice(splitIndex);
+            const updatedAffectedExHistories = []
+            const affectedHistoriesWorkoutIds = affectedExHistories.map(history => history.workoutId)
+            let currentPRs = affectedExHistories.find(history => history.workoutId === template.workoutId).currentPRs
+
+            affectedHistoriesWorkoutIds.forEach(workoutId => {
+                const newCurrentPRs = currentPRs
+                const affectedHistory = affectedExHistories.find(history => history.workoutId === template.workoutId)
+                const userCurrentWeight = affectedHistory.currentWeight
+                let isInUpdatedWorkoutHistories = false
+                let orignalWorkoutHistory = updatedWorkoutHistories.find(history => history.workoutId === workoutId)
+                let editedWorkoutHistory
+
+
+
+                if (orignalWorkoutHistory === undefined) {
+                    isInUpdatedWorkoutHistories = false
+                    orignalWorkoutHistory = data.history.find(history => history.workoutId === workoutId)
+                    editedWorkoutHistory = workoutId === template.workoutId ?
+                        { ...orignalWorkoutHistory, exercises: exercises } :
+                        orignalWorkoutHistory
+                }
+                else {
+                    isInUpdatedWorkoutHistories = true
+                    editedWorkoutHistory = orignalWorkoutHistory
+                }
+
+                /*updatedPropertiesHistory will look like this:
+                  {
+                    exercises: *updated exercises,
+                    PRs: 10,
+                    volume: 300,
+                    reps: 10
+                  }
+                  updatedPropertiesHistory will look like this:
+                {
+                    date: ...,
+                    currentWeight: ...,
+                    workoutId: ...,
+                    currentPRs: { "1RM": 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                    newPRs: { "1RM": 1, weight: 1, reps: 1, volume: 1, strengthScore: 0.4 },
+                    sets: [
+                        { weight: 1, reps: 1, PRs: { "1RM": true, reps: true...} },
+                        { weight: 1, reps: 1, PRs: { "1RM": false, reps: false...} },
+                        { weight: 1, reps: 1, PRs: { "1RM": false, reps: false...} },
+                    ]
+                },
+                  */
+                const [updatedPropertiesHistory, newExerciseHistory] = saveToHistory2(exerciseName, editedWorkoutHistory, newCurrentPRs, exerciseThresholds, userCurrentWeight, exercisePrMetric)
+                const updatedWorkoutHistory = { ...editedWorkoutHistory, ...updatedPropertiesHistory }
+                currentPRs = newExerciseHistory.newPRs
+                updatedAffectedExHistories.push(newExerciseHistory)
+
+                if (isInUpdatedWorkoutHistories === false) {
+                    updatedWorkoutHistories.push(updatedWorkoutHistory)
+                }
+                else {
+                    const historyIndex = updatedWorkoutHistories.findIndex(history => history.workoutId === workoutId);
+                    updatedWorkoutHistories[historyIndex] = updatedWorkoutHistory
+
+                }
+            })
+            updatedExercises = { ...updatedExercises, [exerciseName]: { PRs: currentPRs, history: [...unaffectedExHistories, ...updatedAffectedExHistories] } }
+
+        })
+
+
+        const updatedExerciseNames = Object.keys(updatedExercises);
+        const updatedExercisesObject = data.exercises.map(exercise => (
+            updatedExerciseNames.includes(exercise.name) ?
+                { ...exercise, ...updatedExercises[exercise.name] } :
+                exercise
+        ))
+        const updatedHistoryObject = data.history.map(history => {
+            const updatedWorkoutHistory = updatedWorkoutHistories.find(updatedWorkoutHistory => updatedWorkoutHistory.workoutId === history.workoutId)
+            return updatedWorkoutHistory === undefined ? history : updatedWorkoutHistory
+        })
+
+        const updatedStrengthScores = structuredClone(data.strengthScores);
+        Object.entries(updatedExercises).forEach(([exerciseName, updatedData]) => {
+            Object.values(updatedStrengthScores).forEach(muscleGroup => {
+                if (exerciseName in muscleGroup) {
+                    muscleGroup[exerciseName] = updatedData.PRs.strengthScore;
+                }
+            });
+        });
+
+        saveData(prev => ({
+            ...prev,
+            history: updatedHistoryObject,
+            exercises: updatedExercisesObject,
+            strengthScores: updatedStrengthScores
+        }))
+    }
+
+
+
+
+
+
+
     return (
         <div className="session__container">
 
@@ -779,30 +1019,35 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                     {showCreateExerciseModal && <ModalCreateExercise createExercise={createExercise} setShowCreateExerciseModal={setShowCreateExerciseModal} setShowAddExercisesModal={setShowAddExercisesModal} />}
 
                     {/*newSession + newEmptySession*/}
-                    {(screenVariant === 'newSession' || screenVariant === 'newEmptySession') &&
+                    {
+                        (screenVariant === 'newSession' || screenVariant === 'newEmptySession') &&
                         <>
                             <ModalFinishWorkout screenVariant={screenVariant} showModal={showFinishModal} setShowModal={setShowFinishModal} clearInterval={() => clearInterval(intervalRef.current)}
                                 handleScreenChange={() => handleScreenChange('FinishedWorkoutScreen', template, screenVariant, folderId, template.exercises, exercises, template.id, workoutId, currentDate,
                                     sessionDuration, templateName.current.value, notes.current.value)} />
                             <ModalCancelWorkout showModal={showCloseModal} setShowModal={setShowCloseModal}
                                 handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
-                        </>}
+                        </>
+                    }
 
 
                     {/*editSession*/}
-                    {screenVariant === 'editSession' &&
+                    {
+                        screenVariant === 'editSession' &&
                         <>
-                            <ModalSaveWorkout showModal={showFinishModal} setShowModal={setShowFinishModal} saveToHistory={saveToHistory}
+                            <ModalSaveWorkout showModal={showFinishModal} setShowModal={setShowFinishModal} saveToHistory={saveEditedWorkout}
                                 handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
                             <ModalRevertChanges showModal={showCloseModal} setShowModal={setShowCloseModal}
                                 handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
                             <ModalDeleteWorkout showModal={showDeleteModal} setShowModal={setShowDeleteModal} deleteWorkoutHistory={deleteWorkoutHistory}
                                 handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
-                        </>}
+                        </>
+                    }
 
 
                     {/*editTemplate */}
-                    {screenVariant === 'editTemplate' &&
+                    {
+                        screenVariant === 'editTemplate' &&
                         <>
                             <ModalSaveTemplate showModal={showFinishModal} setShowModal={setShowFinishModal} handleUpdateTemplate={handleUpdateTemplate}
                                 handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
@@ -810,22 +1055,25 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                                 handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
                             <ModalDeleteTemplate showModal={showDeleteModal} setShowModal={setShowDeleteModal} deleteTemplate={deleteTemplate}
                                 handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
-                        </>}
+                        </>
+                    }
 
 
                     {/*newEmptyTemplate*/}
-                    {screenVariant === 'newEmptyTemplate' &&
+                    {
+                        screenVariant === 'newEmptyTemplate' &&
                         <>
                             <ModalSaveTemplate showModal={showFinishModal} setShowModal={setShowFinishModal} handleUpdateTemplate={handleUpdateTemplate}
                                 handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
                             <ModalDiscardTemplate showModal={showCloseModal} setShowModal={setShowCloseModal}
                                 handleScreenChange={() => handleScreenChange('TemplatesScreen')} />
-                        </>}
+                        </>
+                    }
 
-                </div>
-            </div>
+                </div >
+            </div >
 
-        </div>
+        </div >
     )
 }
 
