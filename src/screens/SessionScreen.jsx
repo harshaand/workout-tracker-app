@@ -40,10 +40,8 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
 
     const useLocalStorage = useData()
     const [data, saveData] = useLocalStorage('userData')
-
     const [sessionDuration, setSessionDuration] = React.useState(0);
     const intervalRef = React.useRef(null);
-
     const { handleScreenChange } = React.useContext(RoutingContext)
     const [exercises, setExercises] = React.useState(template.exercises)
     const [showAddExercisesModal, setShowAddExercisesModal] = React.useState(false)
@@ -113,23 +111,58 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
         setExercises(prevExercises => {
             return prevExercises.map(exercise => {
                 if (exercise.name === exerciseName) {
-                    const nextSetNum = exercise.sets.length + 1;
-
-                    const newSet = {
+                    let newSet = {
                         id: uuidv4(),
-                        value: nextSetNum,
-                        num: nextSetNum,
                         weight: 0,
                         reps: 0,
                         completed: false
                     };
+
+                    const prevSetNum = exercise.sets[exercise.sets.length - 1].num
+                    //prevSetNum === 0 means it's a warmup set (set.num === 0 means it doesn't count as a set)
+                    if (prevSetNum === 0) {
+                        for (let i = exercise.sets.length - 2; i >= 0; i--) {
+                            const setNum = exercise.sets[i].num
+                            if (setNum > 0) {
+                                newSet = {
+                                    ...newSet,
+                                    value: setNum + 1,
+                                    num: exercise.sets[i].num + 1,
+                                };
+                                break
+                            }
+                            else {
+                                newSet = {
+                                    ...newSet,
+                                    value: 1,
+                                    num: 1,
+                                };
+                            }
+                        }
+                    }
+                    // if there are no sets before
+                    else if (prevSetNum === undefined) {
+                        newSet = {
+                            ...newSet,
+                            value: 1,
+                            num: 1,
+                        };
+                    }
+                    // if previous set is a normal set (not a warmup set)
+                    else {
+                        newSet = {
+                            ...newSet,
+                            value: prevSetNum + 1,
+                            num: prevSetNum + 1,
+                        };
+                    }
 
                     return {
                         ...exercise,
                         sets: [...exercise.sets, newSet]
                     };
                 }
-                else { return exercise; }
+                else return exercise
             });
         });
     };
@@ -138,15 +171,22 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
         setExercises(prevExercises => {
             return prevExercises.map(exercise => {
                 if (exercise.name === exerciseName) {
+                    const deletedSet = exercise.sets.find(set => set.id === setID)
+                    const deletedSetIndex = exercise.sets.findIndex(set => set.id === setID)
                     const updatedSets = exercise.sets.filter(set => set.id !== setID);
-                    const reorderedSets = updatedSets.map((set, index) => ({
-                        ...set,
-                        num: index + 1
-                    }));
+                    const reorderedSets = updatedSets.map((set, index) => (
+                        index < deletedSetIndex ? set :
+                            {
+                                ...set,
+                                num: set.num - 1,
+                                value: (!isNaN(Number(set.value)) && set.value !== '') || (set.value === "W") ?
+                                    set.value - 1 :
+                                    set.value
+                            }));
 
                     return {
                         ...exercise,
-                        sets: reorderedSets
+                        sets: deletedSet.value === "W" ? updatedSets : reorderedSets
                     };
                 }
                 else { return exercise; }
@@ -230,7 +270,6 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                     const setIndex = exercise.sets.findIndex(set => set.id === setId);
                     if (setIndex === -1) return exercise;
                     const newSets = [...exercise.sets];
-
                     //if ANYTHING + [W] -> W
                     if (option === 'W' && newSets[setIndex].value !== 'W') {
                         newSets[setIndex] = {
@@ -238,40 +277,59 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                             value: 'W',
                             num: 0,
                         };
-                        //decrement all following sets
+                        //decrement all .num & .value (if its a number) of following sets because W doesn't count as a set (.num = 0)
                         for (let i = setIndex + 1; i < newSets.length; i++) {
-                            if (typeof newSets[i].num === 'number' && !isNaN(newSets[i].num)) {
-                                const val = Number(newSets[i].value);
-                                const newVal = Number.isInteger(val) && !isNaN(val) ? newSets[i].value - 1 : newSets[i].value;
-                                newSets[i] = {
-                                    ...newSets[i],
-                                    value: newVal,
-                                    num: newSets[i].num - 1
-                                };
-                            }
+                            const val = newSets[i].value;
+                            const newVal = !isNaN(val) ? newSets[i].value - 1 : newSets[i].value;
+                            const newNum = newSets[i].num > 0 ? newSets[i].num - 1 : newSets[i].num
+                            newSets[i] = {
+                                ...newSets[i],
+                                value: newVal,
+                                num: newNum
+                            };
+
                         }
                     }
 
                     // if 
                     // W + [W] -> NUMBER
                     else if (option === 'W' && newSets[setIndex].value === 'W') {
+                        let newNum = undefined
+
+                        //find next .num
                         for (let i = setIndex + 1; i < newSets.length; i++) {
-                            //new set number = get next set's number (before incrementing following sets)
-                            if (newSets[i].num !== 0 && newSets[setIndex].value === 'W' &&
-                                newSets[i] && newSets[i].num !== undefined) {
-                                newSets[setIndex] = {
-                                    ...newSets[setIndex],
-                                    value: newSets[i].num,
-                                    num: newSets[i].num,
-                                };
+                            if (newSets[i].num > 0) {
+                                newNum = newSets[i].num
+                                break
                             }
-                            //increment all following sets
-                            const val = Number(newSets[i].value);
-                            const newVal = Number.isInteger(val) && !isNaN(val) ? newSets[i].value + 1 : newSets[i].value;
+                        }
+                        // if can't find valid number infront, look behind
+                        if (newNum === undefined) {
+                            for (let i = setIndex - 1; i >= 0; i--) {
+                                if (newSets[i].num > 0) {
+                                    newNum = newSets[i].num + 1
+                                    break
+                                }
+                            }
+                        }
+                        // if can't find a valid number anywhere, newNum = 1
+                        if (newNum === undefined) {
+                            newNum = 1
+                        }
+                        const newSet = {
+                            ...newSets[setIndex],
+                            value: newNum,
+                            num: newNum,
+                        };
+                        newSets[setIndex] = newSet
+
+                        //increment all following sets
+                        for (let i = setIndex + 1; i < newSets.length; i++) {
+                            const val = newSets[i].value;
                             newSets[i] = {
                                 ...newSets[i],
-                                value: newVal,
-                                num: newSets[i].num + 1
+                                value: !isNaN(val) ? newSets[i].value + 1 : newSets[i].value,
+                                num: newSets[i].num > 0 ? newSets[i].num + 1 : newSets[i].num
                             };
                         }
                     }
@@ -279,18 +337,43 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                     // if 
                     // W + [D/F]-> D/F
                     else if (option !== 'W' && newSets[setIndex].value === 'W') {
+                        let newNum = undefined
+
+                        //find next .num
+                        for (let i = setIndex + 1; i <= newSets.length - 1; i++) {
+                            if (newSets[i].num > 0) {
+                                newNum = newSets[i].num
+                                break
+                            }
+                        }
+                        // if can't find valid number infront of it, look behind
+                        if (newNum === undefined) {
+                            for (let i = setIndex - 1; i >= 0; i--) {
+                                if (newSets[i].num > 0) {
+                                    newNum = newSets[i].num + 1
+                                    break
+                                }
+                            }
+                        }
+                        // if can't find a valid number anywhere, newNum = 1
+                        if (newNum === undefined) newNum = 1
+                        const newSet = {
+                            ...newSets[setIndex],
+                            value: option,
+                            num: newNum,
+                        };
+                        newSets[setIndex] = newSet
+
+                        //increment all following sets
                         for (let i = setIndex + 1; i < newSets.length; i++) {
-                            //increment all following sets
-                            const val = Number(newSets[i].value);
-                            const newVal = Number.isInteger(val) && !isNaN(val) ? newSets[i].value + 1 : newSets[i].value;
+                            const val = newSets[i].value;
                             newSets[i] = {
                                 ...newSets[i],
-                                value: newVal,
-                                num: newSets[i].num + 1
+                                value: !isNaN(val) ? val + 1 : newSets[i].value,
+                                num: newSets[i].num > 0 ? newSets[i].num + 1 : newSets[i].num
                             };
                             //new set number = get next set's number then decrement (after incrementing following sets)
-                            if (newSets[i].num !== 0 && newSets[setIndex].value === 'W' &&
-                                newSets[i] && newSets[i].num !== undefined) {
+                            if (newSets[i].num !== 0 && newSets[setIndex].value === 'W') {
                                 newSets[setIndex] = {
                                     ...newSets[setIndex],
                                     value: option,
@@ -894,9 +977,8 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                         <div className='container-cards'>
                             {exercises.map(exercise => (
                                 <CardExerciseTracker exercise={exercise} toggleSetCompleted={toggleSetCompleted} addSet={addSet}
-                                    deleteSet={deleteSet} handleOptionClick={handleOptionClick} saveTemplateValues={saveTemplateValues}
-                                    showFinishModal={showFinishModal}
-                                    screenVariant={screenVariant} />
+                                    deleteSet={deleteSet} handleOptionClick={handleOptionClick} screenVariant={screenVariant}
+                                    saveTemplateValues={saveTemplateValues} showFinishModal={showFinishModal} />
                             ))}
                         </div>
                         <div className='container-buttons'>

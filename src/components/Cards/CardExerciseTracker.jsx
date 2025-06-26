@@ -7,7 +7,7 @@ import '../../css/cards.scss';
 
 function CardExerciseTracker(props) {
     function renderRows() {
-        return props.exercise.sets.map(set => (<RowExerciseTracker exerciseName={props.exercise.name} set={set}
+        return props.exercise.sets.map(set => (<RowExerciseTracker key={`card-exercise-tracker-${set.id}`} exerciseName={props.exercise.name} set={set}
             toggleSetCompleted={props.toggleSetCompleted} deleteSet={props.deleteSet} handleOptionClick={props.handleOptionClick}
             saveTemplateValues={props.saveTemplateValues} showFinishModal={props.showFinishModal} screenVariant={props.screenVariant} />))
     }

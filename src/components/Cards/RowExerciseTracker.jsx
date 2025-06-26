@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from "framer-motion"
 
 
 function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exerciseName, deleteSet, handleOptionClick,
-    saveTemplateValues, showFinishModal, screenVariant = 'newSession' }) {
-
+    saveTemplateValues, screenVariant = 'newSession', showFinishModal }) {
     const [showModal, setShowModal] = React.useState(false);
     const weightRef = React.useRef(null);
     const repsRef = React.useRef(null);
+    const prevSet = React.useRef(set);
     const isFirstRender = React.useRef(true);
 
     const delete_animation = { height: 0, opacity: 0 }
@@ -84,7 +84,9 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
                                         </div>
                                         : setShowModal(false))}
                             </div>
-                            <button disabled={set.completed} className={`btn--prev-volume ${valuesFilled ? 'btn--prev-volume--active' : 'btn--prev-volume--inactive'}`} onClick={set.weight === 0 && set.reps === 0 ? () => { } : fillValues}>{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                            <button disabled={set.completed} className={`btn--prev-volume ${valuesFilled ? 'btn--prev-volume--active' : 'btn--prev-volume--inactive'}`} onClick={prevSet.current.weight === 0 && prevSet.current.reps === 0 ? () => { } : fillValues}>
+                                {prevSet.current.weight === 0 && prevSet.current.reps === 0 ? <BlankWide /> : `${prevSet.current.weight} kg x ${prevSet.current.reps}`}
+                            </button>
                             <div className='testing'><input ref={weightRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight === 0 && set.reps === 0 ? '' : set.weight} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><input ref={repsRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} placeholder={set.weight === 0 && set.reps === 0 ? '' : set.reps} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn--green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
@@ -121,7 +123,8 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
                                         </div>
                                         : setShowModal(false))}
                             </div>
-                            <button disabled={set.completed} className='btn--prev-volume btn--prev-volume--active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                            <button disabled={set.completed} className='btn--prev-volume btn--prev-volume--active' /*onClick={fillValues}*/ >
+                                {prevSet.current.weight === 0 && prevSet.current.reps === 0 ? <BlankWide /> : `${prevSet.current.weight} kg x ${prevSet.current.reps}`}                            </button>
                             <div className='testing'><input ref={weightRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.weight} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><input ref={repsRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.reps} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><ButtonSmall type='checkbox' customClasses={set.completed ? 'btn--green' : ''} onClick={() => toggleSetCompleted(exerciseName, set.num)}></ButtonSmall></div>
@@ -168,7 +171,8 @@ function RowExerciseTracker({ type = 'exerciseRow', set, toggleSetCompleted, exe
                                         </div>
                                         : setShowModal(false))}
                             </div>
-                            <button disabled={set.completed} className='btn--prev-volume btn--prev-volume--active' /*onClick={fillValues}*/ >{set.weight === 0 && set.reps === 0 ? <BlankWide /> : `${set.weight} kg x ${set.reps}`}</button>
+                            <button disabled={set.completed} className='btn--prev-volume btn--prev-volume--active' /*onClick={fillValues}*/ >
+                                {prevSet.current.weight === 0 && prevSet.current.reps === 0 ? <BlankWide /> : `${prevSet.current.weight} kg x ${prevSet.current.reps}`}                            </button>
                             <div className='testing'><input ref={weightRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.weight} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><input ref={repsRef} disabled={set.completed} className={set.completed ? 'completed' : 'input-uncompleted'} defaultValue={set.weight === 0 && set.reps === 0 ? '' : set.reps} type="number" onKeyDown={(e) => { if (['e', 'E', '+', '-'].includes(e.key)) { e.preventDefault(); } }} /></div>
                             <div className='testing'><ButtonSmall type='checkboxLocked' customClasses={set.completed ? 'btn--green' : ''} ></ButtonSmall></div>
