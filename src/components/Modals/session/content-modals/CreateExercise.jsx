@@ -14,7 +14,7 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
     function handleSubmit(formData) {
         createExercise(formData.get('exerciseName'), targetMuscleGroups, formData.get('prMetric'))
         setShowCreateExerciseModal(false)
-        setShowAddExercisesModal(true)
+        if (setShowAddExercisesModal) setShowAddExercisesModal(true)
     }
 
     function toggleTargetMuscleGroup(muscleGroup) {
@@ -37,7 +37,7 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
     return (
         <>
             <button className='modal-overlay' onClick={() => {
-                setShowAddExercisesModal(true)
+                if (setShowAddExercisesModal) setShowAddExercisesModal(true)
                 setShowCreateExerciseModal(false)
             }}></button>
 
@@ -50,7 +50,7 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
                         <div className='header'>
                             {(currentSection === 'exerciseInfo') &&
                                 <ButtonSmall type='closeModal' onClick={() => {
-                                    setShowAddExercisesModal(true)
+                                    if (setShowAddExercisesModal) setShowAddExercisesModal(true)
                                     setShowCreateExerciseModal(false)
                                 }} />}
                             {(currentSection === 'targetMuscleGroups') &&

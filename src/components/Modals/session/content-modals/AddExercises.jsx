@@ -144,7 +144,7 @@ function AddExercises({ addExercises, setShowAddExercisesModal, setShowCreateExe
     return (
 
         <>
-            <div className='modal-overlay'></div>
+            <button className='modal-overlay' onClick={() => { setShowAddExercisesModal(false) }}></button>
 
             <form action={(formData) => { addExercises(formData.getAll("exercise")) }}>
 

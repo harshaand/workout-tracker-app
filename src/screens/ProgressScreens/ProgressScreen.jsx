@@ -7,6 +7,7 @@ import Navbar from '../../components/Navbar.jsx'
 import CardStrScOverview from '../../components/Cards/ProgressScreen/CardStrScOverview.jsx'
 import CardsStrScStats from '../../components/Cards/ProgressScreen/CardsStrScStats.jsx'
 import CardCalendar from '../../components/Cards/ProgressScreen/CardCalendar.jsx';
+import ModalCreateExercise from '../../components/Modals/session/content-modals/CreateExercise.jsx'
 import { RoutingContext } from '../../App.jsx'
 import { useData } from '../../DataContext.jsx'
 import {
@@ -24,6 +25,7 @@ export default function ProgressScreen() {
     const [activeTab, setActiveTab] = React.useState(0);
     const containerRef = React.useRef(null);
     const scrollProgress = React.useRef(0);
+    const [showCreateExerciseModal, setShowCreateExerciseModal] = React.useState(false)
 
     const handleTabClick = (index) => {
         setActiveTab(index);
@@ -271,8 +273,40 @@ export default function ProgressScreen() {
         'Tricep Pushdown (Cable)': TricepPushdownCable
     }
 
+    function createExercise(exerciseName, targetMuscleGroups, prMetric) {
+        saveData(prevData => {
+            //Adding new (created) exercise to strength scores object under correct muscle groups in main data object
+            const updatedStrengthScores = { ...prevData.strengthScores };
+            targetMuscleGroups.forEach(muscleGroup => {
+                if (updatedStrengthScores[muscleGroup]) {
+                    updatedStrengthScores[muscleGroup] = {
+                        ...updatedStrengthScores[muscleGroup],
+                        [exerciseName]: 'not eligible'
+                    };
+                }
+            });
+            //Adding new (created) exercise to the exercises object in main data object
+            return {
+                ...prevData,
+                exercises: [
+                    ...prevData.exercises,
+                    {
+                        name: exerciseName,
+                        prMetric: prMetric,
+                        PRs: { '1RM': 0, weight: 0, reps: 0, volume: 0 },
+                        thumbnail: '',
+                        instructions: { media: '', text: '' },
+                        history: []
+                    }
+                ],
+                strengthScores: updatedStrengthScores
+            }
+        })
+    }
+
     return (
         <>
+            {showCreateExerciseModal && <ModalCreateExercise createExercise={createExercise} setShowCreateExerciseModal={setShowCreateExerciseModal} />}
             <Navbar />
             <div className="progress__container">
                 <div className="progress__header">
@@ -306,13 +340,13 @@ export default function ProgressScreen() {
 
                     <div className="wrapper-screen">
                         <div className='exercises'>
-
                             <div className='container-header'>
                                 <div className='search-bar'>
                                     <Search />
                                     <input type="text" name="" id="" placeholder='Bench Press' value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)} />
                                 </div>
+                                <button className='btn-create-exercise' onClick={() => { setShowCreateExerciseModal(true) }}>Create</button>
                             </div>
 
                             <div className='container-exercises'>
