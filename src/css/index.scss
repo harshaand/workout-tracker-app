@@ -132,7 +132,7 @@ body {
   padding: 0;
   max-width: 100%;
   overflow-x: hidden;
-  background-color: #909090;
+  background-color: var(--white);
 
   /* WebKit Scrollbar Styles */
   &::-webkit-scrollbar {
@@ -174,7 +174,18 @@ body {
   background-color: var(--body-bg);
 }
 
+.container-loading-lottie {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
 
+  .loading-lottie {
+    width: 300px;
+    height: 300px;
+  }
+}
 
 /* LIBRARY SCREEN */
 .testing {
@@ -241,8 +252,14 @@ body {
       fill: var(--white);
     }
 
+    &:active {
+      fill: var(--white);
+      color: var(--white);
+    }
+
     &:hover {
-      text-decoration: underline;
+      fill: var(--gray-medium-light);
+      color: var(--gray-medium-light);
     }
 
   }

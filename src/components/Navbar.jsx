@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavAdd, NavClock, NavProgress, NavUser } from '../assets/icons/icons.js';
+import { NavAdd, NavClock, NavProgress, NavUser, NavSettings } from '../assets/icons/icons.js';
 import { RoutingContext } from '../App.jsx'
 
 function Navbar({ }) {
@@ -14,7 +14,7 @@ function Navbar({ }) {
                 || currentScreen === 'StrScMuscleScreen'
                 || currentScreen === 'StrScExerciseScreen'
                 ? 'navbar__btn--active' : 'navbar__btn--inactive'}`} onClick={() => handleScreenChange('ProgressScreen')}><NavProgress />Progress</button>
-            <button className={`navbar__btn ${currentScreen === 'ProfileScreen' ? 'navbar__btn--active' : 'navbar__btn--inactive'}`} onClick={() => handleScreenChange('ProfileScreen')}><NavUser />Profile</button>
+            <button className={`navbar__btn ${currentScreen === 'SettingsScreen' ? 'navbar__btn--active' : 'navbar__btn--inactive'}`} onClick={() => handleScreenChange('SettingsScreen')}><NavSettings />Settings</button>
         </div>
     )
 }

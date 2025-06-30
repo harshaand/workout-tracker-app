@@ -728,7 +728,7 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
         }
         return [updatedWorkoutHistory, newExerciseHistory]
     }
-    //done
+
     function saveEditedWorkout() {
         const filteredExercises = exercises.filter(exercise => exercise.sets.some(set => set.completed === true))
             .map(exercise => ({ ...exercise, sets: exercise.sets.filter(set => set.completed === true) }));

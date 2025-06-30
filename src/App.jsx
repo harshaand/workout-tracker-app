@@ -1,8 +1,10 @@
 import React from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
+import LoadingLottie from './components/LoadingLottie.jsx';
 import HistoryScreen from './screens/HistoryScreen.jsx'
 import TemplatesScreen from './screens/TemplatesScreen.jsx'
 import ProgressScreen from './screens/ProgressScreens/ProgressScreen.jsx'
-import ProfileScreen from './screens/ProfileScreen.jsx'
+import SettingsScreen from './screens/SettingsScreen.jsx'
 import TestingScreen from './screens/TestingScreen.jsx'
 
 import SessionScreen from './screens/SessionScreen.jsx'
@@ -25,6 +27,14 @@ export const RoutingContext = React.createContext({
 function App() {
   const [currentScreen, setCurrentScreen] = React.useState('TemplatesScreen')
   let ScreenComponent;
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0()
+
+  React.useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      loginWithRedirect();
+    }
+  }, [isLoading, isAuthenticated]);
+
   //FWS = finished workout screen
   let FWS_data = React.useRef({
     oldExercises: undefined,
@@ -66,8 +76,8 @@ function App() {
     case 'ProgressScreen':
       ScreenComponent = <ProgressScreen />;
       break;
-    case 'ProfileScreen':
-      ScreenComponent = <ProfileScreen />;
+    case 'SettingsScreen':
+      ScreenComponent = <SettingsScreen />;
       break;
     case 'SessionScreen':
       ScreenComponent = <SessionScreen
@@ -148,13 +158,21 @@ function App() {
     setCurrentScreen(newScreen)
   }
 
-  return (
-    <DataProvider>
-      <RoutingContext.Provider value={{ currentScreen, handleScreenChange: handleScreenChange, handleStrScScreenChange: handleStrScScreenChange }}>
-        {ScreenComponent}
-      </RoutingContext.Provider>
-    </DataProvider>
-  )
+
+
+  if (isLoading) {
+    return <LoadingLottie />
+  }
+  if (isAuthenticated) {
+    return (
+      <DataProvider>
+        <RoutingContext.Provider value={{ currentScreen, handleScreenChange, handleStrScScreenChange }}>
+          {ScreenComponent}
+        </RoutingContext.Provider>
+      </DataProvider>
+    );
+  }
+
 }
 
 export default App
