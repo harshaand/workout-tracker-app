@@ -12,6 +12,7 @@ button {
     border-radius: 8px;
     font-size: var(--body-text);
     font-weight: 600;
+    transition: all 0.2s ease;
     cursor: pointer;
 
     .main-text {
@@ -94,6 +95,10 @@ button {
     &--blue {
         background-color: var(--blue-medium-dark);
         color: var(--white);
+
+        &:disabled {
+            background-color: var(--gray-medium-light);
+        }
     }
 
     &--blue-soft {
@@ -124,6 +129,11 @@ button {
         fill: var(--black-blue-dark);
         width: fit-content;
         padding: 0px 1px;
+
+        &:disabled {
+            color: var(--gray-medium-light);
+        }
+
     }
 
     &--green {

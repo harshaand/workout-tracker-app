@@ -68,6 +68,20 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
             }, 1000);
         }
 
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                templateName.current.blur();
+                notes.current.blur();
+            }
+        };
+        const templateNameTextArea = templateName.current;
+        const templateNotesTextArea = notes.current;
+        if (notes.current) autoResizeTextArea(notes.current);
+        if (templateNameTextArea) templateNameTextArea.addEventListener('keydown', handleKeyDown)
+        if (templateNotesTextArea) templateNotesTextArea.addEventListener('keydown', handleKeyDown)
+
+
+
         currentWeightInExHistory.current = exercises.map(exercise => {
             const exWithUserWeight = data.exercises.find(ex => ex.name === exercise.name)?.history.find(history => history.workoutId === template.workoutId);
             return exWithUserWeight?.currentWeight;
@@ -75,7 +89,14 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
 
         userCurrentWeight.current = currentWeightInExHistory.current === undefined ? data.user.weight : currentWeightInExHistory.current
 
-        return () => clearInterval(intervalRef.current);
+
+
+
+        return () => {
+            clearInterval(intervalRef.current)
+            if (templateNameTextArea) templateNameTextArea.removeEventListener('keydown', handleKeyDown)
+            if (templateNotesTextArea) templateNotesTextArea.removeEventListener('keydown', handleKeyDown)
+        };
 
     }, [])
 
@@ -195,7 +216,6 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
     };
 
     function createExercise(exerciseName, targetMuscleGroups, prMetric) {
-        console.log(exerciseName, targetMuscleGroups)
         saveData(prevData => {
             //Adding new (created) exercise to strength scores object under correct muscle groups in main data object
             const updatedStrengthScores = { ...prevData.strengthScores };
@@ -428,7 +448,6 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
     }
 
     function handleUpdateTemplate() {
-        console.log('updating...')
         const finalExercises = exercises.map(exercise => {
             return {
                 ...exercise,
@@ -440,14 +459,12 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                 })
             }
         })
-        console.log('folderId', folderId)
         saveData(prevData => {
             const templateExists = prevData.templates.find(templ => templ.id === template.id) ? true : false
-            console.log('templateExists', templateExists)
             const updatedTemplates = templateExists ? prevData.templates.map((templ) => {
                 if (templ.id === template.id) return {
                     ...templ,
-                    name: templateName.current.value,
+                    name: templateName.current.value.replace(/\s+/g, '') === '' ? 'New Template' : templateName.current.value,
                     notes: notes.current.value,
                     exercises: finalExercises
                 }
@@ -457,7 +474,7 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                     ...prevData.templates,
                     {
                         ...template,
-                        name: templateName.current.value,
+                        name: templateName.current.value.replace(/\s+/g, '') === '' ? 'New Template' : templateName.current.value,
                         notes: notes.current.value,
                         exercises: finalExercises
                     }
@@ -475,7 +492,6 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                     }
                     else {
                         const existingFolder = prevData.templateFolders.userCreatedFolders.find(folder => folder.id === folderId);
-                        console.log('existing folder', existingFolder)
 
                         if (existingFolder) {
                             const updatedUserCreatedFolders = prevData.templateFolders.userCreatedFolders.map(folder => {
@@ -507,11 +523,26 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
         })
     }
 
-    function handleTextAreaInput(e) {
+    function autoResizeTextArea(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    };
+
+    function handleTemplNameTextAreaInput(e) {
         e.target.style.height = "auto";
         e.target.style.height = `${e.target.scrollHeight}px`;
         const raw = e.target.value;
-        const cleaned = raw.replace(/[^a-zA-Z0-9 ]/g, "");
+        const cleaned = raw.replace(/[^\p{L}\p{N}\p{Extended_Pictographic}\s]/gu, "");
+        if (raw !== cleaned) {
+            e.target.value = cleaned;
+        }
+    }
+
+    function handleNotesTextAreaInput(e) {
+        e.target.style.height = "auto";
+        e.target.style.height = `${e.target.scrollHeight}px`;
+        const raw = e.target.value;
+        const cleaned = raw.replace(/["']/g, "");
         if (raw !== cleaned) {
             e.target.value = cleaned;
         }
@@ -697,7 +728,7 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
         }
         return [updatedWorkoutHistory, newExerciseHistory]
     }
-
+    //done
     function saveEditedWorkout() {
         const filteredExercises = exercises.filter(exercise => exercise.sets.some(set => set.completed === true))
             .map(exercise => ({ ...exercise, sets: exercise.sets.filter(set => set.completed === true) }));
@@ -710,115 +741,137 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                 === false ? exerciseName : undefined))
             .filter(exName => exName !== undefined)
 
-        //Will output exercises with corresponding new global PRs and entire (updated) histories:
-        /* {
-             "Squat":      {PRs: undefined, history: undefined},
-             "Hip Thrust": {PRs: undefined, history: undefined}
-            } */
-        let updatedExercises = Object.assign({}, ...editedExercises.map(exerciseName => ({ [exerciseName]: { PRs: undefined, history: undefined } })))
+        if (editedExercises.length > 0) {
+            //Will output exercises with corresponding new global PRs and entire (updated) histories:
+            /* {
+                 "Squat":      {PRs: undefined, history: undefined},
+                 "Hip Thrust": {PRs: undefined, history: undefined}
+                } */
+            let updatedExercises = Object.assign({}, ...editedExercises.map(exerciseName => ({ [exerciseName]: { PRs: undefined, history: undefined } })))
 
-        let updatedWorkoutHistories = []
+            let updatedWorkoutHistories = []
 
-        editedExercises.forEach(exerciseName => {
-            const exerciseData = data.exercises.find(ex => ex.name === exerciseName)
-            const exerciseThresholds = exerciseData.thresholds
-            const exercisePrMetric = exerciseData.prMetric
-            const orignalExHistories = exerciseData.history.sort((a, b) => compareAsc(new Date(a.date), new Date(b.date)));
-            const splitIndex = orignalExHistories.findIndex(history => history.workoutId === template.workoutId);
-            const unaffectedExHistories = orignalExHistories.slice(0, splitIndex);
-            const affectedExHistories = orignalExHistories.slice(splitIndex);
-            const updatedAffectedExHistories = []
-            const affectedHistoriesWorkoutIds = affectedExHistories.map(history => history.workoutId)
-            let currentPRs = affectedExHistories.find(history => history.workoutId === template.workoutId).currentPRs
+            editedExercises.forEach(exerciseName => {
+                const exerciseData = data.exercises.find(ex => ex.name === exerciseName)
+                const exerciseThresholds = exerciseData.thresholds
+                const exercisePrMetric = exerciseData.prMetric
+                const orignalExHistories = exerciseData.history.sort((a, b) => compareAsc(new Date(a.date), new Date(b.date)));
+                const splitIndex = orignalExHistories.findIndex(history => history.workoutId === template.workoutId);
+                const unaffectedExHistories = orignalExHistories.slice(0, splitIndex);
+                const affectedExHistories = orignalExHistories.slice(splitIndex);
+                const updatedAffectedExHistories = []
+                const affectedHistoriesWorkoutIds = affectedExHistories.map(history => history.workoutId)
+                let currentPRs = affectedExHistories.find(history => history.workoutId === template.workoutId).currentPRs
 
-            affectedHistoriesWorkoutIds.forEach(workoutId => {
-                const newCurrentPRs = currentPRs
-                const affectedHistory = affectedExHistories.find(history => history.workoutId === workoutId)
-                const userCurrentWeight = affectedHistory.currentWeight
-                let isInUpdatedWorkoutHistories = false
-                let orignalWorkoutHistory = updatedWorkoutHistories.find(history => history.workoutId === workoutId)
-                let editedWorkoutHistory
+                affectedHistoriesWorkoutIds.forEach(workoutId => {
+                    const newCurrentPRs = currentPRs
+                    const affectedHistory = affectedExHistories.find(history => history.workoutId === workoutId)
+                    const userCurrentWeight = affectedHistory.currentWeight
+                    let isInUpdatedWorkoutHistories = false
+                    let orignalWorkoutHistory = updatedWorkoutHistories.find(history => history.workoutId === workoutId)
+                    let editedWorkoutHistory
 
 
 
-                if (orignalWorkoutHistory === undefined) {
-                    isInUpdatedWorkoutHistories = false
-                    orignalWorkoutHistory = data.history.find(history => history.workoutId === workoutId)
-                    editedWorkoutHistory = workoutId === template.workoutId ?
-                        { ...orignalWorkoutHistory, exercises: exercises } :
-                        orignalWorkoutHistory
-                }
-                else {
-                    isInUpdatedWorkoutHistories = true
-                    editedWorkoutHistory = orignalWorkoutHistory
-                }
+                    if (orignalWorkoutHistory === undefined) {
+                        isInUpdatedWorkoutHistories = false
+                        orignalWorkoutHistory = data.history.find(history => history.workoutId === workoutId)
+                        editedWorkoutHistory = workoutId === template.workoutId ?
+                            {
+                                ...orignalWorkoutHistory,
+                                name: templateName.current.value.replace(/\s+/g, '') === '' ? 'Workout' : templateName.current.value,
+                                notes: notes.current.value,
+                                exercises: exercises
+                            } :
+                            orignalWorkoutHistory
+                    }
+                    else {
+                        isInUpdatedWorkoutHistories = true
+                        editedWorkoutHistory = orignalWorkoutHistory
+                    }
 
-                /*updatedPropertiesHistory will look like this:
-                  {
-                    exercises: *updated exercises,
-                    PRs: 10,
-                    volume: 300,
-                    reps: 10
-                  }
-                  updatedPropertiesHistory will look like this:
-                {
-                    date: ...,
-                    currentWeight: ...,
-                    workoutId: ...,
-                    currentPRs: { "1RM": 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
-                    newPRs: { "1RM": 1, weight: 1, reps: 1, volume: 1, strengthScore: 0.4 },
-                    sets: [
-                        { weight: 1, reps: 1, PRs: { "1RM": true, reps: true...} },
-                        { weight: 1, reps: 1, PRs: { "1RM": false, reps: false...} },
-                        { weight: 1, reps: 1, PRs: { "1RM": false, reps: false...} },
-                    ]
-                },
-                  */
-                const [updatedPropertiesHistory, newExerciseHistory] = updWorkoutHistoryAndGenExHistory(exerciseName, editedWorkoutHistory, newCurrentPRs, exerciseThresholds, userCurrentWeight, exercisePrMetric)
-                const updatedWorkoutHistory = { ...editedWorkoutHistory, ...updatedPropertiesHistory }
-                currentPRs = newExerciseHistory.newPRs
-                updatedAffectedExHistories.push(newExerciseHistory)
+                    /*updatedPropertiesHistory will look like this:
+                      {
+                        exercises: *updated exercises,
+                        PRs: 10,
+                        volume: 300,
+                        reps: 10
+                      }
+                      updatedPropertiesHistory will look like this:
+                    {
+                        date: ...,
+                        currentWeight: ...,
+                        workoutId: ...,
+                        currentPRs: { "1RM": 0, weight: 0, reps: 0, volume: 0, strengthScore: 0 },
+                        newPRs: { "1RM": 1, weight: 1, reps: 1, volume: 1, strengthScore: 0.4 },
+                        sets: [
+                            { weight: 1, reps: 1, PRs: { "1RM": true, reps: true...} },
+                            { weight: 1, reps: 1, PRs: { "1RM": false, reps: false...} },
+                            { weight: 1, reps: 1, PRs: { "1RM": false, reps: false...} },
+                        ]
+                    },
+                      */
+                    const [updatedPropertiesHistory, newExerciseHistory] = updWorkoutHistoryAndGenExHistory(exerciseName, editedWorkoutHistory, newCurrentPRs, exerciseThresholds, userCurrentWeight, exercisePrMetric)
+                    const updatedWorkoutHistory = { ...editedWorkoutHistory, ...updatedPropertiesHistory }
+                    currentPRs = newExerciseHistory.newPRs
+                    updatedAffectedExHistories.push(newExerciseHistory)
 
-                if (isInUpdatedWorkoutHistories === false) {
-                    updatedWorkoutHistories.push(updatedWorkoutHistory)
-                }
-                else {
-                    const historyIndex = updatedWorkoutHistories.findIndex(history => history.workoutId === workoutId);
-                    updatedWorkoutHistories[historyIndex] = updatedWorkoutHistory
+                    if (isInUpdatedWorkoutHistories === false) {
+                        updatedWorkoutHistories.push(updatedWorkoutHistory)
+                    }
+                    else {
+                        const historyIndex = updatedWorkoutHistories.findIndex(history => history.workoutId === workoutId);
+                        updatedWorkoutHistories[historyIndex] = updatedWorkoutHistory
 
-                }
+                    }
+                })
+                updatedExercises = { ...updatedExercises, [exerciseName]: { PRs: currentPRs, history: [...unaffectedExHistories, ...updatedAffectedExHistories] } }
+
             })
-            updatedExercises = { ...updatedExercises, [exerciseName]: { PRs: currentPRs, history: [...unaffectedExHistories, ...updatedAffectedExHistories] } }
-
-        })
 
 
-        const updatedExerciseNames = Object.keys(updatedExercises);
-        const updatedExercisesObject = data.exercises.map(exercise => (
-            updatedExerciseNames.includes(exercise.name) ?
-                { ...exercise, ...updatedExercises[exercise.name] } :
-                exercise
-        ))
-        const updatedHistoryObject = data.history.map(history => {
-            const updatedWorkoutHistory = updatedWorkoutHistories.find(updatedWorkoutHistory => updatedWorkoutHistory.workoutId === history.workoutId)
-            return updatedWorkoutHistory === undefined ? history : updatedWorkoutHistory
-        })
+            const updatedExerciseNames = Object.keys(updatedExercises);
+            const updatedExercisesObject = data.exercises.map(exercise => (
+                updatedExerciseNames.includes(exercise.name) ?
+                    { ...exercise, ...updatedExercises[exercise.name] } :
+                    exercise
+            ))
+            const updatedHistoryObject = data.history.map(history => {
+                const updatedWorkoutHistory = updatedWorkoutHistories.find(updatedWorkoutHistory => updatedWorkoutHistory.workoutId === history.workoutId)
+                return updatedWorkoutHistory === undefined ? history : updatedWorkoutHistory
+            })
 
-        const updatedStrengthScores = structuredClone(data.strengthScores);
-        Object.entries(updatedExercises).forEach(([exerciseName, updatedData]) => {
-            Object.values(updatedStrengthScores).forEach(muscleGroup => {
-                if (exerciseName in muscleGroup) {
-                    muscleGroup[exerciseName] = updatedData.PRs.strengthScore;
-                }
+            const updatedStrengthScores = structuredClone(data.strengthScores);
+            Object.entries(updatedExercises).forEach(([exerciseName, updatedData]) => {
+                Object.values(updatedStrengthScores).forEach(muscleGroup => {
+                    if (exerciseName in muscleGroup) {
+                        muscleGroup[exerciseName] = updatedData.PRs.strengthScore;
+                    }
+                });
             });
-        });
 
-        saveData(prev => ({
-            ...prev,
-            history: updatedHistoryObject,
-            exercises: updatedExercisesObject,
-            strengthScores: updatedStrengthScores
-        }))
+            saveData(prev => ({
+                ...prev,
+                history: updatedHistoryObject,
+                exercises: updatedExercisesObject,
+                strengthScores: updatedStrengthScores
+            }))
+        }
+        else {
+            saveData(prev => ({
+                ...prev,
+                history: prev.history.map(history => {
+                    if (history.workoutId === template.workoutId) {
+                        return {
+                            ...template,
+                            name: templateName.current.value.replace(/\s+/g, '') === '' ? 'Workout' : templateName.current.value,
+                            notes: notes.current.value
+                        }
+                    }
+                    else return history
+                }),
+            }))
+        }
     }
 
     function deleteWorkoutHistory() {
@@ -953,8 +1006,7 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                     <div className='header'>
                         <div className='header__title-duration'>
                             <div className='header__title-duration__title'>
-                                <textarea ref={templateName} defaultValue={template.name} className='template-name' type="text" rows={1}
-                                    onInput={handleTextAreaInput}
+                                <textarea ref={templateName} defaultValue={template.name} className='template-name' type="text" rows={1} onInput={handleTemplNameTextAreaInput}
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter") {
                                             e.preventDefault();
@@ -969,7 +1021,7 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
                             {(screenVariant === 'editSession') && <p>{formatTime(template.duration)}</p>}
                         </div>
 
-                        <textarea ref={notes} defaultValue={template.notes} placeholder='Notes' className='notes' type="text" rows={1} onInput={handleTextAreaInput} />
+                        <textarea ref={notes} defaultValue={template.notes} placeholder='Notes' className='notes' type="text" onInput={handleNotesTextAreaInput} />
                     </div>
 
 

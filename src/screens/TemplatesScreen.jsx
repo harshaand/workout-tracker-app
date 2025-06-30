@@ -30,7 +30,6 @@ function TemplatesScreen() {
     const { currentScreen, handleScreenChange } = React.useContext(RoutingContext)
     const useLocalStorage = useData()
     const [data, saveData] = useLocalStorage('userData')
-    console.log(data)
     // console.log('DATA IN DB:', data)
     /* SCREEN VARIANTS
     1. newSession ------new key

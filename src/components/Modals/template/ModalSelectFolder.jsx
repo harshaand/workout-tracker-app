@@ -9,7 +9,6 @@ function ModalSelectFolder({ setShowModal, handleScreenChange, newEmptySession }
     const [data, saveData] = useLocalStorage('userData')
 
     function handleSubmit(formData) {
-        console.log(formData.get('selectedFolder'))
         handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate', formData.get('selectedFolder'))
     }
     return (

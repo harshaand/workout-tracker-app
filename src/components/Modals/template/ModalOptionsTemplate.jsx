@@ -46,7 +46,6 @@ function ModalOptionsTemplate({ templateName, templateId, setShowModal, type = '
     }, []);
 
     if (type === 'userCreatedTemplate' || type === 'myTemplate' || type === 'archivedTemplate') {
-        console.log('folderId', folderId)
         return (
             <>
                 <button className='modal-overlay' onClick={(e) => {

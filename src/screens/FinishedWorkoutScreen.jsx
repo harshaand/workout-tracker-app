@@ -123,7 +123,7 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
 
         return {
             id: template.id,
-            name: templateName,
+            name: templateName.replace(/\s+/g, '') === '' ? 'Workout' : templateName,
             duration: duration,
             notes: notes,
             workoutId: workoutId,
@@ -194,8 +194,6 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                 })
             }
         })
-
-        console.log('updatedExerciseObjects', updatedExerciseObjects)
 
     }
 

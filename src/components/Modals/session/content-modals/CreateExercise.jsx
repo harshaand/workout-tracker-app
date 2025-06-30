@@ -8,13 +8,65 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
     const useLocalStorage = useData()
     const [data, saveData] = useLocalStorage('userData')
     const [currentSection, setCurrentSection] = React.useState('exerciseInfo')
-    const [targetMuscleGroups, setTargetMuscleGroups] = React.useState([])
-    const [currentTargetMuscleGroups, setCurrentTargetMuscleGroups] = React.useState([])
+    const targetMuscleGroups = React.useRef([])
 
-    function handleSubmit(formData) {
-        createExercise(formData.get('exerciseName'), targetMuscleGroups, formData.get('prMetric'))
-        setShowCreateExerciseModal(false)
-        if (setShowAddExercisesModal) setShowAddExercisesModal(true)
+    const [currentTargetMuscleGroups, setCurrentTargetMuscleGroups] = React.useState([])
+    const inputFieldRef = React.useRef(null)
+    const [saveBtnDisabled, setSaveBtnDisabled] = React.useState({ exerciseName: undefined, status: false })
+    const [errorExerciseExists, setErrorExerciseExists] = React.useState(false)
+
+    function handleInput(e) {
+        const raw = e.target.value;
+        const cleaned = raw.replace(/[^\p{L}\p{N}\p{Extended_Pictographic}\s]/gu, "");
+        setSaveBtnDisabled(cleaned === '' || targetMuscleGroups.current.length === 0)
+        if (raw !== cleaned) {
+            e.target.value = cleaned;
+        }
+    }
+
+    React.useEffect(() => {
+        inputFieldRef.current.focus();
+
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                if (setShowAddExercisesModal) setShowAddExercisesModal(true)
+                setShowCreateExerciseModal(false)
+            }
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const userInput = inputFieldRef.current.value;
+                if (userInput !== "" && targetMuscleGroups.current.length > 0) {
+                    const form = document.getElementById('formCreateExercise');
+                    form.requestSubmit()
+                }
+                else inputFieldRef.current.blur();
+            }
+        };
+        const inputElement = inputFieldRef.current;
+        if (inputElement) {
+            inputElement.addEventListener('keydown', handleKeyDown);
+            return () => {
+                inputElement.removeEventListener('keydown', handleKeyDown);
+            };
+        }
+    }, [])
+
+    React.useEffect(() => {
+        setSaveBtnDisabled(inputFieldRef.current.value === '' || targetMuscleGroups.current.length === 0)
+    }, [targetMuscleGroups.current])
+
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const newExerciseName = formData.get('exerciseName')
+        const exerciseExists = data.exercises.find(ex => ex.name === newExerciseName)
+        if (e.target && !exerciseExists) {
+            createExercise(newExerciseName, targetMuscleGroups.current, formData.get('prMetric'))
+            setShowCreateExerciseModal(false)
+            if (setShowAddExercisesModal) setShowAddExercisesModal(true)
+        }
+        else setErrorExerciseExists({ exerciseName: newExerciseName, status: true })
     }
 
     function toggleTargetMuscleGroup(muscleGroup) {
@@ -26,12 +78,13 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
     };
 
     function removeTargetMuscleGroup(muscleGroup) {
-        setTargetMuscleGroups(prev => prev.includes(muscleGroup) ? prev.filter(group => group !== muscleGroup) : prev);
+        const prev = [...targetMuscleGroups.current]
+        targetMuscleGroups.current = prev.includes(muscleGroup) ? prev.filter(group => group !== muscleGroup) : prev
         setCurrentTargetMuscleGroups(prev => prev.includes(muscleGroup) ? prev.filter(group => group !== muscleGroup) : prev);
     }
 
     function syncTargetMuscleGroups() {
-        setTargetMuscleGroups(currentTargetMuscleGroups)
+        targetMuscleGroups.current = currentTargetMuscleGroups
     }
 
     return (
@@ -41,8 +94,7 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
                 setShowCreateExerciseModal(false)
             }}></button>
 
-
-            <form action={handleSubmit}>
+            <form id='formCreateExercise' onSubmit={handleSubmit}>
                 <div className='modal-create-exercise'>
 
 
@@ -56,14 +108,14 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
                             {(currentSection === 'targetMuscleGroups') &&
                                 <ButtonSmall type='backModal' onClick={() => {
                                     setCurrentSection('exerciseInfo')
-                                    setCurrentTargetMuscleGroups(targetMuscleGroups)
+                                    setCurrentTargetMuscleGroups(targetMuscleGroups.current)
                                 }} />}
                             <p>Create New Exercise</p>
                             {(currentSection === 'exerciseInfo') &&
-                                <button type='submit' className='btn-CTA'>Save</button>
+                                <button type='submit' className='btn--transparent' disabled={saveBtnDisabled}>Save</button>
                             }
                             {(currentSection === 'targetMuscleGroups') &&
-                                <button className='btn-CTA' onClick={(e) => {
+                                <button className='btn--transparent' onClick={(e) => {
                                     setCurrentSection('exerciseInfo')
                                     syncTargetMuscleGroups()
                                 }}>Add</button>
@@ -75,8 +127,12 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
                     <div className={`wrapper-main ${currentSection === 'exerciseInfo' ? 'wrapper-main--show' : ''}`}>
                         <div>
                             <div className='container-exercise-info'>
-                                <div className='search-bar'>
-                                    <input name='exerciseName' placeholder='Bench Press' type="text" id="" />
+                                <div className='container-input-and-error'>
+                                    <div className='search-bar'>
+                                        <input ref={inputFieldRef} name='exerciseName' placeholder='Bench Press' type="text"
+                                            onInput={handleInput} />
+                                    </div>
+                                    {errorExerciseExists.status === true && <p className='error-message'>{`${errorExerciseExists.exerciseName} already exists. Please pick another name.`}</p>}
                                 </div>
 
                                 <div className='container-content'>
@@ -103,7 +159,7 @@ function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAdd
                                     </div>
 
                                     <div className='container-tags' >
-                                        {targetMuscleGroups.map(muscleGroup => <span className='tag tag-target-muscle'
+                                        {targetMuscleGroups.current.map(muscleGroup => <span className='tag tag-target-muscle'
                                             onClick={() => removeTargetMuscleGroup(muscleGroup)}>
                                             {muscleGroup}
                                         </span>)}

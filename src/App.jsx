@@ -77,7 +77,6 @@ function App() {
       />;
       break;
     case 'StrScFullBodyScreen':
-      console.log('musclesThresholdBrackets2222', StrScScreen_data.current.musclesThresholdBrackets)
       ScreenComponent = <StrScFullBodyScreen
         musclesThresholdBrackets={StrScScreen_data.current.musclesThresholdBrackets} />;
       break;
