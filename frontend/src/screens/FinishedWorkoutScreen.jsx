@@ -1,6 +1,6 @@
 import React from 'react'
 import '../css/modals.scss'
-import ButtonBig from '../components/Buttons/ButtonBig';
+import ButtonBig from '../components/Buttons/ButtonBig.jsx';
 import ButtonSmall from '../components/Buttons/ButtonSmall.jsx';
 import { useData } from '../DataContext.jsx'
 import { RoutingContext } from '../App.jsx'

@@ -1,0 +1,37 @@
+{
+  "hash": "05c19d94",
+  "configHash": "e6ba7311",
+  "lockfileHash": "5774dc40",
+  "browserHash": "edc10926",
+  "optimized": {
+    "react": {
+      "src": "../../../frontend/node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "6880b652",
+      "needsInterop": true
+    },
+    "react-dom": {
+      "src": "../../../frontend/node_modules/react-dom/index.js",
+      "file": "react-dom.js",
+      "fileHash": "2e94f0a1",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../../frontend/node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "1c4af581",
+      "needsInterop": true
+    },
+    "react/jsx-runtime": {
+      "src": "../../../frontend/node_modules/react/jsx-runtime.js",
+      "file": "react_jsx-runtime.js",
+      "fileHash": "6777eacf",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "chunk-ASKEY4GC": {
+      "file": "chunk-ASKEY4GC.js"
+    }
+  }
+}

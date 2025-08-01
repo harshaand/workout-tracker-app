@@ -1,7 +1,7 @@
 import React from 'react'
-import ButtonBig from '../../../Buttons/ButtonBig'
-import ButtonSmall from '../../../Buttons/ButtonSmall'
-import { useData } from '../../../../DataContext'
+import ButtonBig from '../../../Buttons/ButtonBig.jsx'
+import ButtonSmall from '../../../Buttons/ButtonSmall.jsx'
+import { useData } from '../../../../DataContext.jsx'
 import {
     BentOverRow, Deadlift, LatPulldown, RowCable, RowDumbbell, BicepCurlBarbell, BicepCurlDumbbell, HammerCurlDumbbell,
     CalfRaiseBarbell, CalfRaiseDumbbell, CalfRaiseMachine, SeatedCalfRaise, BenchPressDumbbell, BenchPress,

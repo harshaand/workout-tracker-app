@@ -1,6 +1,6 @@
 import React from 'react'
-import { AnatomyFront, AnatomyBack } from '../../assets/icons/icons'
-import ButtonSmall from '../../components/Buttons/ButtonSmall'
+import { AnatomyFront, AnatomyBack } from '../../assets/icons/icons.js'
+import ButtonSmall from '../../components/Buttons/ButtonSmall.jsx'
 import CardsStrScExercise from '../../components/Cards/ProgressScreen/CardsStrScExercise.jsx'
 import Navbar from '../../components/Navbar.jsx'
 import { RoutingContext } from '../../App.jsx'
