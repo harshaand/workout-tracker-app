@@ -5,13 +5,13 @@ import ButtonBig from '../../components/Buttons/ButtonBig.jsx'
 import RowStrengthScore from '../../components/Cards/ProgressScreen/RowStrSc.jsx'
 import CardStrScMuscle from '../../components/Cards/ProgressScreen/CardStrScMuscle.jsx'
 import Navbar from '../../components/Navbar.jsx'
-import { RoutingContext } from '../../App.jsx'
-import { useData } from '../../DataContext.jsx'
+import { RoutingContext } from '../../RoutingContext.jsx'
+import DataContext from '../../DataContext.jsx'
 
 function StrScMuscleScreen({ musclesThresholdBrackets, muscleGroup }) {
     const { handleScreenChange, handleStrScScreenChange } = React.useContext(RoutingContext)
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+
+    const { data, saveData } = React.useContext(DataContext)
 
     return (
         <div className='strength-score-sub-screen__container'>

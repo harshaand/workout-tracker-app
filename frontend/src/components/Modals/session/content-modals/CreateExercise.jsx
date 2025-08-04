@@ -1,12 +1,12 @@
 import React from 'react'
 import ButtonSmall from '../../../Buttons/ButtonSmall'
 import { Tick } from '../../../../assets/icons/icons'
-import { useData } from '../../../../DataContext'
+import DataContext from '../../../../DataContext'
 
 
 function CreateExercise({ createExercise, setShowCreateExerciseModal, setShowAddExercisesModal }) {
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+
+    const { data, saveData } = React.useContext(DataContext)
     const [currentSection, setCurrentSection] = React.useState('exerciseInfo')
     const targetMuscleGroups = React.useRef([])
 

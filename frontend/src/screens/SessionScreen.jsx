@@ -8,7 +8,6 @@ import '../css/screens.scss'
 
 import ButtonSmall from '../components/Buttons/ButtonSmall.jsx'
 import ButtonBig from '../components/Buttons/ButtonBig.jsx'
-import FolderList from '../OTHER/FoldersFunctionality.jsx'
 
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
 import ModalAddExercises from '../components/Modals/session/content-modals/AddExercises.jsx'
@@ -26,9 +25,9 @@ import ModalDiscardTemplate from '../components/Modals/session/confirmation-moda
 import ModalDeleteTemplate from '../components/Modals/session/confirmation-modals/template/DeleteTemplate.jsx'
 import ModalDeleteWorkout from '../components/Modals/session/confirmation-modals/edit-session/DeleteWorkout.jsx'
 
-import { useData } from '../DataContext.jsx'
+import DataContext from '../DataContext.jsx'
 
-import { RoutingContext } from '../App.jsx'
+import { RoutingContext } from '../RoutingContext.jsx'
 
 function SessionScreen({ template, screenVariant = 'newSession', folderId = undefined }) {
     /* SCREEN VARIANTS
@@ -38,8 +37,8 @@ function SessionScreen({ template, screenVariant = 'newSession', folderId = unde
         4. newEmptyTemplate
         5. newEmptySession -new key*/
 
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+
+    const { data, saveData } = React.useContext(DataContext)
     const [sessionDuration, setSessionDuration] = React.useState(0);
     const intervalRef = React.useRef(null);
     const { handleScreenChange } = React.useContext(RoutingContext)

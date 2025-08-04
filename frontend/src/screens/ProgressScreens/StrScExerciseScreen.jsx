@@ -3,13 +3,13 @@ import { AnatomyFront, AnatomyBack } from '../../assets/icons/icons.js'
 import ButtonSmall from '../../components/Buttons/ButtonSmall.jsx'
 import CardsStrScExercise from '../../components/Cards/ProgressScreen/CardsStrScExercise.jsx'
 import Navbar from '../../components/Navbar.jsx'
-import { RoutingContext } from '../../App.jsx'
-import { useData } from '../../DataContext.jsx'
+import { RoutingContext } from '../../RoutingContext.jsx'
+import DataContext from '../../DataContext.jsx'
 
 function StrScExerciseScreen({ musclesThresholdBrackets, muscleGroup, exercise }) {
     const { handleScreenChange } = React.useContext(RoutingContext)
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+
+    const { data, saveData } = React.useContext(DataContext)
 
     const exerciseData = data.exercises.find(exerciseObject => exerciseObject.name === exercise)
     const strengthScore = data.strengthScores[muscleGroup][exercise]

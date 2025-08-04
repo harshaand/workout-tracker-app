@@ -6,8 +6,8 @@ import ModalHistoryWorkout from '../components/Modals/session/content-modals/His
 import ModalOptionsHistory from '../components/Modals/template/ModalOptionsHistory.jsx'
 import ModalDeleteHistory from '../components/Modals/template/ModalDeleteHistory.jsx'
 import ModalSaveAsTemplate from '../components/Modals/template/ModalSaveAsTemplate.jsx'
-import { useData } from '../DataContext.jsx'
-import { RoutingContext } from '../App.jsx'
+import DataContext from '../DataContext.jsx'
+import { RoutingContext } from '../RoutingContext.jsx'
 import { v4 as uuidv4 } from 'uuid';
 import { format, compareAsc, compareDesc } from 'date-fns';
 import ButtonBig from '../components/Buttons/ButtonBig.jsx'
@@ -15,8 +15,7 @@ import ButtonBig from '../components/Buttons/ButtonBig.jsx'
 
 
 function HistoryScreen() {
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+    const { data, saveData } = React.useContext(DataContext)
     const { handleScreenChange } = React.useContext(RoutingContext)
 
     const months = [

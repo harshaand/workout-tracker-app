@@ -15,21 +15,20 @@ import ModalDeleteFolder from '../components/Modals/template/ModalDeleteFolder.j
 
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx'
 import CardExerciseTracker from '../components/Cards/CardExerciseTracker.jsx'
-import FolderList from '../OTHER/FoldersFunctionality.jsx'
 import Navbar from '../components/Navbar.jsx'
 
-import { useData } from '../DataContext.jsx'
+import DataContext from '../DataContext.jsx'
 import SessionScreen from './SessionScreen.jsx'
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { RoutingContext } from '../App.jsx'
+import { RoutingContext } from '../RoutingContext.jsx'
 
 
 function TemplatesScreen() {
     const { currentScreen, handleScreenChange } = React.useContext(RoutingContext)
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+
+    const { data, saveData } = React.useContext(DataContext)
     // console.log('DATA IN DB:', data)
     /* SCREEN VARIANTS
     1. newSession ------new key

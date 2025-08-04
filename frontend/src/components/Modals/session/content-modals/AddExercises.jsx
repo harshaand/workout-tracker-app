@@ -1,5 +1,5 @@
 import React from 'react'
-import { useData } from '../../../../DataContext.jsx'
+import DataContext from '../../../../DataContext.jsx'
 import ButtonSmall from '../../../Buttons/ButtonSmall.jsx'
 import { Search, ArrowDown, Tick } from '../../../../assets/icons/icons.js'
 import {
@@ -11,8 +11,8 @@ import {
 } from '../../../../assets/exercise-images/index.js';
 
 function AddExercises({ addExercises, setShowAddExercisesModal, setShowCreateExerciseModal }) {
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+
+    const { data, saveData } = React.useContext(DataContext)
     const containerExercises = React.useRef(null);
     const [containerExercisesHeight, setContainerExercisesHeight] = React.useState(0);
 

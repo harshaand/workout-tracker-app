@@ -2,11 +2,11 @@ import React from 'react'
 import '../../../css/modals.scss';
 import ButtonSmall from '../../Buttons/ButtonSmall.jsx'
 import { Tick } from '../../../assets/icons/icons.js';
-import { useData } from '../../../DataContext.jsx'
+import DataContext from '../../../DataContext.jsx'
 
 function ModalSelectFolder({ setShowModal, handleScreenChange, newEmptySession }) {
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+
+    const { data, saveData } = React.useContext(DataContext)
 
     function handleSubmit(formData) {
         handleScreenChange('SessionScreen', { ...newEmptySession, name: 'New Template' }, 'newEmptyTemplate', formData.get('selectedFolder'))

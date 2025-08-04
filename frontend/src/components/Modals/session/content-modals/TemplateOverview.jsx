@@ -1,7 +1,7 @@
 import React from 'react'
 import ButtonBig from '../../../Buttons/ButtonBig.jsx'
 import ButtonSmall from '../../../Buttons/ButtonSmall.jsx'
-import { useData } from '../../../../DataContext.jsx'
+import DataContext from '../../../../DataContext.jsx'
 import {
     BentOverRow, Deadlift, LatPulldown, RowCable, RowDumbbell, BicepCurlBarbell, BicepCurlDumbbell, HammerCurlDumbbell,
     CalfRaiseBarbell, CalfRaiseDumbbell, CalfRaiseMachine, SeatedCalfRaise, BenchPressDumbbell, BenchPress,
@@ -55,8 +55,8 @@ function TemplateOverview({ template, folderId, selectedModal, setSelectedModal,
         'Skull Crusher': SkullCrusher,
         'Tricep Pushdown (Cable)': TricepPushdownCable
     }
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+
+    const { data, saveData } = React.useContext(DataContext)
     let lastDoneMessage = false
     const diff = Math.abs(new Date() - new Date(template?.lastDone));
     if (template?.lastDone === undefined || diff === undefined) {

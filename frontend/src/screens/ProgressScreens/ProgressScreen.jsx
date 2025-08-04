@@ -8,8 +8,8 @@ import CardStrScOverview from '../../components/Cards/ProgressScreen/CardStrScOv
 import CardsStrScStats from '../../components/Cards/ProgressScreen/CardsStrScStats.jsx'
 import CardCalendar from '../../components/Cards/ProgressScreen/CardCalendar.jsx';
 import ModalCreateExercise from '../../components/Modals/session/content-modals/CreateExercise.jsx'
-import { RoutingContext } from '../../App.jsx'
-import { useData } from '../../DataContext.jsx'
+import { RoutingContext } from '../../RoutingContext.jsx'
+import DataContext from '../../DataContext.jsx'
 import {
     BentOverRow, Deadlift, LatPulldown, RowCable, RowDumbbell, BicepCurlBarbell, BicepCurlDumbbell, HammerCurlDumbbell,
     CalfRaiseBarbell, CalfRaiseDumbbell, CalfRaiseMachine, SeatedCalfRaise, BenchPressDumbbell, BenchPress,
@@ -20,8 +20,8 @@ import {
 
 export default function ProgressScreen() {
     const { handleScreenChange, handleStrScScreenChange } = React.useContext(RoutingContext)
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+
+    const { data, saveData } = React.useContext(DataContext)
     const [activeTab, setActiveTab] = React.useState(0);
     const containerRef = React.useRef(null);
     const scrollProgress = React.useRef(0);
@@ -334,7 +334,7 @@ export default function ProgressScreen() {
                                 <AnatomyBack height={170} width={60} opacity={20} musclesThresholdBrackets={musclesThresholdBrackets.current} />
                             </CardStrScOverview>
                             <CardsStrScStats streak={streak > 1 ? `${streak} weeks` : streak === 1 ? '1 week' : '0 Weeks'} PBs={totalPRs} workouts={totalWorkouts} volume={totalVolume} reps={totalReps} />
-                            <CardCalendar dates={data.history.map(history => history.date)} />
+                            {data.history.length > 0 && <CardCalendar dates={data.history.map(history => history.date)} />}
                         </div>
                     </div>
 

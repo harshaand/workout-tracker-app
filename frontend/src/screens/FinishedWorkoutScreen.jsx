@@ -2,15 +2,15 @@ import React from 'react'
 import '../css/modals.scss'
 import ButtonBig from '../components/Buttons/ButtonBig.jsx';
 import ButtonSmall from '../components/Buttons/ButtonSmall.jsx';
-import { useData } from '../DataContext.jsx'
-import { RoutingContext } from '../App.jsx'
+import DataContext from '../DataContext.jsx'
+import { RoutingContext } from '../RoutingContext.jsx'
 import { ThreeStarsRow } from '../assets/icons/icons.js';
 import CardWorkoutHistory from '../components/Cards/CardWorkoutHistory.jsx';
 import ModalUpdateTemplate from '../components/Modals/session/confirmation-modals/finished-session/UpdateTemplate.jsx'
 import ModalSaveAsNewTemplate from '../components/Modals/session/confirmation-modals/finished-session/SaveAsNewTemplate.jsx'
 function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, template, workoutId, currentDate, screenVariant, folderId, duration, templateName, notes }) {
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+
+    const { data, saveData } = React.useContext(DataContext)
     const [showModal, setShowModal] = React.useState(false)
     const userCurrentWeight = data.user.weight
     const { handleScreenChange } = React.useContext(RoutingContext)

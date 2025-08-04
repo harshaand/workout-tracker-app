@@ -1,9 +1,24 @@
+import React from 'react';
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './css/index.scss'
 import './css/buttons.scss'
 import App from './App.jsx'
+import { Auth0Provider } from '@auth0/auth0-react';
+import { DataProvider } from './DataContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <App />
+  <Auth0Provider
+    domain={import.meta.env.VITE_AUTH0_DOMAIN}
+    clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
+    authorizationParams={{
+      redirect_uri: window.location.origin,
+      audience: "https://genmax.app/api",
+      // scope: "read:current_user update:current_user_metadata"
+    }}
+  >
+    <DataProvider>
+      <App />
+    </DataProvider>
+  </Auth0Provider>
 )

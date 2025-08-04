@@ -1,9 +1,9 @@
 import React from 'react'
-import { useData } from '../../DataContext.jsx'
+import DataContext from '../../DataContext.jsx'
 import Navbar from '../../components/Navbar.jsx'
 import CardExerciseHistory from '../../components/Cards/CardExerciseHistory.jsx'
 import ButtonSmall from '../../components/Buttons/ButtonSmall.jsx'
-import { RoutingContext } from '../../App.jsx'
+import { RoutingContext } from '../../RoutingContext.jsx'
 import { format, compareDesc } from 'date-fns';
 import ModalHistoryWorkout from '../../components/Modals/session/content-modals/HistoryWorkout.jsx'
 import {
@@ -16,8 +16,8 @@ import {
 
 function HistoryExerciseScreen({ exercise = 'Back Squat' }) {
     const { handleScreenChange } = React.useContext(RoutingContext)
-    const useLocalStorage = useData()
-    const [data, saveData] = useLocalStorage('userData')
+
+    const { data, saveData } = React.useContext(DataContext)
     const [selectedHistoryWorkoutModal, setSelectedHistoryWorkoutModal] = React.useState(null)
 
     const months = [
