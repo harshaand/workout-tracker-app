@@ -10,7 +10,7 @@ const app = express();
 
 const verifyJwt = auth({
     audience: 'https://genmax.app/api',
-    issuerBaseURL: 'https://dev-et8zr61j0namcvsd.us.auth0.com/',
+    issuerBaseURL: 'https://login.genmax.app',
     tokenSigningAlg: 'RS256'
 });
 
@@ -21,10 +21,9 @@ app.use(cors({
 }));
 app.use(verifyJwt);
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(`${process.env.MONGODB_URI}`)
     .then(() => {
         console.log('connected to db')
-        app.listen(4000, () => console.log('Listening on port 4000'))
     })
     .catch((err) => {
         console.log(err.message)
@@ -93,4 +92,5 @@ app.delete('/api/user/data', async (req, res) => {
     }
 });
 
-
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
