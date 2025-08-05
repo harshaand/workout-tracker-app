@@ -18,7 +18,7 @@ function App() {
   if (isAuthenticated) return <RoutingProvider />
   else {
     loginWithRedirect()
-    return <div>Redirecting to login...</div>
+    return <LoadingLottie />
   }
 }
 

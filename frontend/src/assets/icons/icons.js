@@ -2,6 +2,7 @@ export { default as NavClock } from './NavClock.jsx';
 export { default as NavAdd } from './NavAdd.jsx';
 export { default as NavProgress } from './NavProgress.jsx';
 export { default as NavUser } from './NavUser.jsx';
+export { default as NavSettings } from './NavSettings.jsx';
 
 export { default as AddMedium } from './AddMedium.jsx';
 export { default as AddSmall } from './AddSmall.jsx';

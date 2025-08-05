@@ -4,7 +4,7 @@ import animationData from '../assets/loadingLottie.json';
 
 function LoadingLottie() {
     return (
-        <div style={{ width: 300, height: 300 }}>
+        <div style={{ width: 300, height: 300 }} className='spinner-loading'>
             <Lottie animationData={animationData} loop={true} />
         </div>
     );

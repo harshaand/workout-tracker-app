@@ -132,7 +132,7 @@ body {
   padding: 0;
   max-width: 100%;
   overflow-x: hidden;
-  background-color: #909090;
+  background-color: var(--white);
 
   /* WebKit Scrollbar Styles */
   &::-webkit-scrollbar {
@@ -160,7 +160,12 @@ body {
   }
 }
 
-
+.spinner-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 .container-app {
   display: flex;
@@ -227,7 +232,7 @@ body {
     width: 76.2px;
     font-size: var(--body-text-small);
     font-weight: 600;
-
+    transition: fill 0.3s ease;
     background-color: #00000000;
 
 
@@ -242,7 +247,7 @@ body {
     }
 
     &:hover {
-      text-decoration: underline;
+      fill: var(--white);
     }
 
   }
