@@ -4,9 +4,23 @@ import { auth } from 'express-oauth2-jwt-bearer';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userTemplate from './config/userTemplate.js'
+import path from 'path'
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
 dotenv.config();
 
 const app = express();
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.get('/api/logo', (req, res) => {
+    const filePath = path.join(__dirname, 'assets', 'genmaxlogo.svg');
+    res.sendFile(filePath, {
+        headers: {
+            'Content-Type': 'image/svg+xml'
+        }
+    });
+});
 
 const verifyJwt = auth({
     audience: 'https://genmax.app/api',
