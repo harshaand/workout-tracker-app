@@ -99,6 +99,12 @@ function FinishedWorkoutScreen({ oldExercises, newExercises, templateId, templat
                             [exerciseName]: { ...exercisesNewPRs.current[exerciseName], [prKey]: value }
                         }
                         totalPRs++
+                        if (prKey === 'strengthScore') {
+                            exercisesNewStrengthScores.current = {
+                                ...exercisesNewStrengthScores.current,
+                                [exerciseName]: Number(value.toFixed(1))
+                            }
+                        }
                         return { [prKey]: true }
 
                     } else return { [prKey]: false }

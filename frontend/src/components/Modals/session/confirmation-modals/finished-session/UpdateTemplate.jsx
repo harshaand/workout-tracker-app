@@ -128,7 +128,7 @@ function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, s
     }
 
 
-    if (updateTemplateMessage.length > 0) {
+    if (updateTemplateMessage.length > 0 && folderId !== 'exampleTemplates') {
         if (removedValues) {
             updateTemplateButton = <ButtonBig onClick={async () => {
                 await handleUpdateTemplate()
@@ -161,7 +161,7 @@ function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, s
             setShowModal(false)
         }}>
             <div>
-                <div className='main-text'>Update Values Only</div>
+                <div className='main-text'>Update Values {folderId === 'exampleTemplates' ? '' : 'Only'}</div>
                 <div className='supporting-text'>{updatedValuesMessage}</div>
             </div>
         </ButtonBig>
@@ -169,7 +169,7 @@ function UpdateTemplate({ showModal, setShowModal, oldExercises, newExercises, s
 
     if (!showModal) return null
     else {
-        if (folderId !== 'exampleTemplates' && (updatedValues || updateTemplateMessage.length > 0)) {
+        if (updatedValues || updateTemplateMessage.length > 0) {
             return <>
                 <button className='modal-overlay' onClick={() => setShowModal(false)}></button>
                 <div className='modal modal-spacing--default'>
