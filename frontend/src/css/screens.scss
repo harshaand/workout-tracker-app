@@ -1030,3 +1030,37 @@
 
 
 }
+
+@media (max-width: 768px) {
+    .history {
+        &__container {
+            padding: 36px 0 200px 0;
+        }
+    }
+
+    .templates {
+        &__container {
+            padding: 36px 0 64px 0;
+        }
+    }
+
+    .session {
+        &__container {
+            padding: 20px 0 0 0;
+        }
+    }
+
+    .progress {
+        &__container {
+            padding: 20px 0 128px 0;
+        }
+    }
+
+    .strength-score-sub-screen {
+        &__container {
+            // padding not changed
+            padding: 28px 0 148px 0;
+        }
+    }
+
+}
