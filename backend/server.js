@@ -12,6 +12,10 @@ dotenv.config();
 
 const app = express();
 
+app.get('/demo', (req, res) => {
+    res.status(302).redirect('/')
+});
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 app.get('/api/logo', (req, res) => {
     const filePath = path.join(__dirname, 'assets', 'genmaxlogo.svg');
